@@ -1,0 +1,53 @@
+- name: Check if R is already installed
+  stat:
+    path: "/opt/R/{{ item }}/bin/R"
+  loop: "{{ r_versions }}"
+  register: r_installed
+
+- block:
+    - name: List all installed R versions
+      when: remove_old_r_versions | bool
+      changed_when: false
+      ansible.builtin.shell: dnf list installed | grep R-[0-9] | awk -F- '{print $2}' | awk -F. '{print $1"."$2"."$3}'
+      register: r_installed_list
+
+    - name: Create diff between lists
+      ansible.builtin.set_fact:
+        unwanted_r_versions: "{{ r_installed_list.stdout_lines | difference(r_versions) }}"
+
+    - name: Remove deprecated/old R versions
+      when: remove_old_r_versions | bool
+      ansible.builtin.dnf:
+        name: "R-{{ item }}.{{ ansible_architecture}}"
+        state: absent
+      loop: "{{ unwanted_r_versions }}"
+
+    - name: Download R binary (arm64)
+      when: ansible_facts['os_family'] == 'RedHat' and  ansible_distribution_major_version | int == 9 and ansible_architecture == 'aarch64' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
+      ansible.builtin.get_url:
+        url: "https://cynkra-r-builds-arm64.s3.eu-central-1.amazonaws.com/el9/R-{{ item }}-1-1.aarch64.rpm"
+        dest: "/tmp/R-{{ item }}.rpm"
+        force: true
+      loop: "{{ r_versions }}"
+
+    - name: Download R binary
+      when: ansible_facts['os_family'] == 'RedHat' and  ansible_distribution_major_version | int == 9 and ansible_architecture == 'x86_64' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
+      ansible.builtin.get_url:
+        url: "https://cdn.posit.co/r/rhel-9/pkgs/R-{{ item }}-1-1.x86_64.rpm"
+        dest: "/tmp/R-{{ item }}.rpm"
+      loop: "{{ r_versions }}"
+
+    - name: Install R binary
+      when: ansible_facts['os_family'] == 'RedHat' and  ansible_distribution_major_version | int == 9 and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
+      ansible.builtin.dnf:
+        name: "/tmp/R-{{ item }}.rpm"
+        state: present
+        disable_gpg_check: true
+      loop: "{{ r_versions }}"
+
+    - name: Cleanup downloaded assets
+      when: not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
+      ansible.builtin.file:
+        path: "/tmp/R-{{ item }}.rpm"
+        state: absent
+      loop: "{{ r_versions }}"

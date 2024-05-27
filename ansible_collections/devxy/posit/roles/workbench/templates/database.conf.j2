@@ -1,0 +1,20 @@
+# Specifies the database provider to use
+provider={{ workbench_database_provider }}
+# Directory in which the sqlite database will be written
+directory={{ workbench_database_directory}}
+
+{% if workbench_database_provider == "postgresql" %}
+# Specifies the host (hostname or IP address) of the database host
+host={{ workbench_database_host }}
+# Specifies the database to connect to
+database={{ workbench_database_database}}
+# Specifies the TCP port where the database is listening for connections
+port={{ workbench_database_port}}
+# Specifies the database connection username
+username={{ workbench_database_username }}
+# Specifies the database connection password.
+password={{ workbench_database_password }}
+# Specifies the maximum amount of seconds allowed before a database connection attempt is considered failed
+connection-timeout-seconds={{ workbench_database_connection_timeout_seconds}}
+connection-uri={{ workbench_database_connection_uri }}
+{% endif %}

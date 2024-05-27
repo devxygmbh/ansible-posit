@@ -1,0 +1,6 @@
+- name: Deploy Posit Workbench
+  hosts: all
+  become: true
+
+  roles:
+    - role: devxy.posit.workbench

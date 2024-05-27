@@ -1,0 +1,34 @@
+- name: Check if rstudio-server service exists
+  ansible.builtin.service_facts:
+
+- name: Check rstudio-server version when service exists
+  when: "'rstudio-server.service' in ansible_facts.services"
+  command: "rstudio-server version"
+  register: installed_workbench_version
+  changed_when: false
+  ignore_errors: true
+
+- block:
+    - name: Define environment facts for Workbench download
+      ansible.builtin.set_fact:
+        binary_type: "{{ 'rpm' if ansible_facts['os_family'] == 'RedHat' else 'deb' }}"
+        os_identifier: "{{ 'rhel' if ansible_facts['os_family'] == 'RedHat' else 'ubuntu' }}"
+        arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x86_64' }}"
+
+    - name: Download Posit Workbench
+      ansible.builtin.get_url:
+        url: "https://s3.amazonaws.com/rstudio-ide-build/server/{{ os_identifier }}{{ ansible_distribution_major_version }}/{{ arch }}/rstudio-workbench-{{ os_identifier }}-{{ workbench_version }}-{{ ansible_architecture }}.{{ binary_type }}"
+        dest: "/tmp/workbench-{{ workbench_version }}.{{ binary_type }}"
+
+    - name: Install Posit Workbench
+      ansible.builtin.package:
+        name: "/tmp/workbench-{{ workbench_version }}.{{ binary_type }}"
+        state: present
+        disable_gpg_check: true
+
+    - name: Cleanup downloaded assets
+      ansible.builtin.file:
+        path: "/tmp/workbench-{{ workbench_version }}.{{ binary_type }}"
+        state: absent
+  when: >
+    'rstudio-server.service' not in ansible_facts.services or installed_workbench_version.stdout.split()[0] != (workbench_version | replace('-', '+'))
