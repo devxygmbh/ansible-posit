@@ -1,0 +1,31 @@
+### MANAGED BY ANSIBLE ###
+# This file is managed by Ansible. Any changes made directly to this file will be lost.
+# Please make any changes to the appropriate Ansible variables.
+
+### root logging level, inherited by all loggers
+[*]
+log-level={{ workbench_logging_log_level }}
+logger-type={{ workbench_logging_type }}
+log-dir={{ workbench_logging_dir }}
+log-file-mode={{ workbench_logging_file_mode }}
+rotate={{ workbench_logging_rotate }}
+max-size-mb={{ workbench_logging_max_size_mb }}
+rotate-days={{ workbench_logging_rotate_days }}
+max-rotations={{ workbench_logging_max_rotations }}
+delete-days={{ workbench_logging_delete_days }}
+warn-syslog=1{{ workbench_logging_warn_syslog }}
+
+### subloggers
+#[@rserver]
+#log-level=debug
+#logger-type=file
+#log-dir=/var/log/rstudio/rstudio-server
+#max-size-mb=4
+#rotate-days=1
+#max-rotations=100
+#delete-days=30
+#warn-syslog=1
+#
+# enable debug logging for file locking
+#[file-locking]
+#log-level=debug

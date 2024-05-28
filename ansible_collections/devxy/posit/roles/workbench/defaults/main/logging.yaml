@@ -1,0 +1,12 @@
+### Logging (logging.conf)
+
+workbench_logging_log_level: warn
+workbench_logging_type: file
+workbench_logging_dir: /var/log/rstudio/rstudio-server
+workbench_logging_file_mode: 666
+workbench_logging_rotate: 1
+workbench_logging_max_size_mb: 5
+workbench_logging_rotate_days: 1
+workbench_logging_max_rotations: 100
+workbench_logging_delete_days: 30
+workbench_logging_warn_syslog: 1

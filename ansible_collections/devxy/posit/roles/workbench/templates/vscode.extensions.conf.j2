@@ -1,0 +1,14 @@
+### MANAGED BY ANSIBLE ###
+# This file is managed by Ansible. Any changes made directly to this file will be lost.
+# Please make any changes to the appropriate Ansible variables.
+# Default VSCode extensions to be installed
+quarto.quarto
+REditorSupport.r
+posit.shiny-python
+ms-python.python
+
+{% if additional_vscode_extensions is defined %}
+{% for extension in additional_vscode_extensions %}
+{{ extension }}
+{% endfor %}
+{% endif %}

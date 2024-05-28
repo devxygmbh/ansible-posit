@@ -7,3 +7,22 @@
     mode: "{{ item.mode }}"
   loop:
     - { file: "database.conf", mode: "0600" }
+    - { file: "jupyter.conf", mode: "0644" }
+    - { file: "launcher.conf", mode: "0644" }
+    - { file: "logging.conf", mode: "0644" }
+    - { file: "notifications.conf", mode: "0644" }
+    - { file: "rserver.conf", mode: "0644" }
+    - { file: "rsession.conf", mode: "0644" }
+    - { file: "vscode.conf", mode: "0644" }
+    - { file: "vscode.extensions.conf", mode: "0644" }
+  notify: Restart rstudio-server service
+
+- name: Add static files
+  ansible.builtin.copy:
+    src: "{{ item.name }}"
+    dest: "/etc/rstudio/{{ item.name }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop:
+    - { name: "vscode-user-settings.json", mode: "0644" }

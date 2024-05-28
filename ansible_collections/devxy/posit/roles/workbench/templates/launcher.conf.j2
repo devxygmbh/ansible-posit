@@ -1,0 +1,15 @@
+### MANAGED BY ANSIBLE ###
+# This file is managed by Ansible. Any changes made directly to this file will be lost.
+# Please make any changes to the appropriate Ansible variables.
+
+[server]
+address={{ workbench_launcher_server_address }}
+port={{ workbench_launcher_server_port}}
+# The server-user configured here must match the server-user configured in rserver.conf.
+server-user={{ workbench_launcher_server_server_user }}
+# The admin group configured here must be the primary group of the server-user configured above.
+admin-group={{ workbench_launcher_server_admin_group }}
+
+[cluster]
+name={{ workbench_launcher_cluster_name }}
+type={{ workbench_launcher_cluster_type }}

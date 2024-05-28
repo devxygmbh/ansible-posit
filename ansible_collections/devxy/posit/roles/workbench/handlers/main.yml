@@ -1,2 +1,10 @@
 ---
 # handlers file for workbench
+
+- name: Restart rstudio-server service
+  ansible.builtin.service:
+    name: rstudio-server
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  ignore_errors: true

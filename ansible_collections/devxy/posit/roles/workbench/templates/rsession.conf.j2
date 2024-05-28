@@ -1,0 +1,28 @@
+### MANAGED BY ANSIBLE ###
+# This file is managed by Ansible. Any changes made directly to this file will be lost.
+# Please make any changes to the appropriate Ansible variables.
+
+### session
+session-connections-block-suspend={{ workbench_session_session_connections_block_suspend }}
+session-external-pointers-block-suspend={{ workbench_session_session_external_pointers_block_suspend }}
+session-timeout-minutes={{ workbench_session_session_timeout_minutes }}
+session-timeout-suspend={{ workbench_session_session_timeout_suspend }}
+session-save-action-default={{ workbench_session_session_save_action_default }}
+session-quit-child-processes-on-exit={{ workbench_session_session_quit_child_processes_on_exit }}
+{% if workbench_session_default_rsconnect_server is defined %}
+default-rsconnect-server={{ workbench_session_default_rsconnect_server }}
+{% endif %}
+restrict-directory-view={{ workbench_session_restrict_directory_view }}
+
+### allow
+allow-r-cran-repos-edit={{ workbench_session_allow_r_cran_repos_edit }}
+
+### r
+{# r-cran-repos={{ workbench_session_r_cran_repos }} #}
+{# r-cran-repos-url={{ workbench_session_r_cran_repos_url }} #}
+
+### copilot
+copilot-enabled={{ workbench_session_copilot_enabled }}
+
+### misc
+session-timeout-kill-hours={{ workbench_session_session_timeout_kill_hours }}

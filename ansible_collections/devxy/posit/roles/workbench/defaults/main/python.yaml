@@ -1,0 +1,10 @@
+### Jupyter (jupyter.conf)
+# https://docs.posit.co/ide/server-pro/jupyter_sessions/configuration.html
+
+workbench_notebooks_enabled: 1
+workbench_labs_enabled: 1
+workbench_session_cull_minutes: 0
+workbench_jupyterlabs_version: ~=4.0
+workbench_jupyternotebook_version: ~=6.0
+workbench_posit_jupyterlab_extension_version: ~=1.0
+workbench_jupyter_exe: /usr/local/bin/jupyter

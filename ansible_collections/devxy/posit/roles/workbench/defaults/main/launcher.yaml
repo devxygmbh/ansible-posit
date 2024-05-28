@@ -1,0 +1,10 @@
+### Launcher (launcher.conf)
+# https://docs.posit.co/ide/server-pro/reference/launcher_conf.html
+
+workbench_launcher_server_address: localhost
+workbench_launcher_server_port: 5559
+workbench_launcher_server_server_user: rstudio-server
+workbench_launcher_server_admin_group: rstudio-server
+
+workbench_launcher_cluster_name: Local
+workbench_launcher_cluster_type: Local

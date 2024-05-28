@@ -4,14 +4,19 @@
 # - name: Import 01_syslibs.yaml
 #   ansible.builtin.import_tasks: 01_syslibs.yaml
 
-- name: Import 02_r.yaml
-  ansible.builtin.import_tasks: 02_r.yaml
+# - name: Import 02_r.yaml
+#   ansible.builtin.import_tasks: 02_r.yaml
 
 # - name: Import 02_dirs.yaml
 #   ansible.builtin.import_tasks: 02_dirs.yaml
 
-- name: Import 03_install.yaml
-  ansible.builtin.import_tasks: 03_install.yaml
+# - name: Import 03_install.yaml
+#   ansible.builtin.import_tasks: 03_install.yaml
+
+# - name: Import jupyter.yaml
+#   ansible.builtin.import_tasks: jupyter.yaml
+
 
 - name: Import 04_config.yaml
   ansible.builtin.import_tasks: 04_config.yaml
+

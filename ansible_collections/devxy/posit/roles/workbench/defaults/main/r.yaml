@@ -1,0 +1,9 @@
+# removes all R versions that are not in the r_versions list
+remove_old_r_versions: true
+
+r_versions:
+  - 4.0.5
+  - 4.1.3
+  - 4.2.3
+  - 4.3.3
+

@@ -16,9 +16,17 @@
       - epel-release
       - dnf-plugins-core
 
-# - name: Install required system libraries
-#   when: os_family == 'RedHat'
-#   ansible.builtin.dnf:
-#     name: "{{ item }}"
-#     state: present
-#   loop:
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Install required system libraries
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{
+    (ansible_facts['os_family'] == 'Debian') | ternary(r_package_syslibs_debian,
+    (ansible_facts['os_family'] == 'RedHat') | ternary(r_package_syslibs_redhat,
+    (ansible_facts['os_family'] == 'Suse') | ternary(r_package_syslibs_suse, [])))
+    }}"
+  when: "item not in ansible_facts.packages"
