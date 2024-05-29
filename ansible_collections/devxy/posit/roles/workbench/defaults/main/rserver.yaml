@@ -14,7 +14,7 @@ workbench_server_launcher_address: localhost
 workbench_server_launcher_port: 5559
 workbench_server_launcher_session_callback_address: http://localhost:8787
 workbench_server_launcher_default_cluster: Local
-workbench_server_launcher_use_ssl: 0
+workbench_server_launcher_use_ssl: 1
 workbench_server_launcher_sessions_enabled: 1
 workbench_server_launcher_verify_ssl_certs: 1
 workbench_server_launcher_session_callback_verify_ssl_certs: 1

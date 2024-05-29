@@ -2,5 +2,25 @@
   hosts: all
   become: true
 
+  vars:
+    workbench_launcher_enable_ssl: 0
+    workbench_server_launcher_use_ssl: 0
+    workbench_launcher_server_enable_debug_logging: 1
+    workbench_file_license: |
+      -----BEGIN RSTUDIO LICENSE-----
+      Ib/khM7oeZ9qfXlPveLcbf62+yVBcELwGJoLoh2PTuiDvI+UCplInNsd/ASDA+uyoQViNaqK
+      ITKTWix59sZeYvHAS7q1Gb4CJddO3zPbPJ1r5AFlRmDR4U2bK4tJ8I6GQEqQ2Dsv1GbEzTrF
+      BraqaZq9Y/v4J+0U8Tz3RuImrl+mRk355j1FqAo2YukKKmBtFuwNGMuAhwgGyOpKn5PX/bc4
+      dBvkiRakaunyBJmmrp9leGtKhRfsnsgTmBB85JkIgz4PSX33PW9yvIYxeX2cPRntphFiDN1j
+      hyLaxMqYTC9WcraQPiEyLMn+3DEfuzEHYZxewkILPZ2H073PjSsbpuvk/dMD2J/m8hNq1fJf
+      MFB1ckw7QXUdeRmMk8rGiSeB0UXWDTXPRvpU/xRJm0Zi4nzMVEBk10XZLzSLMqiPbYkiOdd3
+      PbBqbHEH69rxpy/M7bd8lD7R0qhuyn9wKAoQvyVXdxDMai2BmWotCdagVE/VAHk1L7qr0t4i
+      MBufJhdvjKLten1IJg6XuZSgisqz1kmUElFcl7fVN2VcrncfQi6+cVyfh9n03MYcQcrSU2wb
+      m7CXfvzXBadHEOvjV+hJIrDfk18pMKlPHfEtIUgv3BSHBVr4RimibFuKBDJCrL30tlSY/D4v
+      crtMaAxRyN4Veiiv5SiCQL98Qcmj4oVpoMzuwdowIib27c2UqO2fUo/oCIyJKkzvIamLkJwb
+      Yss9iEGXwmjozwGFvOR3C797urapbpSKt6yAaWOfFxowI3oEmzuTZcAfIr4NlGn2pxoFtdRi
+      MhHX1lldE3gj0aMwPGvBJbDGjBtwi0NBqlEiKTxd
+      -----END RSTUDIO LICENSE-----
+
   roles:
     - role: devxy.posit.workbench

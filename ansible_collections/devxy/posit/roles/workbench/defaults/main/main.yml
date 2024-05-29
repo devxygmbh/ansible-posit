@@ -2,4 +2,4 @@
 # defaults file for workbench
 
 workbench_version: "2024.04.1-748.pro2"
-
+workbench_server_user: rstudio-server

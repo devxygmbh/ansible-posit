@@ -8,3 +8,10 @@ workbench_launcher_server_admin_group: rstudio-server
 
 workbench_launcher_cluster_name: Local
 workbench_launcher_cluster_type: Local
+workbench_launcher_cluster_exe: /usr/lib/rstudio-server/bin/rstudio-local-launcher
+
+workbench_launcher_server_enable_debug_logging: 0
+
+workbench_launcher_enable_ssl: 1
+workbench_launcher_certificate_file: /var/lib/rstudio-launcher/localhost.crt
+workbench_launcher_certificate_key_file: /var/lib/rstudio-launcher/localhost.key
