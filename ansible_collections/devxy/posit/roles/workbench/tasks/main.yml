@@ -16,9 +16,11 @@
 # - name: Import jupyter.yaml
 #   ansible.builtin.import_tasks: jupyter.yaml
 
+- name: Import startup.yaml
+  ansible.builtin.import_tasks: startup.yaml
 
-- name: Import 04_config.yaml
-  ansible.builtin.import_tasks: 04_config.yaml
+# - name: Import 04_config.yaml
+#   ansible.builtin.import_tasks: 04_config.yaml
 
-- name: Import secrets.yaml
-  ansible.builtin.import_tasks: secrets.yaml
+# - name: Import secrets.yaml
+#   ansible.builtin.import_tasks: secrets.yaml
