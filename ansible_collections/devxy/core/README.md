@@ -1,3 +1,3 @@
-# Ansible Collection - devxy.posit
+# Ansible Collection - devxy.core
 
 Documentation for the collection.

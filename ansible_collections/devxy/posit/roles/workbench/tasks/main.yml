@@ -4,8 +4,8 @@
 # - name: Import 01_syslibs.yaml
 #   ansible.builtin.import_tasks: 01_syslibs.yaml
 
-- name: Import 02_r.yaml
-  ansible.builtin.import_tasks: 02_r.yaml
+# - name: Import 02_r.yaml
+#   ansible.builtin.import_tasks: 02_r.yaml
 
 # - name: Import 02_dirs.yaml
 #   ansible.builtin.import_tasks: 02_dirs.yaml

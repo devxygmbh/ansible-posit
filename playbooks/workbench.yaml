@@ -24,4 +24,5 @@
       -----END RSTUDIO LICENSE-----
 
   roles:
+    - role: devxy.core.r
     - role: devxy.posit.workbench

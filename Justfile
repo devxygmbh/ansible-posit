@@ -6,3 +6,9 @@ workbench_check:
 
 workbench_apply:
   ansible-playbook -D playbooks/workbench.yaml
+
+r_check:
+  ansible-playbook -C -D playbooks/r.yaml
+
+r_apply:
+  ansible-playbook -D playbooks/r.yaml
