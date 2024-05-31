@@ -5,6 +5,13 @@
   register: r_installed
 
 - block:
+    # otherwise /usr/lib/rstudio-server/bin/rsession will fail to find libR
+    - name: Ensure R-core is installed
+      when: ansible_facts['os_family'] == 'RedHat'
+      ansible.builtin.dnf:
+        name: R
+        state: present
+
     - name: List all installed R versions
       when: remove_old_r_versions | bool
       changed_when: false
@@ -43,6 +50,26 @@
         name: "/tmp/R-{{ item }}.rpm"
         state: present
         disable_gpg_check: true
+      loop: "{{ r_versions }}"
+
+    - name: Create Renviron and Rprofile
+      ansible.builtin.blockinfile:
+        path: "/opt/R/{{ item }}/lib/R/etc/Renviron"
+        block: |
+          R_ENVIRON='/etc/Renviron.site'
+          R_PROFILE='/etc/Rprofile.site'
+          QUARTO_R=/opt/R/{{ item }}/lib/R/bin/R
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+      loop: "{{ r_versions }}"
+
+    - name: Configure R-version specific Renviron
+      ansible.builtin.blockinfile:
+        path: "/opt/R/{{ item }}/lib/R/etc/Renviron"
+        block: |
+          R_ENVIRON='/etc/Renviron.site'
+          R_PROFILE='/etc/Rprofile.site'
+          QUARTO_R=/opt/R/{{ item }}/lib/R/bin/R
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
       loop: "{{ r_versions }}"
 
     - name: Cleanup downloaded assets

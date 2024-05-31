@@ -9,6 +9,9 @@ workbench_server_server_license_warning_days: 15
 workbench_server_server_project_sharing: 1
 workbench_server_server_admin_enabled: 1
 workbench_server_server_load_balancing_enabled: 0
+# disabled as otherwise the OS package manager version will be auto-detected
+# this will not work with the custom Renviron/Rprofile logic in place in /etc
+workbench_server_server_r_versions_scan: 0
 
 workbench_server_launcher_address: localhost
 workbench_server_launcher_port: 5559

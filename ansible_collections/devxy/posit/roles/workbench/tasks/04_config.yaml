@@ -13,6 +13,7 @@
     - { file: "notifications.conf", mode: "0644", restart: "Restart rstudio-server service" }
     - { file: "rstudio-prefs.json", mode: "0644", restart: "Restart rstudio-server service" }
     - { file: "rserver.conf", mode: "0644", restart: "Restart rstudio-server service" }
+    - { file: "r-versions", mode: "0644", restart: "Restart rstudio-server service" }
     - { file: "rsession.conf", mode: "0644", restart: "Restart rstudio-server service" }
     - { file: "vscode.conf", mode: "0644", restart: "Restart rstudio-server service" }
     - { file: "vscode.extensions.conf", mode: "0644", restart: "Restart rstudio-server service" }
