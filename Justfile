@@ -12,3 +12,9 @@ r_check:
 
 r_apply:
   ansible-playbook -D playbooks/r.yaml
+
+quarto_check:
+  ansible-playbook -C -D playbooks/quarto.yaml
+
+quarto_apply:
+  ansible-playbook -D playbooks/quarto.yaml

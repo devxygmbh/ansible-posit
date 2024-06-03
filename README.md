@@ -16,6 +16,17 @@
 - For every R version, pointers to a central `Renviron.site` (`/etc/Renviron.site`) and `Rprofile.site` (`/etc/Rprofile.site`) are configured by default
 - Installations live in `/opt/R`
 
+### [Quarto (ansible_collections/devxy/core/roles/quarto)](ansible_collections/devxy/core/roles/quarto)
+
+- Installs and configures Quarto
+- Multiple versions are supported
+- Supports adding Quarto to `$PATH`
+- Convenience aliases `release` and `pre-release` are available
+
+**Tested with:**
+
+- Linux arm64
+
 ## Posit
 
 ### [Workbench (ansible_collections/devxy/posit/roles/workbench)](ansible_collections/devxy/posit/roles/workbench)
