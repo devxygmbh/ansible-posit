@@ -6,7 +6,7 @@
 - name: Get Quarto latest release from GitHub
   ansible.builtin.uri:
     url: https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest
-    return_content: yes
+    return_content: true
     headers:
       Accept: "application/vnd.github.v3+json"
   register: latest_release
@@ -20,7 +20,7 @@
 - name: Get Quarto releases from GitHub
   ansible.builtin.uri:
     url: https://api.github.com/repos/quarto-dev/quarto-cli/releases
-    return_content: yes
+    return_content: true
     headers:
       Accept: "application/vnd.github.v3+json"
   register: all_releases
@@ -43,13 +43,14 @@
   ansible.builtin.get_url:
     url: "https://github.com/quarto-dev/quarto-cli/releases/download/v{{ item }}/quarto-{{ item }}-linux-{{ arch }}.tar.gz"
     dest: "/tmp/quarto-{{ item }}.tar.gz"
+    mode: "0644"
   loop: "{{ quarto_versions }}"
 
 - name: Ensure quarto directory exists
   ansible.builtin.file:
     path: "{{ quarto_dest_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
 
 - name: Extract quarto binary
   ansible.builtin.unarchive:
@@ -73,3 +74,4 @@
     create: true
     state: present
     marker: "# {mark} ANSIBLE MANAGED BLOCK quarto"
+    mode: "0644"
