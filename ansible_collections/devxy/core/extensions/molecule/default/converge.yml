@@ -1,6 +1,9 @@
 - name: Converge
   hosts: all
   gather_facts: true
+  vars:
+    r_r_versions:
+      - 4.0.5
   # tasks:
   #   - name: Replace this task with one that validates your content
   #     ansible.builtin.debug:
