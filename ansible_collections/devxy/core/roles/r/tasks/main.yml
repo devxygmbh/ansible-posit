@@ -61,10 +61,14 @@
         mode: "0644"
       loop: "{{ r_r_versions }}"
 
+    - name: Set Posit OS identifier for download
+      ansible.builtin.set_fact:
+        posit_os_identifier: "{{ 'centos' if ansible_distribution_major_version | int == 8 else 'rhel' if ansible_distribution_major_version | int == 9 else 'unsupported' }}"
+
     - name: Download R binary
       when: ansible_facts['os_family'] == 'RedHat' and ansible_architecture == 'x86_64' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
       ansible.builtin.get_url:
-        url: "https://cdn.posit.co/r/rhel-{{ ansible_distribution_major_version }}/pkgs/R-{{ item }}-1-1.x86_64.rpm"
+        url: "https://cdn.posit.co/r/{{ posit_os_identifier }}-{{ ansible_distribution_major_version }}/pkgs/R-{{ item }}-1-1.x86_64.rpm"
         dest: "/tmp/R-{{ item }}.rpm"
         mode: "0644"
       loop: "{{ r_r_versions }}"
