@@ -24,7 +24,7 @@
         that:
           - item.stat.exists
           - item.stat.isreg
-          - item.stat.mode | regex_search('^[^0-7]*7')
+          - item.stat.executable
         msg: "R binary at {{ item.stat.path }} is not executable"
       loop: "{{ r_files_stats.results }}"
       when: item.stat.exists
