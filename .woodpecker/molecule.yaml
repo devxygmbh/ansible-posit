@@ -1,0 +1,51 @@
+when:
+  event: [push, cron, manual]
+
+steps:
+  - name: Build
+    image: library/docker:26.1.4-dind-alpine3.20 # agent on k8s
+    # image: alpine:3.20 # agent on VM
+    privileged: true
+    environment:
+      DOCKER_HOST: tcp://docker:2375
+    commands:
+      - apk add -q --no-cache
+        python3 python3-dev py3-pip gcc git curl build-base
+        autoconf automake py3-cryptography linux-headers
+        musl-dev libffi-dev openssl-dev openssh
+      - python3 --version
+      - python3 -m venv ~/venv/ansible-molecule
+      - source ~/venv/ansible-molecule/bin/activate
+      - python3 -m pip install -q 'ansible-core<2.17' molecule-plugins[docker]
+      - ansible --version
+      - molecule --version
+      - cd ansible_collections/devxy/core/extensions
+      - molecule test
+    backend_options:
+      kubernetes:
+        resources:
+          requests:
+            memory: 200Mi
+            cpu: 500m
+          limits:
+            memory: 1000Mi
+            cpu: 4000m
+        # nodeSelector:
+        #   kubernetes.io/arch: "arm64"
+        #   topology.kubernetes.io/region: fsn1
+
+services:
+  docker:
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    image: docker:26-dind
+    commands: dockerd --tls=false --host=tcp://0.0.0.0:2375
+    privileged: true
+    ports:
+      - 2375
+    # volumes:
+    #   - ci-tmp-fsn1:/tmp
+    # backend_options:
+    #   kubernetes:
+    #     nodeSelector:
+    #       topology.kubernetes.io/region: fsn1
