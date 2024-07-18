@@ -10,10 +10,7 @@ steps:
       PY_COLORS: 1
       DOCKER_HOST: tcp://docker:2375
     commands:
-      - apk add -q --no-cache
-        python3 python3-dev py3-pip gcc git curl build-base
-        autoconf automake py3-cryptography linux-headers
-        musl-dev libffi-dev openssl-dev openssh
+      - apk add -q --no-cache python3 python3-dev py3-pip gcc git curl build-base autoconf automake py3-cryptography linux-headers musl-dev libffi-dev openssl-dev openssh
       - python3 --version
       - python3 -m venv ~/venv/ansible-molecule
       - source ~/venv/ansible-molecule/bin/activate
