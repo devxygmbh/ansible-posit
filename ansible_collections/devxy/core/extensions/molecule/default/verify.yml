@@ -13,11 +13,18 @@
         use_regex: false
       register: r_installed
 
+    - name: Gather file stats for each R executable
+      ansible.builtin.stat:
+        path: "{{ item.path }}"
+      loop: "{{ r_installed.files }}"
+      register: r_files_stats
+
     - name: Assert R binaries are executable
       ansible.builtin.assert:
         that:
           - item.stat.exists
           - item.stat.isreg
           - item.stat.mode | regex_search('^[^0-7]*7')
-        msg: "R binary at {{ item.path }} is not executable"
-      loop: "{{ r_installed.files }}"
+        msg: "R binary at {{ item.stat.path }} is not executable"
+      loop: "{{ r_files_stats.results }}"
+      when: item.stat.exists
