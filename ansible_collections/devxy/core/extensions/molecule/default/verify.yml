@@ -1,0 +1,23 @@
+- name: Verify
+  hosts: all
+  become: false
+  gather_facts: false
+
+  tasks:
+    - name: Find all R executables under /opt/R
+      ansible.builtin.find:
+        paths: "/opt/R"
+        patterns: "R"
+        file_type: file
+        recurse: true
+        use_regex: false
+      register: r_executables
+
+    - name: Assert R binaries are executable
+      ansible.builtin.assert:
+        that:
+          - item.stat.exists
+          - item.stat.isreg
+          - item.stat.mode | regex_search('^[^0-7]*7')
+        msg: "R binary at {{ item.invocation.module_args.path }} is not executable"
+      loop: "{{ r_installed.results }}"

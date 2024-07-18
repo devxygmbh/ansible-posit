@@ -1,5 +1,17 @@
 # ansible
 
+## Molecule setup
+
+- Done via `venv`
+- When working with RHEL8 hosts, make sure to install ansible@9 and ansible-core<2.17
+
+```sh
+mkdir ~/venv
+python3 -m venv ~/venv/ansible-molecule
+source ~/venv/ansible-molecule/bin/activate
+pip3 install molecule docker molecule-plugins[docker] 'ansible-core<2.17'
+```
+
 ## Core
 
 ### [R (ansible_collections/devxy/core/roles/r)](ansible_collections/devxy/core/roles/r)
@@ -15,6 +27,10 @@
 
 - For every R version, pointers to a central `Renviron.site` (`/etc/Renviron.site`) and `Rprofile.site` (`/etc/Rprofile.site`) are configured by default
 - Installations live in `/opt/R`
+
+**Tested for:**
+
+- [x] AlmaLinux 9
 
 ### [Quarto (ansible_collections/devxy/core/roles/quarto)](ansible_collections/devxy/core/roles/quarto)
 
