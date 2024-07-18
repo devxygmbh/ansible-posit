@@ -2,9 +2,8 @@ when:
   event: [push, cron, manual]
 
 steps:
-  - name: Build
-    image: library/docker:26.1.4-dind-alpine3.20 # agent on k8s
-    # image: alpine:3.20 # agent on VM
+  - name: "Test devxy.core.r"
+    image: library/docker:26.1.4-dind-alpine3.20
     privileged: true
     environment:
       # force output of ANSI colors
@@ -50,6 +49,15 @@ steps:
         Workflow: ${CI_WORKFLOW_NAME/\n//}
         Commit message: ${CI_COMMIT_MESSAGE/\n//}
         Commit Author: ${CI_COMMIT_AUTHOR/\n//}
+    backend_options:
+      kubernetes:
+        resources:
+          requests:
+            memory: 100Mi
+            cpu: 0m
+          limits:
+            memory: 300Mi
+            cpu: 200m
 
 services:
   docker:
