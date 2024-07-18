@@ -35,6 +35,22 @@ steps:
         nodeSelector:
           kubernetes.io/arch: "arm64"
 
+  - name: "ntfy"
+    image: codeberg.org/l-x/woodpecker-ntfy:1.3.1
+    when:
+      - status: [failure]
+    settings:
+      url: https://ntfy.devxy.io/ci-builds
+      token:
+        from_secret: ntfy_token
+      title: "CI '${CI_REPO}' failed"
+      actions: view, Open build, ${CI_PIPELINE_URL}, clear=false;
+      click: ${CI_BUILD_LINK}
+      message: |
+        Workflow: ${CI_WORKFLOW_NAME/\n//}
+        Commit message: ${CI_COMMIT_MESSAGE/\n//}
+        Commit Author: ${CI_COMMIT_AUTHOR/\n//}
+
 services:
   docker:
     environment:
