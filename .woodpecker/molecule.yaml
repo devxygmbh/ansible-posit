@@ -7,6 +7,8 @@ steps:
     # image: alpine:3.20 # agent on VM
     privileged: true
     environment:
+      # force output of ANSI colors
+      PY_COLORS: 1
       DOCKER_HOST: tcp://docker:2375
     commands:
       - apk add -q --no-cache
@@ -25,14 +27,13 @@ steps:
       kubernetes:
         resources:
           requests:
-            memory: 200Mi
+            memory: 300Mi
             cpu: 500m
           limits:
             memory: 1000Mi
             cpu: 4000m
-        # nodeSelector:
-        #   kubernetes.io/arch: "arm64"
-        #   topology.kubernetes.io/region: fsn1
+        nodeSelector:
+          kubernetes.io/arch: "arm64"
 
 services:
   docker:
@@ -43,9 +44,14 @@ services:
     privileged: true
     ports:
       - 2375
-    # volumes:
-    #   - ci-tmp-fsn1:/tmp
-    # backend_options:
-    #   kubernetes:
-    #     nodeSelector:
-    #       topology.kubernetes.io/region: fsn1
+    backend_options:
+      kubernetes:
+        resources:
+          requests:
+            memory: 600Mi
+            cpu: 500m
+          limits:
+            memory: 1000Mi
+            cpu: 4000m
+        nodeSelector:
+          kubernetes.io/arch: "arm64"
