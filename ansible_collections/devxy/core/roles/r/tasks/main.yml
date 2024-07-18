@@ -1,10 +1,33 @@
-- name: Check if R is already installed
-  stat:
+- name: List installed R versions under /opt/R
+  ansible.builtin.stat:
     path: "/opt/R/{{ item }}/bin/R"
   loop: "{{ r_r_versions }}"
   register: r_installed
 
-- block:
+- name: RedHat block
+  when: ansible_facts['os_family'] == 'RedHat'
+  block:
+    # to be able to install R-core
+    - name: Ensure R-core deps are installed (1)
+      when: ansible_facts['os_family'] == 'RedHat'
+      ansible.builtin.dnf:
+        name: epel-release
+        state: present
+
+    # for flexiblas-devel
+    - name: Enable appropriate repository for RedHat 8 or 9
+      community.general.dnf_config_manager:
+        name: "{{ 'crb' if ansible_distribution_major_version | int == 9 else 'powertools' }}"
+        state: enabled
+      when: ansible_facts['os_family'] == 'RedHat' and ansible_distribution_major_version | int in [8, 9]
+
+    - name: Ensure R-core deps are installed (2)
+      when: ansible_facts['os_family'] == 'RedHat'
+      ansible.builtin.dnf:
+        name: "{{ 'flexiblas-devel' if ansible_distribution_major_version | int == 9 else 'openblas-devel' }}"
+        update_cache: true
+        state: present
+
     # otherwise /usr/lib/rstudio-server/bin/rsession will fail to find libR
     - name: Ensure R-core is installed
       when: ansible_facts['os_family'] == 'RedHat'
@@ -25,27 +48,29 @@
     - name: Remove deprecated/old R versions
       when: r_remove_old_r_versions | bool
       ansible.builtin.dnf:
-        name: "R-{{ item }}.{{ ansible_architecture}}"
+        name: "R-{{ item }}.{{ ansible_architecture }}"
         state: absent
       loop: "{{ unwanted_r_r_versions }}"
 
     - name: Download R binary (arm64)
-      when: ansible_facts['os_family'] == 'RedHat' and  ansible_distribution_major_version | int == 9 and ansible_architecture == 'aarch64' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
+      when: ansible_facts['os_family'] == 'RedHat' and ansible_architecture == 'aarch64' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
       ansible.builtin.get_url:
-        url: "https://cynkra-r-builds-arm64.s3.eu-central-1.amazonaws.com/el9/R-{{ item }}-1-1.aarch64.rpm"
+        url: "https://devxy-r-builds.s3.eu-central-003.backblazeb2.com/el{{ ansible_distribution_major_version }}/R-{{ item }}-1-1.aarch64.rpm"
         dest: "/tmp/R-{{ item }}.rpm"
         force: true
+        mode: "0644"
       loop: "{{ r_r_versions }}"
 
     - name: Download R binary
-      when: ansible_facts['os_family'] == 'RedHat' and  ansible_distribution_major_version | int == 9 and ansible_architecture == 'x86_64' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
+      when: ansible_facts['os_family'] == 'RedHat' and ansible_architecture == 'x86_64' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
       ansible.builtin.get_url:
-        url: "https://cdn.posit.co/r/rhel-9/pkgs/R-{{ item }}-1-1.x86_64.rpm"
+        url: "https://cdn.posit.co/r/rhel-{{ ansible_distribution_major_version }}/pkgs/R-{{ item }}-1-1.x86_64.rpm"
         dest: "/tmp/R-{{ item }}.rpm"
+        mode: "0644"
       loop: "{{ r_r_versions }}"
 
     - name: Install R binary
-      when: ansible_facts['os_family'] == 'RedHat' and  ansible_distribution_major_version | int == 9 and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
+      when: ansible_facts['os_family'] == 'RedHat' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
       ansible.builtin.dnf:
         name: "/tmp/R-{{ item }}.rpm"
         state: present
