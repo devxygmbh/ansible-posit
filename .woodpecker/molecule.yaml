@@ -3,7 +3,7 @@ when:
 
 steps:
   - name: "Test devxy.core.r"
-    image: library/docker:26.1.4-dind-alpine3.20
+    image: library/docker:27.0.3-dind-alpine3.20
     privileged: true
     environment:
       # force output of ANSI colors
@@ -60,7 +60,7 @@ services:
   docker:
     environment:
       DOCKER_TLS_CERTDIR: ""
-    image: docker:26-dind
+    image: docker:27-dind
     commands: dockerd --tls=false --host=tcp://0.0.0.0:2375
     privileged: true
     ports:
