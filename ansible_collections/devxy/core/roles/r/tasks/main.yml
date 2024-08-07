@@ -1,109 +1,38 @@
+- name: Make sure /opt/R exists
+  ansible.builtin.file:
+    path: /opt/R
+    state: directory
+
 - name: List installed R versions under /opt/R
   ansible.builtin.stat:
     path: "/opt/R/{{ item }}/bin/R"
   loop: "{{ r_r_versions }}"
   register: r_installed
 
-- name: RedHat block
+- name: Execute RedHat tasks
   when: ansible_facts['os_family'] == 'RedHat'
-  block:
-    # to be able to install R-core
-    - name: Ensure R-core deps are installed (1)
-      when: ansible_facts['os_family'] == 'RedHat'
-      ansible.builtin.dnf:
-        name: epel-release
-        state: present
+  ansible.builtin.import_tasks: redhat.yaml
 
-    # for flexiblas-devel
-    - name: Enable appropriate repository for RedHat 8 or 9
-      community.general.dnf_config_manager:
-        name: "{{ 'crb' if ansible_distribution_major_version | int == 9 else 'powertools' }}"
-        state: enabled
-      when: ansible_facts['os_family'] == 'RedHat' and ansible_distribution_major_version | int in [8, 9]
+- name: Execute Ubuntu tasks
+  when: ansible_distribution == 'Ubuntu'
+  ansible.builtin.import_tasks: ubuntu.yaml
 
-    - name: Ensure R-core deps are installed (2)
-      when: ansible_facts['os_family'] == 'RedHat'
-      ansible.builtin.dnf:
-        name: "{{ 'flexiblas-devel' if ansible_distribution_major_version | int == 9 else 'openblas-devel' }}"
-        update_cache: true
-        state: present
+- name: Create Renviron and Rprofile
+  ansible.builtin.blockinfile:
+    path: "/opt/R/{{ item }}/lib/R/etc/Renviron"
+    block: |
+      R_ENVIRON='/etc/Renviron.site'
+      R_PROFILE='/etc/Rprofile.site'
+      QUARTO_R=/opt/R/{{ item }}/lib/R/bin/R
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+  loop: "{{ r_r_versions }}"
 
-    # otherwise /usr/lib/rstudio-server/bin/rsession will fail to find libR
-    - name: Ensure R-core is installed
-      when: ansible_facts['os_family'] == 'RedHat'
-      ansible.builtin.dnf:
-        name: R
-        state: present
-
-    - name: List all installed R versions
-      when: r_remove_old_r_versions | bool
-      changed_when: false
-      ansible.builtin.shell: dnf list installed | grep R-[0-9] | awk -F- '{print $2}' | awk -F. '{print $1"."$2"."$3}'
-      register: r_installed_list
-
-    - name: Create diff between lists
-      ansible.builtin.set_fact:
-        unwanted_r_r_versions: "{{ r_installed_list.stdout_lines | difference(r_r_versions) }}"
-
-    - name: Remove deprecated/old R versions
-      when: r_remove_old_r_versions | bool
-      ansible.builtin.dnf:
-        name: "R-{{ item }}.{{ ansible_architecture }}"
-        state: absent
-      loop: "{{ unwanted_r_r_versions }}"
-
-    - name: Download R binary (arm64)
-      when: ansible_facts['os_family'] == 'RedHat' and ansible_architecture == 'aarch64' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
-      ansible.builtin.get_url:
-        url: "https://devxy-r-builds.s3.eu-central-003.backblazeb2.com/el{{ ansible_distribution_major_version }}/R-{{ item }}-1-1.aarch64.rpm"
-        dest: "/tmp/R-{{ item }}.rpm"
-        force: true
-        mode: "0644"
-      loop: "{{ r_r_versions }}"
-
-    - name: Set Posit OS identifier for download
-      ansible.builtin.set_fact:
-        posit_os_identifier: "{{ 'centos' if ansible_distribution_major_version | int == 8 else 'rhel' if ansible_distribution_major_version | int == 9 else 'unsupported' }}"
-
-    - name: Download R binary
-      when: ansible_facts['os_family'] == 'RedHat' and ansible_architecture == 'x86_64' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
-      ansible.builtin.get_url:
-        url: "https://cdn.posit.co/r/{{ posit_os_identifier }}-{{ ansible_distribution_major_version }}/pkgs/R-{{ item }}-1-1.x86_64.rpm"
-        dest: "/tmp/R-{{ item }}.rpm"
-        mode: "0644"
-      loop: "{{ r_r_versions }}"
-
-    - name: Install R binary
-      when: ansible_facts['os_family'] == 'RedHat' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
-      ansible.builtin.dnf:
-        name: "/tmp/R-{{ item }}.rpm"
-        state: present
-        disable_gpg_check: true
-      loop: "{{ r_r_versions }}"
-
-    - name: Create Renviron and Rprofile
-      ansible.builtin.blockinfile:
-        path: "/opt/R/{{ item }}/lib/R/etc/Renviron"
-        block: |
-          R_ENVIRON='/etc/Renviron.site'
-          R_PROFILE='/etc/Rprofile.site'
-          QUARTO_R=/opt/R/{{ item }}/lib/R/bin/R
-        marker: "# {mark} ANSIBLE MANAGED BLOCK"
-      loop: "{{ r_r_versions }}"
-
-    - name: Configure R-version specific Renviron
-      ansible.builtin.blockinfile:
-        path: "/opt/R/{{ item }}/lib/R/etc/Renviron"
-        block: |
-          R_ENVIRON='/etc/Renviron.site'
-          R_PROFILE='/etc/Rprofile.site'
-          QUARTO_R=/opt/R/{{ item }}/lib/R/bin/R
-        marker: "# {mark} ANSIBLE MANAGED BLOCK"
-      loop: "{{ r_r_versions }}"
-
-    - name: Cleanup downloaded assets
-      when: not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
-      ansible.builtin.file:
-        path: "/tmp/R-{{ item }}.rpm"
-        state: absent
-      loop: "{{ r_r_versions }}"
+- name: Configure R-version specific Renviron
+  ansible.builtin.blockinfile:
+    path: "/opt/R/{{ item }}/lib/R/etc/Renviron"
+    block: |
+      R_ENVIRON='/etc/Renviron.site'
+      R_PROFILE='/etc/Rprofile.site'
+      QUARTO_R=/opt/R/{{ item }}/lib/R/bin/R
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+  loop: "{{ r_r_versions }}"
