@@ -1,0 +1,9 @@
+---
+# tasks file for system
+- name: Execute RedHat tasks
+  when: ansible_facts['os_family'] == 'RedHat'
+  ansible.builtin.import_tasks: redhat.yaml
+
+- name: Execute Ubuntu tasks
+  when: ansible_distribution == 'Ubuntu'
+  ansible.builtin.import_tasks: ubuntu.yaml

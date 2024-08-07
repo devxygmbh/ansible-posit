@@ -7,6 +7,12 @@ workbench_check:
 workbench_apply:
   ansible-playbook -D playbooks/workbench.yaml
 
+r_test:
+    cd ansible_collections/devxy/core/extensions && \
+    source ~/venv/ansible-molecule/bin/activate && \
+    pip3 install molecule docker molecule-plugins[docker] 'ansible-core<2.17' && \
+    molecule converge
+
 r_check:
   ansible-playbook -C -D playbooks/r.yaml
 
@@ -18,3 +24,15 @@ quarto_check:
 
 quarto_apply:
   ansible-playbook -D playbooks/quarto.yaml
+
+system_check:
+  ansible-playbook -C -D playbooks/system.yaml
+
+system_apply:
+    ansible-playbook -D playbooks/system.yaml
+
+stop SERVER:
+    hcloud server poweroff {{SERVER}}
+
+start SERVER:
+    hcloud server poweron {{SERVER}}

@@ -1,0 +1,40 @@
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: apt
+
+- name: Ensure essential packages are installed
+  when: "item not in ansible_facts.packages"
+  ansible.builtin.apt:
+    update_cache: true
+    name: "{{ item }}"
+    state: present
+  loop:
+    - vim
+    - htop
+    - curl
+    - net-tools
+    - cron-apt
+    - telnet
+    - git
+
+- name: Remove unattended upgrades
+  become: true
+  become_user: root
+  apt:
+    name: unattended-upgrades
+    state: absent
+
+- name: Configure cron-apt
+  ansible.builtin.lineinfile:
+    path: /etc/cron-apt/action.d/3-download
+    line: "dist-upgrade -y -o APT::Get::Show-Upgraded=true"
+
+- name: Add cron to reboot when required
+  ansible.builtin.cron:
+    name: reboot when required
+    weekday: "*"
+    minute: "0"
+    hour: "3"
+    user: root
+    job: "test -f /var/run/reboot-required && /sbin/shutdown -r >> /var/log/reboot_when_required.log 2>&1"
+    cron_file: reboot_when_required
