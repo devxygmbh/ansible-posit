@@ -1,9 +1,9 @@
 # ansible
 
-## Molecule setup
+## Molecule (test framework)
 
 - Done via `venv`
-- When working with RHEL8 hosts, make sure to install ansible@9 and ansible-core<2.17
+- When working with RHEL8 hosts, make sure to install `ansible@9` and `ansible-core<2.17` into the `venv` which is executing `molecule`
 
 ```sh
 mkdir ~/venv
@@ -16,21 +16,21 @@ pip3 install molecule docker molecule-plugins[docker] 'ansible-core<2.17'
 
 ### [R (ansible_collections/devxy/core/roles/r)](ansible_collections/devxy/core/roles/r)
 
-- Installs and configures R in an opinionated way
+Installs and configures R in an opinionated way:
 
-**Notes:**
-
-- Uses prebuilt R binaries from rstudio/r-builds for amd64
-- Uses prebuilt R binaries from cynkra's S3 bucket for arm64
-
-**Changes compared to vanilla R:**
-
+- All versions live at `/opt/R`
 - For every R version, pointers to a central `Renviron.site` (`/etc/Renviron.site`) and `Rprofile.site` (`/etc/Rprofile.site`) are configured by default
-- Installations live in `/opt/R`
+- Removes R versions not listed in variable `r_r_versions`
 
-**Tested for:**
+#### Resources
 
-- [x] AlmaLinux 9
+- Uses prebuilt R interpreter binaries from rstudio/r-builds for `amd64`
+- Uses prebuilt R interpreter binaries from devXY for `arm64`
+
+#### Tested for
+
+- [x] AlmaLinux 9 / RHEL 9
+- [x] AlmaLinux 8 / RHEL 8
 
 ### [Quarto (ansible_collections/devxy/core/roles/quarto)](ansible_collections/devxy/core/roles/quarto)
 
