@@ -11,6 +11,7 @@
     dnf config-manager --set-enabled powertools
 
 - name: Install EPEL
+  when: ansible_facts['os_family'] == 'RedHat'
   ansible.builtin.dnf:
     name:
       - epel-release

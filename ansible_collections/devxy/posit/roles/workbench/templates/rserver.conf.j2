@@ -30,9 +30,12 @@ launcher-sessions-callback-verify-ssl-certs={{ workbench_server_launcher_session
 www-thread-pool-size={{ workbench_server_www_thread_pool_size }}
 www-enable-origin-check={{ workbench_server_www_enable_origin_check }}
 ssl-enabled={{ workbench_server_www_ssl_enabled }}
-{% if workbench_server_www_ssl_certificate is defined and workbench_server_www_ssl_certificate_key is defined %}
+{% if workbench_server_www_ssl_certificate is defined and workbench_server_www_ssl_certificate_key is defined and workbench_server_www_ssl_enabled == 1 %}
 ssl-certificate={{ workbench_server_www_ssl_certificate }}
 ssl-certificate-key={{ workbench_server_www_ssl_certificate_key }}
+{% endif %}
+{% if workbench_server_www_address is defined %}
+www-address={{ workbench_server_www_address }}
 {% endif %}
 session-ssl-enabled={{ workbench_server_www_session_ssl_enabled }}
 

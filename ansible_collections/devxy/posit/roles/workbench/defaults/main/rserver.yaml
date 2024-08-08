@@ -25,6 +25,9 @@ workbench_server_launcher_session_callback_verify_ssl_certs: 1
 workbench_server_www_thread_pool_size: 2
 workbench_server_www_enable_origin_check: 0
 workbench_server_www_ssl_enabled: 0
+workbench_server_www_ssl_certificate:
+workbench_server_www_ssl_certificate_key:
+workbench_server_www_address: 0.0.0.0
 workbench_server_www_session_ssl_enabled: 1
 
 workbench_server_rsession_no_profile: 0
