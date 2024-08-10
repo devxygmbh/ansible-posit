@@ -19,6 +19,18 @@ r_check:
 r_apply:
   ansible-playbook -D playbooks/r.yaml
 
+python_check:
+  ansible-playbook -C -D playbooks/python.yaml
+
+python_apply:
+  ansible-playbook -D playbooks/python.yaml
+
+db_drivers_check:
+  ansible-playbook -C -D playbooks/db_drivers.yaml
+
+db_drivers_apply:
+  ansible-playbook -D playbooks/db_drivers.yaml
+
 quarto_check:
   ansible-playbook -C -D playbooks/quarto.yaml
 

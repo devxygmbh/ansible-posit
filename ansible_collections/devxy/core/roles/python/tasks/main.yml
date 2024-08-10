@@ -1,0 +1,113 @@
+---
+# tasks file for python
+
+- name: Check if miniconda is installed
+  ansible.builtin.stat:
+    path: /opt/python/miniconda
+  register: miniconda_installed
+
+- name: Download miniconda
+  ansible.builtin.get_url:
+    url: "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-{{ ansible_architecture }}.sh"
+    dest: /tmp/miniconda.sh
+    mode: 0755
+  when: not miniconda_installed.stat.exists
+
+- name: Install miniconda
+  ansible.builtin.shell: /tmp/miniconda.sh -b -p /opt/python/miniconda
+  args:
+    creates: /opt/python/miniconda
+  when: not miniconda_installed.stat.exists
+
+- name: Create various directories/opt/python directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    recurse: true
+  loop:
+    - /opt/python
+    - /etc/profile.d
+    - /etc/fish/conf.d
+
+- name: Configure profile.d for bash
+  ansible.builtin.blockinfile:
+    path: /etc/profile.d/python.sh
+    create: true
+    block: |
+      export PATH=/opt/python/{{ item }}/bin:/opt/python/miniconda/bin:$PATH
+  loop: "{{ python_python_versions }}"
+  when: item == python_python_versions[-1]
+
+- name: Configure profile.d for fish
+  ansible.builtin.blockinfile:
+    path: /etc/fish/conf.d/python.fish
+    create: true
+    block: |
+      set -gx PATH '/opt/python/miniconda/bin:/opt/python/{{ item }}/bin:$PATH'
+  loop: "{{ python_python_versions }}"
+  when: item == python_python_versions[-1]
+
+- name: Find Python versions in /opt/python
+  ansible.builtin.find:
+    paths: /opt/python
+    file_type: directory
+    patterns: "3.*"
+  register: python_dirs
+
+- name: "'Update mode': Get list of installed Python directories"
+  when: python_remove_versions | bool or python_update_versions | bool
+  ansible.builtin.find:
+    paths: /opt/python
+    file_type: directory
+    excludes: miniconda
+  register: python_dirs
+
+- name: "Get Python version for each installation"
+  when: python_remove_versions | bool or python_update_versions | bool
+  ansible.builtin.command: "{{ item.path }}/bin/python --version"
+  register: python_versions
+  loop: "{{ python_dirs.files }}"
+  changed_when: false
+
+- name: "Store Python versions in a list"
+  when: python_remove_versions | bool or python_update_versions | bool
+  set_fact:
+    python_version_list: "{{ (python_version_list | default([]) + [item.stdout | replace('Python ',   '')]) | unique | community.general.version_sort }}"
+  loop: "{{ python_versions.results }}"
+  # output is too verbose
+  no_log: true
+
+- name: "Print installed Python versions"
+  block:
+    - name: "'Update mode': Print Installed Python versions"
+      debug:
+        msg: "{{ python_version_list }}"
+
+- name: Execute 'remove' mode
+  when: python_remove_versions | bool
+  ansible.builtin.include_tasks: remove.yaml
+
+- name: Execute 'update' mode
+  when: python_dirs.matched > 0
+  ansible.builtin.include_tasks: update.yaml
+
+- name: Install Python versions
+  ansible.builtin.shell: "/opt/python/miniconda/bin/conda create --quiet --yes --prefix /opt/python/{{ item }} python={{ item }}"
+  loop: "{{ python_python_versions }}"
+  when: python_python_versions is defined
+
+- name: Install ipykernel for use in Jupyter
+  ansible.builtin.pip:
+    executable: /opt/python/{{ item }}/bin/pip3
+    name: ipykernel
+    state: present
+  loop: "{{ python_python_versions }}"
+
+- name: Configure kernel in Jupyter
+  ansible.builtin.command: /opt/python/{{ item }}/bin/python -m ipykernel install --name py{{ item }} --display-name "Python {{ item }}"
+  loop: "{{ python_python_versions }}"
+
+- name: Remove miniconda installer
+  ansible.builtin.file:
+    path: /tmp/miniconda.sh
+    state: absent

@@ -32,6 +32,13 @@ Installs and configures R in an opinionated way:
 - [x] AlmaLinux 9 / RHEL 9
 - [x] AlmaLinux 8 / RHEL 8
 
+#### Outbound Connectivity
+
+| Reason             | URL                                                      |
+| ------------------ | -------------------------------------------------------- |
+| Download R (arm64) | https://devxy-r-builds.s3.eu-central-003.backblazeb2.com |
+| Download R (amd64) | https://cdn.posit.co                                     |
+
 ### [Quarto (ansible_collections/devxy/core/roles/quarto)](ansible_collections/devxy/core/roles/quarto)
 
 - Installs and configures Quarto
@@ -42,6 +49,26 @@ Installs and configures R in an opinionated way:
 **Tested with:**
 
 - Linux arm64
+- Linux amd64
+
+#### Outbound Connectivity
+
+| Reason                  | URL                                                        |
+| ----------------------- | ---------------------------------------------------------- |
+| To infer latest release | https://api.github.com/repos/quarto-dev/quarto-cli         |
+| To download release     | https://github.com/quarto-dev/quarto-cli/releases/download |
+
+### [Python (ansible_collections/devxy/core/roles/python)](ansible_collections/devxy/core/roles/python)
+
+- Supports installing multiple Python versions on the minor level (always installs the latest patch version)
+- Supports removing Python versions not listed in `python_python_versions`
+
+####
+
+| Reason             | URL                                                                   |
+| ------------------ | --------------------------------------------------------------------- |
+| Download miniconda | https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh |
+| Download Python    | https://repo.anaconda.com                                             |
 
 ## Posit
 

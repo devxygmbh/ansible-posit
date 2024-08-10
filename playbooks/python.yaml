@@ -1,0 +1,8 @@
+- name: Install Python
+  hosts: all
+  become: true
+
+  # vars:
+
+  roles:
+    - role: devxy.core.python
