@@ -90,3 +90,12 @@
     path: "/tmp/R-{{ item }}.rpm"
     state: absent
   loop: "{{ r_r_versions }}"
+
+- name: Configure /etc/Rprofile.site (default)
+  when: r_r_custom_repos is undefined
+  ansible.builtin.blockinfile:
+    create: true
+    path: /etc/Rprofile.site
+    block: |
+      options(install.packages.check.source = 'no',
+        repos = 'c(CRAN = "https://packagemanager.posit.co/cran/__linux__/{{ posit_os_identifier{{ ansible_distribution_major_version }}/latest")')

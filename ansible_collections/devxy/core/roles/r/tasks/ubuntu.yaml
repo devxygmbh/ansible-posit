@@ -7,6 +7,7 @@
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
+    update_cache: true
   loop:
     - g++
     - gdebi
@@ -92,3 +93,12 @@
     path: "/tmp/R-{{ item }}.deb"
     state: absent
   loop: "{{ r_r_versions }}"
+
+- name: Configure /etc/Rprofile.site (default, Ubuntu)
+  when: r_r_custom_repos is undefined
+  ansible.builtin.blockinfile:
+    create: true
+    path: /etc/Rprofile.site
+    block: |
+      options(install.packages.check.source = 'no',
+        repos = c(CRAN = "https://packagemanager.posit.co/cran/__linux__/{{ ansible_distribution_release }}/latest"))

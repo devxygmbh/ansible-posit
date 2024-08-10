@@ -6,4 +6,6 @@ r_r_versions:
   - 4.1.3
   - 4.2.3
   - 4.3.3
-
+### Optional vars
+# r_r_custom_repos:
+# r_additional_options:
