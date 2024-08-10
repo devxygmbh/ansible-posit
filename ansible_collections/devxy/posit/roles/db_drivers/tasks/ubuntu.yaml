@@ -1,0 +1,15 @@
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: apt
+
+- name: Ensure syslib dependencies are installed
+  when: "item not in ansible_facts.packages"
+  ansible.builtin.apt:
+    update_cache: true
+    name: "{{ item }}"
+    state: present
+  loop:
+    - unixodbc
+    - unixodbc-dev
+    - "{{ 'libaio1t64' if ansible_distribution_version is version('21.04', '>=') else 'libaio1' }}"
+    - libsasl2-dev

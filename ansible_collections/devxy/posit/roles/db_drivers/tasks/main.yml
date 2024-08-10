@@ -1,0 +1,47 @@
+---
+# tasks file for db-drivers
+
+- name: Create directory for Posit DB Drivers
+  ansible.builtin.file:
+    path: "/opt/rstudio-drivers-{{ db_drivers_version }}"
+    state: directory
+
+- name: Execute RedHat tasks
+  when: ansible_facts['os_family'] == 'RedHat'
+  ansible.builtin.import_tasks: redhat.yaml
+
+- name: Execute Ubuntu tasks
+  when: ansible_distribution == 'Ubuntu'
+  ansible.builtin.import_tasks: ubuntu.yaml
+
+- name: Check if directory is empty
+  ansible.builtin.find:
+    paths: "/opt/rstudio-drivers-{{ db_drivers_version }}"
+  register: dir_content
+
+- name: Download Posit DB Drivers
+  when: dir_content.files | length == 0
+  ansible.builtin.get_url:
+    url: "https://cdn.rstudio.com/drivers/7C152C12/installer/rstudio-drivers-{{ db_drivers_version }}.tar"
+    dest: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
+    mode: 0755
+
+- name: Extract Posit DB Drivers
+  when: dir_content.files | length == 0
+  ansible.builtin.unarchive:
+    src: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
+    dest: "/opt"
+    remote_src: yes
+
+- name: Cleanup Posit DB Drivers tarball
+  when: dir_content.files | length == 0
+  ansible.builtin.file:
+    path: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
+    state: absent
+
+- name: Create odbc.ini from template
+  when: dir_content.files | length == 0
+  ansible.builtin.command: mv /opt/rstudio-drivers-{{ db_drivers_version }}/odbcinst.ini.sample /etc/odbcinst.ini
+  args:
+    creates: /etc/odbcinst.ini
+    removes: /opt/rstudio-drivers-{{ db_drivers_version }}/odbcinst.ini.sample

@@ -1,0 +1,11 @@
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: dnf
+
+- name: Ensure essential packages are installed
+  when: "item not in ansible_facts.packages"
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - unixODBC

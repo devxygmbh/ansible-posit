@@ -84,6 +84,10 @@ Installs and configures R in an opinionated way:
 
 -
 
+### [db_drivers (ansible_collections/devxy/posit/roles/db_drivers)](ansible_collections/devxy/core/roles/python)
+
+Installs Posit Professional Drivers into `/opt`.
+
 ## Testing
 
 Proxy from server to localhost voa local port forwarding:
