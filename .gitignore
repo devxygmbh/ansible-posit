@@ -63,4 +63,4 @@ Temporary Items
 
 .gitignore
 .envrc
-roles/
+./roles/
