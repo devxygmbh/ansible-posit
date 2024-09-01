@@ -1,0 +1,30 @@
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Install python3 development package
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ 'python3-dev' if ansible_facts['os_family'] == 'Debian' else 'python3-devel' }}"
+    - python3-pip
+  when: "item not in ansible_facts.packages"
+
+- name: Install JupyterLab and JupyterNotebook
+  ansible.builtin.pip:
+    break_system_packages: true
+    extra_args: --ignore-installed
+    name: "{{ item }}"
+    state: present
+  loop:
+    - jupyterlab{{ workbench_jupyterlabs_version }}
+    - notebook{{ workbench_jupyternotebook_version }}
+    - pwb_jupyterlab{{ workbench_posit_jupyterlab_extension_version}}
+    - jupyterlab_gitlab
+    - jupyterlab-git
+    - jupyterlab-code-formatter
+    - lckr_jupyterlab_variableinspector
+    - jupyter-resource-usage
+    - jupyter_scheduler
+  notify: Restart rstudio-server service

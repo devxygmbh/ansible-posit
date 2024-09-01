@@ -1,0 +1,8 @@
+# trust local Certificate Authority (https://docs.posit.co/resources/install-python.html#optional-configure-python-local-certificate-authority-trust)
+JobType: any
+Workbench: any
+{% if ansible_facts['os_family'] == 'RedHat' %}
+Environment: REQUESTS_CA_BUNDLE=/etc/pki/ca-trust/extracted/tls-ca-bundle.pem
+{% elif ansible_facts['os_family'] == 'Debian' %}
+Environment: REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+{% endif %}

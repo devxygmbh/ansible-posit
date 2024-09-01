@@ -1,0 +1,89 @@
+- name: Create /etc/rstudio
+  ansible.builtin.file:
+    path: /etc/rstudio
+    state: directory
+
+- name: Apply Posit Workbench configuration (/etc/rstudio)
+  ansible.builtin.template:
+    src: "{{ item.file }}.j2"
+    dest: "/etc/rstudio/{{ item.file }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop:
+    - {
+        file: "database.conf",
+        mode: "0600",
+        restart: "Restart rstudio-server service",
+      }
+    - {
+        file: "jupyter.conf",
+        mode: "0644",
+        restart: "Restart rstudio-server service",
+      }
+    - {
+        file: "launcher.conf",
+        mode: "0644",
+        restart: "Restart rstudio-launcher service",
+      }
+    - {
+        file: "logging.conf",
+        mode: "0644",
+        restart: "Restart rstudio-server service",
+      }
+    - {
+        file: "notifications.conf",
+        mode: "0644",
+        restart: "Restart rstudio-server service",
+      }
+    - {
+        file: "rstudio-prefs.json",
+        mode: "0644",
+        restart: "Restart rstudio-server service",
+      }
+    - {
+        file: "rserver.conf",
+        mode: "0644",
+        restart: "Restart rstudio-server service",
+      }
+    - {
+        file: "r-versions",
+        mode: "0644",
+        restart: "Restart rstudio-server service",
+      }
+    - {
+        file: "rsession.conf",
+        mode: "0644",
+        restart: "Restart rstudio-server service",
+      }
+    - {
+        file: "vscode.conf",
+        mode: "0644",
+        restart: "Restart rstudio-server service",
+      }
+    - {
+        file: "vscode.extensions.conf",
+        mode: "0644",
+        restart: "Restart rstudio-server service",
+      }
+  notify:
+    - "{{ item.restart }}"
+
+- name: Add static files
+  ansible.builtin.copy:
+    src: "{{ item.name }}"
+    dest: "/etc/rstudio/{{ item.name }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop:
+    - { name: "vscode-user-settings.json", mode: "0644" }
+
+- name: Write openid-client-secret
+  when: workbench_server_oidc_client_id is defined and workbench_server_oidc_client_secret is defined
+  ansible.builtin.template:
+    src: openid-client-secret.j2
+    dest: /etc/rstudio/openid-client-secret
+    owner: root
+    group: root
+    mode: 0600

@@ -47,6 +47,9 @@ workbench_server_auth_pam_sessions_profile: su
 workbench_server_auth_pam_sessions_use_password: 0
 workbench_server_auth_pam_sessions_close: 0
 
+# workbench_server_oidc_client_id:
+# workbench_server_oidc_client_secret:
+
 workbench_server_monitor_interval_seconds: 60
 workbench_server_monitor_stderr_enabled: 0
 workbench_server_monitor_data_path: /var/lib/rstudio-server/monitor
