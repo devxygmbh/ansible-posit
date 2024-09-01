@@ -1,3 +1,8 @@
+- name: Ensure python-apt is installed
+  ansible.builtin.apt:
+    name: python3-apt
+    state: present
+
 - name: Gather package facts
   ansible.builtin.package_facts:
     manager: apt
