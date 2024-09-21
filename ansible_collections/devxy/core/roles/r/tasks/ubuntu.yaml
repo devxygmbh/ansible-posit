@@ -71,7 +71,7 @@
 - name: Download R binary (arm64)
   when: ansible_architecture == 'aarch64' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
   ansible.builtin.get_url:
-    url: "https://devxy-r-builds.s3.eu-central-003.backblazeb2.com/{{ os_identifier }}/r-{{ item }}_1_arm64.deb"
+    url: "https://devxy-r-builds.s3.eu-central-2.amazonaws.com/{{ os_identifier }}/r-{{ item }}_1_arm64.deb"
     dest: "/tmp/R-{{ item }}.deb"
     force: true
     mode: "0644"
@@ -85,10 +85,19 @@
     mode: "0644"
   loop: "{{ r_r_versions }}"
 
+# without it, the deb package might be broken if someone manually removed /opt/r-<version>
+- name: Uninstall existing R binaries
+  when: not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
+  ansible.builtin.apt:
+    name: "r-{{ item }}"
+    state: absent
+  loop: "{{ r_r_versions }}"
+
 - name: Install R binary
   when: not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
   ansible.builtin.apt:
     deb: "/tmp/R-{{ item }}.deb"
+    force: true
     state: present
   loop: "{{ r_r_versions }}"
 
