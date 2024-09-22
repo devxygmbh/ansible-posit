@@ -3,7 +3,7 @@ when:
 
 steps:
   - name: "Test devxy.core.r"
-    image: library/docker:27.2.0-dind-alpine3.20
+    image: library/docker:27.3.1-dind-alpine3.20
     privileged: true
     environment:
       # force output of ANSI colors
