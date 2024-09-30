@@ -48,3 +48,8 @@ stop SERVER:
 
 start SERVER:
     hcloud server poweron {{SERVER}}
+
+
+ansible-doctor:
+    cd ansible_collections/devxy/core/roles/r && ansible-doctor
+    cd ansible_collections/devxy/posit/roles/workbench && ansible-doctor

@@ -1,7 +1,7 @@
 roles:
-  - role: nginxinc.nginx
+  - name: nginxinc.nginx
     version: 0.24.3
-  - role: nginxinc.nginx_config
+  - name: nginxinc.nginx_config
     version: 0.7.1
-  - role: geerlingguy.certbot
+  - name: geerlingguy.certbot
     version: 5.2.0
