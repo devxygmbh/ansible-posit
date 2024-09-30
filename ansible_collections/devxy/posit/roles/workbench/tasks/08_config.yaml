@@ -87,3 +87,7 @@
     owner: root
     group: root
     mode: 0600
+  no_log: true
+  notify:
+    - Encrypt OIDC client secret
+    - Restart rstudio-server service

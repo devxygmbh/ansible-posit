@@ -1,6 +1,10 @@
 ---
 # handlers file for workbench
 
+- name: Encrypt OIDC client secret
+  when: workbench_server_oidc_client_secret is defined
+  ansible.builtin.include_tasks: 01_secret_oidc.yaml
+
 - name: Restart rstudio-server service
   ansible.builtin.service:
     name: rstudio-server
