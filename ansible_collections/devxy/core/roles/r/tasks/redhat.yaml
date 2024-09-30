@@ -46,14 +46,14 @@
 - name: Create diff between lists
   when: any_r_installed.matched | int != 0
   ansible.builtin.set_fact:
-    unwanted_r_r_versions: "{{ r_installed_list.stdout_lines | difference(r_r_versions) }}"
+    unwanted_r_versions: "{{ r_installed_list.stdout_lines | difference(r_versions) }}"
 
 - name: Remove deprecated/old R versions
   when: r_remove_old_r_versions | bool and any_r_installed.matched | int != 0
   ansible.builtin.dnf:
     name: "R-{{ item }}.{{ ansible_architecture }}"
     state: absent
-  loop: "{{ unwanted_r_r_versions }}"
+  loop: "{{ unwanted_r_versions }}"
 
 - name: Download R binary (arm64)
   when: ansible_architecture == 'aarch64' and not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
@@ -62,7 +62,7 @@
     dest: "/tmp/R-{{ item }}.rpm"
     force: true
     mode: "0644"
-  loop: "{{ r_r_versions }}"
+  loop: "{{ r_versions }}"
 
 - name: Set Posit OS identifier for download
   ansible.builtin.set_fact:
@@ -74,14 +74,14 @@
     url: "https://cdn.posit.co/r/{{ posit_os_identifier }}-{{ ansible_distribution_major_version }}/pkgs/R-{{ item }}-1-1.x86_64.rpm"
     dest: "/tmp/R-{{ item }}.rpm"
     mode: "0644"
-  loop: "{{ r_r_versions }}"
+  loop: "{{ r_versions }}"
 
 - name: Uninstall existing R binaries
   when: not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
   ansible.builtin.dnf:
     name: "r-{{ item }}"
     state: absent
-  loop: "{{ r_r_versions }}"
+  loop: "{{ r_versions }}"
 
 - name: Install R binary
   when: not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
@@ -89,14 +89,14 @@
     name: "/tmp/R-{{ item }}.rpm"
     state: present
     disable_gpg_check: true
-  loop: "{{ r_r_versions }}"
+  loop: "{{ r_versions }}"
 
 - name: Cleanup downloaded assets
   when: not (item in r_installed.results | selectattr('stat.exists') | map(attribute='item') | list)
   ansible.builtin.file:
     path: "/tmp/R-{{ item }}.rpm"
     state: absent
-  loop: "{{ r_r_versions }}"
+  loop: "{{ r_versions }}"
 
 - name: Configure /etc/Rprofile.site (default)
   when: r_r_custom_repos is undefined

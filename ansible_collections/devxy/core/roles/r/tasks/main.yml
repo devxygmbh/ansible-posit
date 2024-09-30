@@ -6,7 +6,7 @@
 - name: List installed R versions under /opt/R
   ansible.builtin.stat:
     path: "/opt/R/{{ item }}/bin/R"
-  loop: "{{ r_r_versions }}"
+  loop: "{{ r_versions }}"
   register: r_installed
 
 - name: Execute RedHat tasks
@@ -25,7 +25,7 @@
       R_PROFILE='/etc/Rprofile.site'
       QUARTO_R=/opt/R/{{ item }}/lib/R/bin/R
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
-  loop: "{{ r_r_versions }}"
+  loop: "{{ r_versions }}"
 
 - name: Configure R-version specific Renviron
   ansible.builtin.blockinfile:
@@ -35,7 +35,7 @@
       R_PROFILE='/etc/Rprofile.site'
       QUARTO_R=/opt/R/{{ item }}/lib/R/bin/R
     marker: "# {mark} ANSIBLE MANAGED BLOCK"
-  loop: "{{ r_r_versions }}"
+  loop: "{{ r_versions }}"
 
 - name: Configure /etc/Rprofile.site (default)
   when: r_r_custom_repos is defined
