@@ -52,4 +52,6 @@ start SERVER:
 
 ansible-doctor:
     cd ansible_collections/devxy/core/roles/r && ansible-doctor
+    cd ansible_collections/devxy/core/roles/quarto && ansible-doctor
+    cd ansible_collections/devxy/core/roles/python && ansible-doctor
     cd ansible_collections/devxy/posit/roles/workbench && ansible-doctor
