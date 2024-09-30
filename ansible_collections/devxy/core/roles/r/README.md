@@ -1,38 +1,44 @@
-Role Name
-=========
+# ansible-role-r
 
-A brief description of the role goes here.
+Installs and configures R in an opinionated way:
 
-Requirements
-------------
+- All versions live at `/opt/R`
+- For every R version, global `Renviron.site` (`/etc/Renviron.site`) and `Rprofile.site` (`/etc/Rprofile.site`) are configured by default
+- Supports removing R versions not listed in variable `r_versions`
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+your role description
 
-Role Variables
---------------
+## Table of content
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- [Requirements](#requirements)
+- [Default Variables](#default-variables)
+- [Dependencies](#dependencies)
+- [License](#license)
+- [Author](#author)
 
-Dependencies
-------------
+---
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+## Requirements
 
-Example Playbook
-----------------
+- Minimum Ansible version: `2.1`
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+## Default Variables
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+| Variable | Default |
+| -------- | ------- |
+| r_r_versions | ['4.0.5', '4.1.3', '4.2.3', '4.3.3'] |
+| r_remove_old_r_versions | True |
 
-License
--------
 
-BSD
 
-Author Information
-------------------
+## Dependencies
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+None.
+
+## License
+
+license (GPL-2.0-or-later, MIT, etc)
+
+## Author
+
+your name
