@@ -3,7 +3,7 @@
     - name: Ensure Renviron.site exists
       ansible.builtin.file:
         path: /etc/Renviron.site
-        state: touch
+        state: file
         owner: root
         group: root
         mode: 0644
