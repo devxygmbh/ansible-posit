@@ -20,7 +20,7 @@ Installs and configures R in an opinionated way:
 
 - All versions live at `/opt/R`
 - For every R version, pointers to a central `Renviron.site` (`/etc/Renviron.site`) and `Rprofile.site` (`/etc/Rprofile.site`) are configured by default
-- Removes R versions not listed in variable `r_versions`
+- Removes R versions not listed in variable `r_interpreter_versions`
 
 #### Resources
 
