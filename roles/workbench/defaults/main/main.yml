@@ -1,5 +1,5 @@
 ## General
-workbench_general_version: "2024.12.0+467.pro1"
+workbench_general_version: "2024.12.0-467.pro1"
 # @var workbench_general_local_test_user_create:type: boolean
 # @var workbench_general_local_test_user_create:description: Whether to create a local (test) user
 workbench_general_local_test_user_create: false
