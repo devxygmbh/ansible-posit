@@ -26,7 +26,7 @@
     - jupyterlab{{ workbench_jupyter_jupyterlab_version }}
     - notebook{{ workbench_jupyter_jupyternotebook_version }}
     - pwb_jupyterlab{{ workbench_jupyter_jupyterlab_extension_version}}
-    - jupyterlab_gitlab
+    - jupyterlab_gitlab{{ workbench_jupyter_jupyterlab_gitlab_version }}
     - jupyterlab-git
     - jupyterlab-code-formatter
     - lckr_jupyterlab_variableinspector
