@@ -102,6 +102,7 @@
   ansible.builtin.copy:
     src: /etc/pam.d/login
     dest: /etc/pam.d/rstudio
+    remote_src: true
     owner: root
     group: root
     mode: 0644
