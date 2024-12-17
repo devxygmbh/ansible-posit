@@ -11,6 +11,11 @@
     - python3-pip
   when: "item not in ansible_facts.packages"
 
+- name: Check for JupyterLab and JupyterNotebook updates
+  ansible.builtin.command: "pip list --format=json"
+  register: installed_packages
+  changed_when: false
+
 - name: Install JupyterLab and JupyterNotebook
   ansible.builtin.pip:
     break_system_packages: true
@@ -27,4 +32,5 @@
     - lckr_jupyterlab_variableinspector
     - jupyter-resource-usage
     - jupyter_scheduler
+  when: item in installed_packages.stdout | from_json | map(attribute='name')
   notify: Restart rstudio-server service
