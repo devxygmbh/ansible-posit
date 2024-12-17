@@ -87,10 +87,12 @@ workbench_session_session_timeout_suspend: 1
 workbench_session_session_save_action_default: "no"
 workbench_session_session_quit_child_processes_on_exit: 1
 workbench_session_restrict_directory_view: 1
-workbench_session_allow_r_cran_repos_edit: 0
+workbench_session_allow_r_repos_edit: 0
 workbench_session_copilot_enabled: 1
 workbench_session_session_timeout_kill_hours: 24
 
+workbench_session_repos_conf: |
+  CRAN=https://cran.rstudio.com
 
 ## Certificates
 

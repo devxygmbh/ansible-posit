@@ -37,6 +37,11 @@
         restart: "Restart rstudio-server service",
       }
     - {
+        file: "repos.conf",
+        mode: "0644",
+        restart: "Restart rstudio-server service",
+      }
+    - {
         file: "rstudio-prefs.json",
         mode: "0644",
         restart: "Restart rstudio-server service",
