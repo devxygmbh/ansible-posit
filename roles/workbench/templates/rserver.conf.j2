@@ -1,0 +1,103 @@
+### MANAGED BY ANSIBLE ###
+# This file is managed by Ansible. Any changes made directly to this file will be lost.
+# Please make any changes to the appropriate Ansible variables.
+
+### Server
+server-data-dir={{ workbench_server_server_data_dir }}
+# The server user here must match the server user configured in launcher.conf.
+server-user={{ workbench_server_server_user }}
+server-access-log={{ workbench_server_server_access_log }}
+server-license-type={{ workbench_server_server_license_type }}
+license-warning-days={{ workbench_server_server_license_warning_days }}
+server-project-sharing={{ workbench_server_server_project_sharing }}
+admin-enabled={{ workbench_server_server_admin_enabled }}
+# requires a shared postgres database config)
+load-balancing-enabled={{ workbench_server_server_load_balancing_enabled }}
+r-versions-scan={{ workbench_server_server_versions_scan }}
+
+### Launcher
+launcher-address={{ workbench_server_launcher_address }}
+launcher-port={{ workbench_server_launcher_port }}
+launcher-sessions-callback-address={{ workbench_server_launcher_session_callback_address }}
+launcher-default-cluster={{ workbench_server_launcher_default_cluster }}
+launcher-use-ssl={{ workbench_server_launcher_use_ssl }}
+launcher-sessions-enabled={{ workbench_server_launcher_sessions_enabled }}
+launcher-verify-ssl-certs={{ workbench_server_launcher_verify_ssl_certs }}
+launcher-sessions-callback-verify-ssl-certs={{ workbench_server_launcher_session_callback_verify_ssl_certs }}
+
+### WWW
+
+www-thread-pool-size={{ workbench_server_www_thread_pool_size }}
+www-enable-origin-check={{ workbench_server_www_enable_origin_check }}
+ssl-enabled={{ workbench_server_www_ssl_enabled }}
+{% if workbench_server_www_ssl_certificate is defined and workbench_server_www_ssl_certificate_key is defined and workbench_server_www_ssl_enabled == 1 %}
+ssl-certificate={{ workbench_server_www_ssl_certificate }}
+ssl-certificate-key={{ workbench_server_www_ssl_certificate_key }}
+{% endif %}
+{% if workbench_server_www_address is defined %}
+www-address={{ workbench_server_www_address }}
+{% endif %}
+session-ssl-enabled={{ workbench_server_www_session_ssl_enabled }}
+
+### rsession
+rsession-no-profile={{ workbench_server_rsession_no_profile }}
+rsession-diagnostics-enabled={{ workbench_server_rsession_diagnostics_enabled }}
+rsession-diagnostics-strace-enabled={{ workbench_server_rsession_diagnostics_strace_enabled }}
+
+### database
+db-connection-timeout={{ workbench_server_db_connection_timeout }}
+
+
+### auth
+auth-timeout-minutes={{ workbench_server_auth_timeout_minutes }}
+auth-pam-require-password-prompt={{ workbench_server_auth_pam_require_password_prompt }}
+auth-cookies-force-secure={{ workbench_server_auth_cookies_force_secure }}
+auth-openid={{ workbench_server_auth_openid }}
+{% if workbench_server_auth_openid_base_uri is defined %}
+auth-openid-base-uri={{ workbench_server_auth_openid_base_uri }}
+{% endif %}
+{% if workbench_server_auth_openid_issuer is defined %}
+auth-openid-issuer={{ workbench_server_auth_openid_issuer }}
+{% endif %}
+{% if workbench_server_auth_openid_scopes is defined %}
+auth-openid-scopes={{ workbench_server_auth_openid_scopes }}
+{% endif %}
+auth-openid-username-claim={{ workbench_server_auth_openid_username_claim }}
+auth-saml={{ workbench_server_auth_saml }}
+{% if workbench_server_auth_saml_metadata_path is defined %}
+auth-saml-metadata-path={{ workbench_server_auth_saml_metadata_path }}
+{% endif %}
+{% if workbench_server_auth_saml_metadata_url is defined %}
+auth-saml-metadata-url={{ workbench_server_auth_saml_metadata_url }}
+{% endif %}
+{% if workbench_server_auth_saml_idp_entity_id is defined %}
+auth-saml-idp-entity-id={{ workbench_server_auth_saml_idp_entity_id }}
+{% endif %}
+auth-pam-sessions-enabled={{ workbench_server_auth_pam_sessions_enabled }}
+auth-pam-sessions-profile={{ workbench_server_auth_pam_sessions_profile }}
+auth-pam-sessions-use-password={{ workbench_server_auth_pam_sessions_use_password }}
+auth-pam-sessions-close={{ workbench_server_auth_pam_sessions_close }}
+
+### monitor
+monitor-interval-seconds={{ workbench_server_monitor_interval_seconds }}
+monitor-stderr-enabled={{ workbench_server_monitor_stderr_enabled }}
+monitor-data-path={{ workbench_server_monitor_data_path }}
+monitor-rstudio-session-metrics={{ workbench_server_monitor_rstudio_session_metrics }}
+audit-data-path={{ workbench_server_monitor_audit_data_path }}
+audit-r-console={{ workbench_server_monitor_audit_r_console }}
+server-shared-storage-path={{ workbench_server_monitor_shared_storage_path }}
+
+### metrics
+metrics-enabled={{ workbench_metrics_enabled }}
+metrics-port={{ workbench_metrics_port }}
+{% if workbench_metrics_address is defined %}
+metrics-address={{ workbench_server_metrics_address }}
+{% endif %}
+
+### databricks
+databricks-enabled={{ workbench_server_databricks_enabled }}
+
+### userProvisioning
+user-provisioning-enabled={{ workbench_server_user_provisioning_enabled }}
+user-homedir-path={{ workbench_server_user_homedir_path }}
+user-provisioning-start-uid={{ workbench_server_user_provisioning_start_uid }}

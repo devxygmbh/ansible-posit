@@ -1,0 +1,10 @@
+- name: Create local test user
+  ansible.builtin.user:
+    name: "{{ workbench_general_local_test_user_name}}"
+    comment: "Posit Workbench Test User"
+    shell: /bin/bash
+    home: /home/posit
+    createhome: true
+    password: "{{ workbench_general_local_test_user_password | password_hash('sha512') }}"
+    state: present
+  when: workbench_general_local_test_user_create | bool

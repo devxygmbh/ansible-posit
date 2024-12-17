@@ -1,0 +1,100 @@
+# https://wb-test.devxy.io
+- name: Deploy Posit Workbench
+  hosts: all
+  become: true
+
+  roles:
+    # - role: devxy.core.r
+    # - role: devxy.core.python
+    - role: devxy.posit.workbench
+  # - role: nginxinc.nginx
+  # - role: geerlingguy.certbot
+  # - role: nginxinc.nginx_config
+
+  vars:
+    workbench_general_local_test_user_create: true
+    workbench_general_local_test_user_password: "{{ lookup('ansible.builtin.env', 'workbench_general_local_test_user_password') }}"
+
+    # Connection server <-> launcher, localhost cert created via mkcert
+    workbench_launcher_enable_ssl: 1
+    workbench_server_launcher_use_ssl: 1
+
+    # only needed if no reverse proxy is used
+    workbench_server_www_ssl_enabled: 0
+    workbench_server_www_address: 0.0.0.0
+
+    workbench_server_auth_openid: 1
+    # workbench_server_auth_openid_base_uri:
+    workbench_server_auth_openid_issuer: https://auth.devxy.io
+    workbench_server_oidc_client_id: "{{ lookup('ansible.builtin.env', 'WORKBENCH_SERVER_OIDC_CLIENT_ID') }}"
+    workbench_server_oidc_client_secret: "{{ lookup('ansible.builtin.env', 'WORKBENCH_SERVER_OIDC_CLIENT_SECRET') }}"
+
+    workbench_launcher_server_enable_debug_logging: 1
+
+    certbot_create_if_missing: true
+    certbot_create_standalone_stop_services: [nginx]
+    certbot_admin_email: mail@devxy.io
+    certbot_create_extra_args: ""
+    certbot_certs:
+      - domains:
+          - "wb-test.devxy.io"
+
+    nginx_config_debug_output: true
+
+    nginx_config_http_template_enable: true
+    # https://github.com/nginxinc/ansible-role-nginx-config/blob/main/defaults/main/template.yml
+    nginx_config_http_template:
+      - template_file: http/default.conf.j2
+        deployment_location: /etc/nginx/conf.d/workbench.conf
+        config:
+          servers:
+            - core:
+                listen:
+                  - port: "[::]:80"
+                  - port: "[::]:443"
+                    ssl: true
+                server_name:
+                  - wb-test.devxy.io
+              locations:
+                - location: /
+                  proxy:
+                    pass: http://localhost:8787
+                    set_header:
+                      - field: Upgrade
+                        value: $http_upgrade
+                      - field: Connection
+                        value: "upgrade"
+                      - field: Host
+                        value: $host
+                      - field: proxy_read_timeout
+                        value: 20d
+          http2:
+            enable: true
+          http3:
+            enable: true
+
+          ssl:
+            certificate:
+              - /etc/letsencrypt/live/wb-test.devxy.io/fullchain.pem
+            certificate_key:
+              - /etc/letsencrypt/live/wb-test.devxy.io/privkey.pem
+
+            server_name: wb-test.devxy.io
+          log:
+            access:
+              - path: /var/log/nginx/wb-test.devxy.io_access.log
+                format: combined
+            error:
+              - /var/log/nginx/wb-test.devxy.io_error.log
+
+          map:
+            mappings:
+              - string: $http_upgrade
+                variable: $connection_upgrade
+                hostnames: false
+                volatile: false
+                content:
+                  - value: default
+                    new_value: upgrade
+                  - value: "''"
+                    new_value: close

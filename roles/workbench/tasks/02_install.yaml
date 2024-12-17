@@ -1,0 +1,46 @@
+- name: Check if rstudio-server service exists
+  ansible.builtin.service_facts:
+
+- name: Check rstudio-server version when service exists
+  when: "'rstudio-server.service' in ansible_facts.services"
+  command: "rstudio-server version"
+  register: installed_workbench_general_version
+  changed_when: false
+  ignore_errors: true
+
+- block:
+    - name: Define environment facts for Workbench download
+      ansible.builtin.set_fact:
+        binary_type: "{{ 'rpm' if ansible_facts['os_family'] == 'RedHat' else 'deb' }}"
+        os_identifier: "{{ 'rhel' if ansible_facts['os_family'] == 'RedHat' else 'jammy' if ansible_distribution_release in ['jammy', 'noble'] else 'default' }}"
+        arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x86_64' if ansible_architecture == 'x86_64' and ansible_facts['os_family'] == 'RedHat' else 'amd64' }}"
+
+    - name: Download Posit Workbench (RedHat)
+      when: ansible_facts['os_family'] == 'RedHat'
+      ansible.builtin.get_url:
+        url: "https://s3.amazonaws.com/rstudio-ide-build/server/{{ os_identifier }}{{ ansible_distribution_major_version }}/{{ arch }}/rstudio-workbench-{{ os_identifier }}-{{ workbench_general_version }}-{{ arch }}.{{ binary_type }}"
+        dest: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
+
+    - name: Download Posit Workbench (Ubuntu)
+      when: ansible_distribution == 'Ubuntu'
+      ansible.builtin.get_url:
+        url: "https://s3.amazonaws.com/rstudio-ide-build/server/{{ os_identifier }}/{{ arch }}/rstudio-workbench-{{ workbench_general_version }}-{{ arch }}.{{ binary_type }}"
+        dest: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
+
+    - name: Install Posit Workbench
+      when: ansible_facts['os_family'] == 'RedHat'
+      ansible.builtin.dnf:
+        name: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
+        state: present
+
+    - name: Install Posit Workbench
+      when: ansible_distribution == 'Ubuntu'
+      ansible.builtin.apt:
+        deb: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
+
+    - name: Cleanup downloaded assets
+      ansible.builtin.file:
+        path: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
+        state: absent
+  when: >
+    'rstudio-server.service' not in ansible_facts.services or installed_workbench_general_version.stdout.split()[0] != (workbench_general_version | replace('-', '+'))

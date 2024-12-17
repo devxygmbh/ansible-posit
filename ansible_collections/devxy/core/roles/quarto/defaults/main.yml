@@ -1,8 +1,0 @@
-# defaults file for quarto
-quarto_versions:
-  - release
-  - pre-release
-  # - 1.2.232
-quarto_dest_dir: /opt/quarto
-
-quarto_add_to_path: true

@@ -1,6 +1,0 @@
-- name: Install Quarto
-  hosts: all
-  become: true
-
-  roles:
-    - role: devxy.core.quarto

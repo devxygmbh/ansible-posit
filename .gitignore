@@ -63,5 +63,6 @@ Temporary Items
 
 .gitignore
 .envrc
-/roles/
-ansible_collections/community
+#!**/roles/
+# /roles/
+ansible_collections/
