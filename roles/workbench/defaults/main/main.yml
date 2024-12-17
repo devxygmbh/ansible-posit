@@ -158,4 +158,7 @@ workbench_jupyter_jupyterlab_version: ~=4.0
 workbench_jupyter_jupyternotebook_version: ~=6.0
 workbench_jupyter_jupyterlab_extension_version: ~=1.0
 workbench_jupyter_jupyterlab_gitlab_version: ~=4.0
+workbench_jupyter_lckr_jupyterlab_variableinspector_version: ~=3.0
+workbench_jupyter_jupyter_resource_usage_version: ~=1.0
+workbench_jupyter_jupyter_scheduler_version: ~=2.0
 workbench_jupyter_jupyter_exe: /usr/local/bin/jupyter

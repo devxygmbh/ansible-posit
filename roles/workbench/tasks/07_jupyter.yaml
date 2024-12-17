@@ -29,8 +29,8 @@
     - jupyterlab_gitlab{{ workbench_jupyter_jupyterlab_gitlab_version }}
     - jupyterlab-git
     - jupyterlab-code-formatter
-    - lckr_jupyterlab_variableinspector
-    - jupyter-resource-usage
-    - jupyter_scheduler
+    - lckr_jupyterlab_variableinspector{{ workbench_jupyter_lckr_jupyterlab_variableinspector_version }}
+    - jupyter-resource-usage{{ workbench_jupyter_jupyter_resource_usage_version }}
+    - jupyter_scheduler{{ workbench_jupyter_jupyter_scheduler_version }}
   when: item in installed_packages.stdout | from_json | map(attribute='name')
   notify: Restart rstudio-server service
