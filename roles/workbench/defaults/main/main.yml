@@ -149,7 +149,7 @@ workbench_logging_warn_syslog: 1
 ### Jupyter (jupyter.conf)
 # https://docs.posit.co/ide/server-pro/jupyter_sessions/configuration.html
 
-workbench_jupyter_notebooks_enabled: 1
+workbench_jupyter_notebooks_enabled: 0
 workbench_jupyter_labs_enabled: 1
 workbench_session_cull_minutes: 0
 workbench_jupyter_jupyterlab_version: ~=4.0
