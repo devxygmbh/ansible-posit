@@ -1,5 +1,5 @@
 ## General
-workbench_general_version: "2024.04.3-776.pro2"
+workbench_general_version: "2024.12.0+467.pro1"
 # @var workbench_general_local_test_user_create:type: boolean
 # @var workbench_general_local_test_user_create:description: Whether to create a local (test) user
 workbench_general_local_test_user_create: false
@@ -53,7 +53,7 @@ workbench_server_auth_cookies_force_secure: 0
 workbench_server_auth_openid: 0
 workbench_server_auth_openid_username_claim: preferred_username
 workbench_server_auth_saml: 0
-workbench_server_auth_pam_sessions_profile: su
+workbench_server_auth_pam_sessions_profile: "{{ 'login' if ansible_os_family == 'RedHat' else 'su' }}"
 workbench_server_auth_pam_sessions_use_password: 0
 workbench_server_auth_pam_sessions_close: 0
 
