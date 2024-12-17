@@ -162,3 +162,8 @@ workbench_jupyter_lckr_jupyterlab_variableinspector_version: ~=3.0
 workbench_jupyter_jupyter_resource_usage_version: ~=1.0
 workbench_jupyter_jupyter_scheduler_version: ~=2.0
 workbench_jupyter_jupyter_exe: /usr/local/bin/jupyter
+
+### Positron (positron.conf)
+workbench_positron_enabled: 1
+workbench_positron_session_no_profile: 0
+workbench_positron_session_timeout_kill_hours: 24
