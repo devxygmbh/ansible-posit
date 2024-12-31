@@ -6,7 +6,7 @@ template:
 
 logging:
   # Possible options: debug|info|warning| error|critical
-  level: 'info'
+  level: "info"
 
 renderer:
   include_header: HEADER.md

@@ -34,10 +34,10 @@ Installs and configures R in an opinionated way:
 
 #### Outbound Connectivity
 
-| Reason             | URL                                                  |
-| ------------------ | ---------------------------------------------------- |
-| Download R (arm64) | https://devxy-r-builds.s3.eu-central-2.amazonaws.com |
-| Download R (amd64) | https://cdn.posit.co                                 |
+| Reason             | URL                                                |
+| ------------------ | -------------------------------------------------- |
+| Download R (arm64) | https://devxy-r-builds.fsn1.your-objectstorage.com |
+| Download R (amd64) | https://cdn.posit.co                               |
 
 ### [Quarto (ansible_collections/devxy/core/roles/quarto)](ansible_collections/devxy/core/roles/quarto)
 

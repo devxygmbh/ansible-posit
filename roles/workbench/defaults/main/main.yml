@@ -72,7 +72,6 @@ workbench_server_launcher_verify_ssl_certs: 1
 # @var workbench_server_launcher_session_callback_verify_ssl_certs:description: Launcher session callback verify SSL certificates
 workbench_server_launcher_session_callback_verify_ssl_certs: 1
 
-
 # @var workbench_server_www_thread_pool_size:type: integer
 # @var workbench_server_www_thread_pool_size:description: WWW thread pool size
 workbench_server_www_thread_pool_size: 2
@@ -309,7 +308,6 @@ workbench_launcher_certificate_file: /var/lib/rstudio-launcher/localhost.crt
 # @var workbench_launcher_certificate_key_file:type: string
 # @var workbench_launcher_certificate_key_file:description: Launcher certificate key file
 workbench_launcher_certificate_key_file: /var/lib/rstudio-launcher/localhost.key
-
 
 ### Logging (logging.conf)
 

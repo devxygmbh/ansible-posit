@@ -9,7 +9,7 @@ when:
   branch: ${CI_REPO_DEFAULT_BRANCH}
 
 steps:
-  - name: 'Upcoming Changelog'
+  - name: "Upcoming Changelog"
     environment:
       API_RW_TOKEN:
         from_secret: API_RW_TOKEN

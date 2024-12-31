@@ -2,7 +2,7 @@ when:
   event: [push, cron, manual]
 
 steps:
-  - name: "Test devxy.core.r"
+  - name: "Test devxy.posit.workbench"
     image: library/docker:27.3.1-dind-alpine3.20
     privileged: true
     environment:

@@ -17,7 +17,7 @@ license:
 
 # A list of tags you want to associate with the collection for indexing/searching. A tag name has the same character
 # requirements as 'namespace' and 'name'
-tags: ['tools']
+tags: ["tools"]
 
 dependencies: {}
 
@@ -37,11 +37,11 @@ build_ignore:
   - test
   - ssh.cfg
   - release-config.ts
-  - '*.json'
+  - "*.json"
   - Justfile
-  - '*.ini'
+  - "*.ini"
   - ansibledoctor
-  - '*.cfg'
+  - "*.cfg"
   - .yamllint.yaml
   - .pre-commit-config.yaml
   - .markdownlint.yaml
@@ -50,7 +50,7 @@ build_ignore:
   - .ansible-lint
   - .ansibledoctor.yaml
   - .woodpecker
-  - '*.tar.gz'
+  - "*.tar.gz"
   - .gitignore
   - extensions
   - requirements.yaml
