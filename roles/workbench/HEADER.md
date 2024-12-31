@@ -1,7 +1,4 @@
----
-gitea: none
-include_toc: true
----
+[[_TOC_]]
 
 # Ansible Role to install Posit Workbench
 
@@ -20,7 +17,7 @@ include_toc: true
 | Installation of additional fonts        | <https://github.com/>                                                   |                                                       |
 | Download of `mkcert`                    | <https://dl.filippo.io>                                                 | to create self-signed certs for localhost             |
 | Download of Jupyter packages            | <https://pipy.org>                                                      |                                                       |
-| Download R interpreter (arm64)          | <https://devxy-r-builds.s3.eu-central-2.amazonaws.com>                  | Optional dependency: `devxy.data_science_core.r`      |
+| Download R interpreter (arm64)          | <https://devxy-r-builds.fsn1.your-objectstorage.com>                  | Optional dependency: `devxy.data_science_core.r`      |
 | Download R interpreter (amd64)          | <https://cdn.posit.co>                                                  | Optional dependency: `devxy.data_science_core.r`      |
 | Infer latest release & Download release | <https://api.github.com/repos/quarto-dev/quarto-cli>                    | Optional dependency: `devxy.data_science_core.quarto` |
 | Download miniconda                      | <https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh> | Optional dependency: `devxy.data_science_core.python` |

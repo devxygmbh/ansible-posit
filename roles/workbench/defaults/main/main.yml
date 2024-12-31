@@ -1,96 +1,227 @@
 ## General
+# @var workbench_general_version:type: string
+# @var workbench_general_version:description: Workbench version
 workbench_general_version: "2024.12.0-467.pro1"
 # @var workbench_general_local_test_user_create:type: boolean
 # @var workbench_general_local_test_user_create:description: Whether to create a local (test) user
 workbench_general_local_test_user_create: false
+# @var workbench_general_local_test_user_name:type: string
+# @var workbench_general_local_test_user_name:description: Local test user name
 workbench_general_local_test_user_name: posit
+# @var workbench_general_local_test_user_password:type: string
+# @var workbench_general_local_test_user_password:description: Local test user password
 workbench_general_local_test_user_password: posit
 
 ## Server
+# @var workbench_server_user:type: string
+# @var workbench_server_user:description: Server user
 workbench_server_user: rstudio-server
 ### Server (rserver.conf)
 # https://docs.posit.co/ide/server-pro/reference/rserver_conf.html
 
+# @var workbench_server_server_user:type: string
+# @var workbench_server_server_user:description: Server user
 workbench_server_server_user: rstudio-server
+# @var workbench_server_server_data_dir:type: string
+# @var workbench_server_server_data_dir:description: Server data directory
 workbench_server_server_data_dir: /var/run/rstudio-server
+# @var workbench_server_server_access_log:type: integer
+# @var workbench_server_server_access_log:description: Server access log
 workbench_server_server_access_log: 0
+# @var workbench_server_server_license_type:type: string
+# @var workbench_server_server_license_type:description: Server license type
 workbench_server_server_license_type: local
+# @var workbench_server_server_license_warning_days:type: integer
+# @var workbench_server_server_license_warning_days:description: Server license warning days
 workbench_server_server_license_warning_days: 15
+# @var workbench_server_server_project_sharing:type: integer
+# @var workbench_server_server_project_sharing:description: Server project sharing
 workbench_server_server_project_sharing: 1
+# @var workbench_server_server_admin_enabled:type: integer
+# @var workbench_server_server_admin_enabled:description: Server admin enabled
 workbench_server_server_admin_enabled: 1
+# @var workbench_server_server_load_balancing_enabled:type: integer
+# @var workbench_server_server_load_balancing_enabled:description: Server load balancing enabled
 workbench_server_server_load_balancing_enabled: 0
-# disabled as otherwise the OS package manager version will be auto-detected
-# this will not work with the custom Renviron/Rprofile logic in place in /etc
+# @var workbench_server_server_versions_scan:type: integer
+# @var workbench_server_server_versions_scan:description: Server versions scan
 workbench_server_server_versions_scan: 0
 
+# @var workbench_server_launcher_address:type: string
+# @var workbench_server_launcher_address:description: Launcher address
 workbench_server_launcher_address: localhost
+# @var workbench_server_launcher_port:type: integer
+# @var workbench_server_launcher_port:description: Launcher port
 workbench_server_launcher_port: 5559
+# @var workbench_server_launcher_session_callback_address:type: string
+# @var workbench_server_launcher_session_callback_address:description: Launcher session callback address
 workbench_server_launcher_session_callback_address: http://localhost:8787
+# @var workbench_server_launcher_default_cluster:type: string
+# @var workbench_server_launcher_default_cluster:description: Launcher default cluster
 workbench_server_launcher_default_cluster: Local
+# @var workbench_server_launcher_use_ssl:type: integer
+# @var workbench_server_launcher_use_ssl:description: Launcher use SSL
 workbench_server_launcher_use_ssl: 1
+# @var workbench_server_launcher_sessions_enabled:type: integer
+# @var workbench_server_launcher_sessions_enabled:description: Launcher sessions enabled
 workbench_server_launcher_sessions_enabled: 1
+# @var workbench_server_launcher_verify_ssl_certs:type: integer
+# @var workbench_server_launcher_verify_ssl_certs:description: Launcher verify SSL certificates
 workbench_server_launcher_verify_ssl_certs: 1
+# @var workbench_server_launcher_session_callback_verify_ssl_certs:type: integer
+# @var workbench_server_launcher_session_callback_verify_ssl_certs:description: Launcher session callback verify SSL certificates
 workbench_server_launcher_session_callback_verify_ssl_certs: 1
 
+
+# @var workbench_server_www_thread_pool_size:type: integer
+# @var workbench_server_www_thread_pool_size:description: WWW thread pool size
 workbench_server_www_thread_pool_size: 2
+# @var workbench_server_www_enable_origin_check:type: integer
+# @var workbench_server_www_enable_origin_check:description: WWW enable origin check
 workbench_server_www_enable_origin_check: 0
+# @var workbench_server_www_ssl_enabled:type: integer
+# @var workbench_server_www_ssl_enabled:description: WWW SSL enabled
 workbench_server_www_ssl_enabled: 0
+# @var workbench_server_www_ssl_certificate:type: string
+# @var workbench_server_www_ssl_certificate:description: WWW SSL certificate
 workbench_server_www_ssl_certificate:
+# @var workbench_server_www_ssl_certificate_key:type: string
+# @var workbench_server_www_ssl_certificate_key:description: WWW SSL certificate key
 workbench_server_www_ssl_certificate_key:
+# @var workbench_server_www_address:type: string
+# @var workbench_server_www_address:description: WWW address
 workbench_server_www_address: 0.0.0.0
+# @var workbench_server_www_session_ssl_enabled:type: integer
+# @var workbench_server_www_session_ssl_enabled:description: WWW session SSL enabled
 workbench_server_www_session_ssl_enabled: 1
 
+# @var workbench_server_rsession_no_profile:type: integer
+# @var workbench_server_rsession_no_profile:description: RSession no profile
 workbench_server_rsession_no_profile: 0
+# @var workbench_server_rsession_diagnostics_enabled:type: integer
+# @var workbench_server_rsession_diagnostics_enabled:description: RSession diagnostics enabled
 workbench_server_rsession_diagnostics_enabled: 0
+# @var workbench_server_rsession_diagnostics_strace_enabled:type: integer
+# @var workbench_server_rsession_diagnostics_strace_enabled:description: RSession diagnostics strace enabled
 workbench_server_rsession_diagnostics_strace_enabled: 0
 
+# @var workbench_server_db_connection_timeout:type: integer
+# @var workbench_server_db_connection_timeout:description: DB connection timeout
 workbench_server_db_connection_timeout: 15
 
+# @var workbench_server_auth_timeout_minutes:type: integer
+# @var workbench_server_auth_timeout_minutes:description: Auth timeout minutes
 workbench_server_auth_timeout_minutes: 5040
+# @var workbench_server_auth_pam_require_password_prompt:type: integer
+# @var workbench_server_auth_pam_require_password_prompt:description: Auth PAM require password prompt
 workbench_server_auth_pam_require_password_prompt: 1
+# @var workbench_server_auth_pam_sessions_enabled:type: integer
+# @var workbench_server_auth_pam_sessions_enabled:description: Auth PAM sessions enabled
 workbench_server_auth_pam_sessions_enabled: 1
+# @var workbench_server_auth_cookies_force_secure:type: integer
+# @var workbench_server_auth_cookies_force_secure:description: Auth cookies force secure
 workbench_server_auth_cookies_force_secure: 0
+# @var workbench_server_auth_openid:type: integer
+# @var workbench_server_auth_openid:description: Auth OpenID
 workbench_server_auth_openid: 0
+# @var workbench_server_auth_openid_username_claim:type: string
+# @var workbench_server_auth_openid_username_claim:description: Auth OpenID username claim
 workbench_server_auth_openid_username_claim: preferred_username
+# @var workbench_server_auth_saml:type: integer
+# @var workbench_server_auth_saml:description: Auth SAML
 workbench_server_auth_saml: 0
+# @var workbench_server_auth_pam_sessions_profile:type: string
+# @var workbench_server_auth_pam_sessions_profile:description: Auth PAM sessions profile
 workbench_server_auth_pam_sessions_profile: "{{ 'login' if ansible_os_family == 'RedHat' else 'su' }}"
+# @var workbench_server_auth_pam_sessions_use_password:type: integer
+# @var workbench_server_auth_pam_sessions_use_password:description: Auth PAM sessions use password
 workbench_server_auth_pam_sessions_use_password: 0
+# @var workbench_server_auth_pam_sessions_close:type: integer
+# @var workbench_server_auth_pam_sessions_close:description: Auth PAM sessions close
 workbench_server_auth_pam_sessions_close: 0
 
 # workbench_server_oidc_client_id:
 # workbench_server_oidc_client_secret:
 
+# @var workbench_server_monitor_interval_seconds:type: integer
+# @var workbench_server_monitor_interval_seconds:description: Monitor interval seconds
 workbench_server_monitor_interval_seconds: 60
+# @var workbench_server_monitor_stderr_enabled:type: integer
+# @var workbench_server_monitor_stderr_enabled:description: Monitor stderr enabled
 workbench_server_monitor_stderr_enabled: 0
+# @var workbench_server_monitor_data_path:type: string
+# @var workbench_server_monitor_data_path:description: Monitor data path
 workbench_server_monitor_data_path: /var/lib/rstudio-server/monitor
+# @var workbench_server_monitor_rstudio_session_metrics:type: integer
+# @var workbench_server_monitor_rstudio_session_metrics:description: Monitor RStudio session metrics
 workbench_server_monitor_rstudio_session_metrics: 1
+# @var workbench_server_monitor_audit_data_path:type: string
+# @var workbench_server_monitor_audit_data_path:description: Monitor audit data path
 workbench_server_monitor_audit_data_path: /var/lib/rstudio-server/audit
+# @var workbench_server_monitor_audit_r_console:type: string
+# @var workbench_server_monitor_audit_r_console:description: Monitor audit R console
 workbench_server_monitor_audit_r_console: none
+# @var workbench_server_monitor_shared_storage_path:type: string
+# @var workbench_server_monitor_shared_storage_path:description: Monitor shared storage path
 workbench_server_monitor_shared_storage_path: /var/lib/rstudio-server/shared-storage
 
+# @var workbench_metrics_enabled:type: integer
+# @var workbench_metrics_enabled:description: Metrics enabled
 workbench_metrics_enabled: 0
+# @var workbench_metrics_port:type: integer
+# @var workbench_metrics_port:description: Metrics port
 workbench_metrics_port: 8989
 
+# @var workbench_server_databricks_enabled:type: string
+# @var workbench_server_databricks_enabled:description: Server Databricks enabled
 workbench_server_databricks_enabled: auto
 
+# @var workbench_server_user_provisioning_enabled:type: integer
+# @var workbench_server_user_provisioning_enabled:description: Server user provisioning enabled
 workbench_server_user_provisioning_enabled: 0
+# @var workbench_server_user_homedir_path:type: string
+# @var workbench_server_user_homedir_path:description: Server user home directory path
 workbench_server_user_homedir_path: /home
+# @var workbench_server_user_provisioning_start_uid:type: integer
+# @var workbench_server_user_provisioning_start_uid:description: Server user provisioning start UID
 workbench_server_user_provisioning_start_uid: 15000
 
 ## Session
 # https://docs.posit.co/ide/server-pro/reference/rsession_conf.html
 
+# @var workbench_session_session_connections_block_suspend:type: integer
+# @var workbench_session_session_connections_block_suspend:description: Session connections block suspend
 workbench_session_session_connections_block_suspend: 0
+# @var workbench_session_session_external_pointers_block_suspend:type: integer
+# @var workbench_session_session_external_pointers_block_suspend:description: Session external pointers block suspend
 workbench_session_session_external_pointers_block_suspend: 0
+# @var workbench_session_session_timeout_minutes:type: integer
+# @var workbench_session_session_timeout_minutes:description: Session timeout minutes
 workbench_session_session_timeout_minutes: 300
+# @var workbench_session_session_timeout_suspend:type: integer
+# @var workbench_session_session_timeout_suspend:description: Session timeout suspend
 workbench_session_session_timeout_suspend: 1
+# @var workbench_session_session_save_action_default:type: string
+# @var workbench_session_session_save_action_default:description: Session save action default
 workbench_session_session_save_action_default: "no"
+# @var workbench_session_session_quit_child_processes_on_exit:type: integer
+# @var workbench_session_session_quit_child_processes_on_exit:description: Session quit child processes on exit
 workbench_session_session_quit_child_processes_on_exit: 1
+# @var workbench_session_restrict_directory_view:type: integer
+# @var workbench_session_restrict_directory_view:description: Restrict directory view
 workbench_session_restrict_directory_view: 1
+# @var workbench_session_allow_r_repos_edit:type: integer
+# @var workbench_session_allow_r_repos_edit:description: Allow R repos edit
 workbench_session_allow_r_repos_edit: 0
+# @var workbench_session_copilot_enabled:type: integer
+# @var workbench_session_copilot_enabled:description: Copilot enabled
 workbench_session_copilot_enabled: 1
+# @var workbench_session_session_timeout_kill_hours:type: integer
+# @var workbench_session_session_timeout_kill_hours:description: Session timeout kill hours
 workbench_session_session_timeout_kill_hours: 24
 
+# @var workbench_session_repos_conf:type: string
+# @var workbench_session_repos_conf:description: Repos configuration
 workbench_session_repos_conf: |
   CRAN=https://cran.rstudio.com
 
@@ -102,68 +233,162 @@ workbench_create_localhost_certificate: true
 
 ## Database
 # https://docs.posit.co/ide/server-pro/database/configuration.html
+# @var workbench_database_provider:type: string
+# @var workbench_database_provider:description: Database provider
 workbench_database_provider: sqlite
+# @var workbench_database_directory:type: string
+# @var workbench_database_directory:description: Database directory
 workbench_database_directory: /var/lib/rstudio-server
+# @var workbench_database_host:type: string
+# @var workbench_database_host:description: Database host
 workbench_database_host: localhost
+# @var workbench_database_database:type: string
+# @var workbench_database_database:description: Database name
 workbench_database_database: workbenchdb
+# @var workbench_database_username:type: string
+# @var workbench_database_username:description: Database username
 workbench_database_username: workbench_db_user
+# @var workbench_database_password:type: string
+# @var workbench_database_password:description: Database password
 workbench_database_password: workbench_db_password
+# @var workbench_database_port:type: integer
+# @var workbench_database_port:description: Database port
 workbench_database_port: 5432
+# @var workbench_database_connection_timeout_seconds:type: integer
+# @var workbench_database_connection_timeout_seconds:description: Database connection timeout seconds
 workbench_database_connection_timeout_seconds: 10
+# @var workbench_database_connection_uri:type: string
+# @var workbench_database_connection_uri:description: Database connection URI
 workbench_database_connection_uri: ""
 
 ## Fonts
 
+# @var workbench_fonts_install_custom_fonts:type: boolean
+# @var workbench_fonts_install_custom_fonts:description: Install custom fonts
 workbench_fonts_install_custom_fonts: true
+# @var workbench_fonts_jetbrains_mono_version:type: string
+# @var workbench_fonts_jetbrains_mono_version:description: JetBrains Mono version
 workbench_fonts_jetbrains_mono_version: "2.304"
 
 ## Launcher
 # https://docs.posit.co/ide/server-pro/reference/launcher_conf.html
 
+# @var workbench_launcher_server_address:type: string
+# @var workbench_launcher_server_address:description: Launcher server address
 workbench_launcher_server_address: localhost
+# @var workbench_launcher_server_port:type: integer
+# @var workbench_launcher_server_port:description: Launcher server port
 workbench_launcher_server_port: 5559
+# @var workbench_launcher_server_server_user:type: string
+# @var workbench_launcher_server_server_user:description: Launcher server user
 workbench_launcher_server_server_user: rstudio-server
+# @var workbench_launcher_server_admin_group:type: string
+# @var workbench_launcher_server_admin_group:description: Launcher server admin group
 workbench_launcher_server_admin_group: rstudio-server
 
+# @var workbench_launcher_cluster_name:type: string
+# @var workbench_launcher_cluster_name:description: Launcher cluster name
 workbench_launcher_cluster_name: Local
+# @var workbench_launcher_cluster_type:type: string
+# @var workbench_launcher_cluster_type:description: Launcher cluster type
 workbench_launcher_cluster_type: Local
+# @var workbench_launcher_cluster_exe:type: string
+# @var workbench_launcher_cluster_exe:description: Launcher cluster executable
 workbench_launcher_cluster_exe: /usr/lib/rstudio-server/bin/rstudio-local-launcher
 
+# @var workbench_launcher_server_enable_debug_logging:type: integer
+# @var workbench_launcher_server_enable_debug_logging:description: Launcher server enable debug logging
 workbench_launcher_server_enable_debug_logging: 0
 
+# @var workbench_launcher_enable_ssl:type: integer
+# @var workbench_launcher_enable_ssl:description: Launcher enable SSL
 workbench_launcher_enable_ssl: 1
+# @var workbench_launcher_certificate_file:type: string
+# @var workbench_launcher_certificate_file:description: Launcher certificate file
 workbench_launcher_certificate_file: /var/lib/rstudio-launcher/localhost.crt
+# @var workbench_launcher_certificate_key_file:type: string
+# @var workbench_launcher_certificate_key_file:description: Launcher certificate key file
 workbench_launcher_certificate_key_file: /var/lib/rstudio-launcher/localhost.key
+
 
 ### Logging (logging.conf)
 
+# @var workbench_logging_log_level:type: string
+# @var workbench_logging_log_level:description: Logging log level
 workbench_logging_log_level: warn
+# @var workbench_logging_type:type: string
+# @var workbench_logging_type:description: Logging type
 workbench_logging_type: file
+# @var workbench_logging_dir:type: string
+# @var workbench_logging_dir:description: Logging directory
 workbench_logging_dir: /var/log/rstudio/rstudio-server
+# @var workbench_logging_file_mode:type: integer
+# @var workbench_logging_file_mode:description: Logging file mode
 workbench_logging_file_mode: 666
+# @var workbench_logging_rotate:type: integer
+# @var workbench_logging_rotate:description: Logging rotate
 workbench_logging_rotate: 1
+# @var workbench_logging_max_size_mb:type: integer
+# @var workbench_logging_max_size_mb:description: Logging max size in MB
 workbench_logging_max_size_mb: 5
+
+# @var workbench_logging_rotate_days:type: integer
+# @var workbench_logging_rotate_days:description: Logging rotate days
 workbench_logging_rotate_days: 1
+# @var workbench_logging_max_rotations:type: integer
+# @var workbench_logging_max_rotations:description: Logging max rotations
 workbench_logging_max_rotations: 100
+# @var workbench_logging_delete_days:type: integer
+# @var workbench_logging_delete_days:description: Logging delete days
 workbench_logging_delete_days: 30
+# @var workbench_logging_warn_syslog:type: integer
+# @var workbench_logging_warn_syslog:description: Logging warn syslog
 workbench_logging_warn_syslog: 1
 
 ### Jupyter (jupyter.conf)
 # https://docs.posit.co/ide/server-pro/jupyter_sessions/configuration.html
 
+# @var workbench_jupyter_notebooks_enabled:type: integer
+# @var workbench_jupyter_notebooks_enabled:description: Jupyter notebooks enabled
 workbench_jupyter_notebooks_enabled: 0
+# @var workbench_jupyter_labs_enabled:type: integer
+# @var workbench_jupyter_labs_enabled:description: Jupyter labs enabled
 workbench_jupyter_labs_enabled: 1
+# @var workbench_session_cull_minutes:type: integer
+# @var workbench_session_cull_minutes:description: Session cull minutes
 workbench_session_cull_minutes: 0
+# @var workbench_jupyter_jupyterlab_version:type: string
+# @var workbench_jupyter_jupyterlab_version:description: JupyterLab version
 workbench_jupyter_jupyterlab_version: ~=4.0
+# @var workbench_jupyter_jupyternotebook_version:type: string
+# @var workbench_jupyter_jupyternotebook_version:description: Jupyter Notebook version
 workbench_jupyter_jupyternotebook_version: ~=6.0
+# @var workbench_jupyter_jupyterlab_extension_version:type: string
+# @var workbench_jupyter_jupyterlab_extension_version:description: JupyterLab extension version
 workbench_jupyter_jupyterlab_extension_version: ~=1.0
+# @var workbench_jupyter_jupyterlab_gitlab_version:type: string
+# @var workbench_jupyter_jupyterlab_gitlab_version:description: JupyterLab GitLab version
 workbench_jupyter_jupyterlab_gitlab_version: ~=4.0
+# @var workbench_jupyter_lckr_jupyterlab_variableinspector_version:type: string
+# @var workbench_jupyter_lckr_jupyterlab_variableinspector_version:description: JupyterLab variable inspector version
 workbench_jupyter_lckr_jupyterlab_variableinspector_version: ~=3.0
+# @var workbench_jupyter_jupyter_resource_usage_version:type: string
+# @var workbench_jupyter_jupyter_resource_usage_version:description: Jupyter resource usage version
 workbench_jupyter_jupyter_resource_usage_version: ~=1.0
+# @var workbench_jupyter_jupyter_scheduler_version:type: string
+# @var workbench_jupyter_jupyter_scheduler_version:description: Jupyter scheduler version
 workbench_jupyter_jupyter_scheduler_version: ~=2.0
+# @var workbench_jupyter_jupyter_exe:type: string
+# @var workbench_jupyter_jupyter_exe:description: Jupyter executable path
 workbench_jupyter_jupyter_exe: /usr/local/bin/jupyter
 
 ### Positron (positron.conf)
+# @var workbench_positron_enabled:type: integer
+# @var workbench_positron_enabled:description: Positron enabled
 workbench_positron_enabled: 1
+# @var workbench_positron_session_no_profile:type: integer
+# @var workbench_positron_session_no_profile:description: Positron session no profile
 workbench_positron_session_no_profile: 0
+# @var workbench_positron_session_timeout_kill_hours:type: integer
+# @var workbench_positron_session_timeout_kill_hours:description: Positron session timeout kill hours
 workbench_positron_session_timeout_kill_hours: 24
