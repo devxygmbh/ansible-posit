@@ -37,6 +37,7 @@ build_ignore:
   - test
   - ssh.cfg
   - release-config.ts
+  - '*.json'
   - Justfile
   - '*.ini'
   - ansibledoctor
