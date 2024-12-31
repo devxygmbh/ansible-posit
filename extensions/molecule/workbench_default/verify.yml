@@ -1,0 +1,14 @@
+- name: Verify
+  hosts: all
+  become: false
+  gather_facts: false
+
+  tasks:
+    - name: Find all R executables under /opt/R
+      ansible.builtin.find:
+        paths: "/opt/R"
+        patterns: "R"
+        file_type: file
+        recurse: true
+        use_regex: false
+      register: r_installed
