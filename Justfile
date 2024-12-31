@@ -49,9 +49,19 @@ stop SERVER:
 start SERVER:
     hcloud server poweron {{SERVER}}
 
-
 ansible-doctor:
-    cd ansible_collections/devxy/core/roles/r && ansible-doctor
-    cd ansible_collections/devxy/core/roles/quarto && ansible-doctor
-    cd ansible_collections/devxy/core/roles/python && ansible-doctor
-    cd ansible_collections/devxy/posit/roles/workbench && ansible-doctor
+    fish -c 'source ~/venv/ansible-ds-core/bin/activate.fish' && ansible-doctor roles -r
+
+galaxy-publish:
+    ansible-galaxy collection build && \
+    tarball=$(ls | grep devxy-) && \
+    ansible-galaxy collection install $tarball -p /Users/pjs/.ansible/collections && \
+    ansible-galaxy collection publish $tarball && \
+    rm $tarball
+
+init-venv:
+    python3 -m venv ~/venv/ansible-posit && \
+    fish -c 'source ~/venv/ansible-posit/bin/activate.fish; python3 -m pip install ansible-doctor[ansible-core] "ansible-core<2.17" molecule-plugins[docker] cryptography'
+
+molecule scenario:
+    cd extensions molecule && molecule test --scenario-name {{scenario}}
