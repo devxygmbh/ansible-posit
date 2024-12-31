@@ -1,0 +1,69 @@
+when:
+  - event: tag
+
+clone:
+  git:
+    image: docker.io/woodpeckerci/plugin-git:2.6.0
+    settings:
+      tags: true
+
+depends_on:
+  - lint
+
+steps:
+  release-collection:
+    environment:
+      GALAXY_TOKEN:
+        from_secret: GALAXY_TOKEN
+    image: alpine/ansible:2.17.0
+    commands:
+      - ansible-galaxy collection build
+      - export tarball=$(ls | grep devxy-)
+      - ansible-galaxy collection install $tarball
+      - ansible-galaxy collection publish --token $GALAXY_TOKEN $tarball
+    backend_options:
+      kubernetes:
+        resources:
+          requests:
+            memory: 100Mi
+            cpu: 100m
+          limits:
+            memory: 300Mi
+            cpu: 1000m
+
+  changelog:
+    image: docker.io/thegeeklab/git-sv:1.0.7
+    commands:
+      - git sv current-version
+      - git sv release-notes -t ${CI_COMMIT_TAG:-next} -o CHANGELOG.md
+      - cat CHANGELOG.md
+    backend_options:
+      kubernetes:
+        resources:
+          requests:
+            memory: 100Mi
+            cpu: 100m
+          limits:
+            memory: 300Mi
+            cpu: 1000m
+
+  create_release:
+    image: 'gitlab/glab:v1.50.0'
+    environment:
+      API_RW_TOKEN:
+        from_secret: API_RW_TOKEN
+    commands:
+      - echo $API_RW_TOKEN | glab auth login --stdin
+      - glab release create "${CI_COMMIT_TAG}" -F CHANGELOG.md
+    when:
+      event: [tag]
+      branch: ${CI_REPO_DEFAULT_BRANCH}
+    backend_options:
+      kubernetes:
+        resources:
+          requests:
+            memory: 100Mi
+            cpu: 100m
+          limits:
+            memory: 300Mi
+            cpu: 1000m
