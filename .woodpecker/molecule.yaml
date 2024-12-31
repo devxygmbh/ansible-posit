@@ -1,6 +1,10 @@
 when:
   event: [push, cron, manual]
 
+matrix:
+  SCENARIO:
+    - workbench_default
+
 steps:
   - name: "Test devxy.posit.workbench"
     image: library/docker:27.3.1-dind-alpine3.20
@@ -17,8 +21,8 @@ steps:
       - python3 -m pip install -q 'ansible-core<2.17' molecule-plugins[docker] cryptography
       - ansible --version
       - molecule --version
-      - cd ansible_collections/devxy/core/extensions
-      - molecule test
+      - cd extensions
+      - molecule test --scenario-name ${SCENARIO}
     backend_options:
       kubernetes:
         resources:

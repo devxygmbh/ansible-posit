@@ -64,4 +64,4 @@ init-venv:
     fish -c 'source ~/venv/ansible-posit/bin/activate.fish; python3 -m pip install ansible-doctor[ansible-core] "ansible-core<2.17" molecule-plugins[docker] cryptography'
 
 molecule scenario:
-    cd extensions molecule && molecule test --scenario-name {{scenario}}
+    source ~/venv/ansible-ds-core/bin/activate.fish && cd extensions && molecule test --scenario-name {{scenario}}
