@@ -1,0 +1,12 @@
+when:
+  - event: pull_request
+    evaluate: 'CI_COMMIT_SOURCE_BRANCH != "next-release/main"'
+  - event: tag
+
+steps:
+  commitlint:
+    when:
+      - event: pull_request
+    image: commitlint/commitlint:19.6.1
+    commands:
+      - echo $${CI_COMMIT_MESSAGE} | commitlint
