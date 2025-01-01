@@ -9,13 +9,9 @@
     name: rstudio-server
     state: restarted
     enabled: true
-    daemon_reload: true
-  ignore_errors: true
 
 - name: Restart rstudio-launcher service
   ansible.builtin.service:
     name: rstudio-launcher
     state: restarted
     enabled: true
-    daemon_reload: true
-  ignore_errors: true
