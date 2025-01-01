@@ -1,8 +1,9 @@
+# the task is skipped in alma9 in docker, hence escaping is needed for dependent ones
 - name: Check if rstudio-server service exists
   ansible.builtin.service_facts:
 
 - name: Check rstudio-server version when service exists
-  when: "'rstudio-server.service' in ansible_facts.services"
+  when: "'services' in ansible_facts and 'rstudio-server.service' in ansible_facts.services"
   command: "rstudio-server version"
   register: installed_workbench_general_version
   changed_when: false
@@ -15,6 +16,10 @@
         os_identifier: "{{ 'rhel' if ansible_facts['os_family'] == 'RedHat' else 'jammy' if ansible_distribution_release in ['jammy', 'noble'] else 'default' }}"
         arch: "{{ 'arm64' if ansible_architecture == 'aarch64' and ansible_facts['os_family'] == 'Debian' else 'aarch64' if ansible_architecture == 'aarch64' and ansible_facts['os_family'] == 'RedHat' else 'x86_64' if ansible_architecture == 'x86_64' and ansible_facts['os_family'] == 'RedHat' else 'amd64' if ansible_architecture == 'x86_64' and ansible_facts['os_family'] == 'Debian' }}"
         arch_download: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x86_64' if ansible_architecture == 'x86_64' }}"
+
+    - name: Debug architecture
+      ansible.builtin.debug:
+        var: ansible_architecture
 
     - name: Download Posit Workbench (RedHat)
       when: ansible_facts['os_family'] == 'RedHat'
@@ -44,5 +49,4 @@
       ansible.builtin.file:
         path: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
         state: absent
-  when: >
-    'rstudio-server.service' not in ansible_facts.services or installed_workbench_general_version.stdout.split()[0] != (workbench_general_version | replace('-', '+'))
+  when: "'services' in ansible_facts and ('rstudio-server.service' not in ansible_facts.services or installed_workbench_general_version.stdout.split()[0] != (workbench_general_version | replace('-', '+')))"
