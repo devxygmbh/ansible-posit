@@ -25,7 +25,7 @@
     - name: Download Posit Workbench (Ubuntu)
       when: ansible_distribution == 'Ubuntu'
       ansible.builtin.get_url:
-        url: "https://s3.amazonaws.com/rstudio-ide-build/server/{{ os_identifier }}/{{ arch }}/rstudio-workbench-{{ workbench_general_version }}-{{ arch }}.{{ binary_type }}"
+        url: "https://s3.amazonaws.com/rstudio-ide-build/server/{{ os_identifier }}/{{ arch_download }}/rstudio-workbench-{{ workbench_general_version }}-{{ arch }}.{{ binary_type }}"
         dest: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
 
     - name: Install Posit Workbench
