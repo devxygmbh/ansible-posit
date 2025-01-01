@@ -6,23 +6,24 @@
 {% set found_columns = ["variable", "default"] + var.values() | map("list") | sum(start=["key"]) | unique | list %}
 {% for c in columns %}
 {% if c in found_columns %}
-| {{ c | capitalize -}}{% raw %} {% endraw %}
+|{{ c | capitalize -}}
 {% endif %}
 {% endfor %}
 |
 {% for c in columns %}
 {% if c in found_columns %}
-| {{ "-" * (c | length) -}}{% raw %} {% endraw %}
+|{{ "-" * (c | length) -}}
 {% endif %}
 {% endfor %}
 |
 {% for key, item in var | dictsort %}
-| {{ key }} | {{ (item.value | default({}))[key ] | default -}}{% raw %} {% endraw %}
+|{{ key | to_code -}}
+|{{ (item.value | default({}))[key] | default | to_code(tab_var=true) -}}
 {% if "description" in found_columns %}
-| {{ item.description | default([]) | safe_join("<br />") | replace("\n", "<br />") | replace("|", "\|") -}}
+|{{ item.description | default([]) | safe_join("<br />") | replace("\n", "<br />") | replace("|", "\|") -}}
 {% endif %}
 {% if "type" in found_columns %}
-| {{ item.type | default([]) | join("<br />") -}}
+|{{ item.type | default([]) | to_code(preserve_ms=true) | safe_join("<br />") -}}
 {% endif %}
 {% if "deprecated" in found_columns %}
 |
@@ -41,7 +42,7 @@ False
 {% endif %}
 {% endif %}
 {% if "example" in found_columns %}
-|{{ item.example | default([]) | safe_join("<br />") | replace("\n", "<br />") | replace("|", "\|") -}}
+|{{ item.example | default([]) | to_code(tab_var=true,preserve_ms=true) | safe_join("<br />") | replace("\n", "<br />") | replace("|", "\|") -}}
 {% endif %}
 |
 {% endfor %}
