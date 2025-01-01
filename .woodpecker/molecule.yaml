@@ -15,6 +15,8 @@ steps:
       DOCKER_HOST: tcp://docker:2376
       DOCKER_CERT_PATH: "/dind-certs/client"
       DOCKER_TLS_VERIFY: "1"
+    volumes:
+      - ci-tmp-rwx:/dind-certs
     commands:
       - apk add -q --no-cache python3 python3-dev py3-pip gcc git curl build-base autoconf automake py3-cryptography linux-headers musl-dev libffi-dev openssl-dev openssh yaml-dev
       - python3 --version
@@ -34,8 +36,14 @@ steps:
           limits:
             memory: 1000Mi
             cpu: 4000m
+        tolerations:
+          - key: 'CI'
+            operator: 'Equal'
+            value: 'true'
+            effect: 'NoSchedule'
         nodeSelector:
-          kubernetes.io/arch: "arm64"
+          kubernetes.io/arch: amd64
+          node.kubernetes.io/instance-type: AX42
 
   - name: "ntfy"
     image: codeberg.org/l-x/woodpecker-ntfy:1.3.1
@@ -65,12 +73,11 @@ steps:
 services:
   docker:
     image: docker:27-dind
-    commands: dockerd --tls=false --host=tcp://0.0.0.0:2375
     privileged: true
     environment:
       DOCKER_TLS_CERTDIR: /dind-certs
     volumes:
-      - /opt/woodpeckerci/dind-certs:/dind-certs
+      - ci-tmp-rwx:/dind-certs
     ports:
       - 2376
     backend_options:
@@ -82,5 +89,11 @@ services:
           limits:
             memory: 1000Mi
             cpu: 4000m
+        tolerations:
+          - key: 'CI'
+            operator: 'Equal'
+            value: 'true'
+            effect: 'NoSchedule'
         nodeSelector:
-          kubernetes.io/arch: "arm64"
+          kubernetes.io/arch: amd64
+          node.kubernetes.io/instance-type: AX42
