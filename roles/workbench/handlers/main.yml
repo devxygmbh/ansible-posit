@@ -9,9 +9,13 @@
     name: rstudio-server
     state: restarted
     enabled: true
+  register: result
+  failed_when: result.failed or "'Could not find the requested service' in result.msg"
 
 - name: Restart rstudio-launcher service
   ansible.builtin.service:
     name: rstudio-launcher
     state: restarted
     enabled: true
+  register: result
+  failed_when: result.failed or "'Could not find the requested service' in result.msg"
