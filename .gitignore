@@ -66,3 +66,5 @@ Temporary Items
 #!**/roles/
 # /roles/
 ansible_collections/
+roles/geerlingguy*
+roles/nginx*

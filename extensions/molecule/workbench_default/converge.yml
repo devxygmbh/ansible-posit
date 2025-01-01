@@ -15,4 +15,5 @@
   #         - "ansible_os_family"
 
   roles:
+    - role: devxy.data_science_core.r
     - role: workbench
