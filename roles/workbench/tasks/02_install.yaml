@@ -9,7 +9,8 @@
   changed_when: false
   ignore_errors: true
 
-- block:
+- name: Install Workbench
+  block:
     - name: Define environment facts for Workbench download
       ansible.builtin.set_fact:
         binary_type: "{{ 'rpm' if ansible_facts['os_family'] == 'RedHat' else 'deb' }}"
@@ -29,14 +30,14 @@
         url: "https://s3.amazonaws.com/rstudio-ide-build/server/{{ os_identifier }}/{{ arch_download }}/rstudio-workbench-{{ workbench_general_version }}-{{ arch }}.{{ binary_type }}"
         dest: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
 
-    - name: Install Posit Workbench
+    - name: Install Posit Workbench (RedHat)
       when: ansible_facts['os_family'] == 'RedHat'
       ansible.builtin.dnf:
         name: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
         disable_gpg_check: true
         state: present
 
-    - name: Install Posit Workbench
+    - name: Install Posit Workbench (Ubuntu)
       when: ansible_distribution == 'Ubuntu'
       ansible.builtin.apt:
         deb: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
@@ -45,4 +46,4 @@
       ansible.builtin.file:
         path: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
         state: absent
-  when: "'services' in ansible_facts and ('rstudio-server.service' not in ansible_facts.services or installed_workbench_general_version.stdout.split()[0] != (workbench_general_version | replace('-', '+')))"
+  when: "'services' not in ansible_facts or ('services' in ansible_facts and 'rstudio-server.service' not in ansible_facts.services or installed_workbench_general_version.stdout.split()[0] != (workbench_general_version | replace('-', '+')))"
