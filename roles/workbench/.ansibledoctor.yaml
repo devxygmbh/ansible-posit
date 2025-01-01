@@ -2,7 +2,7 @@ template:
   name: readme
   src: local>../../ansibledoctor/templates
   options:
-    tabulate_vars: True
+    tabulate_vars: true
 
 logging:
   # Possible options: debug|info|warning| error|critical
@@ -10,4 +10,4 @@ logging:
 
 renderer:
   include_header: HEADER.md
-  force_overwrite: True
+  force_overwrite: true

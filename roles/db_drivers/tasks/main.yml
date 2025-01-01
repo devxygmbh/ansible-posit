@@ -4,6 +4,7 @@
   ansible.builtin.file:
     path: "/opt/rstudio-drivers-{{ db_drivers_version }}"
     state: directory
+    mode: "0775"
 
 - name: Execute RedHat tasks
   when: ansible_facts['os_family'] == 'RedHat'
@@ -23,14 +24,14 @@
   ansible.builtin.get_url:
     url: "https://cdn.rstudio.com/drivers/7C152C12/installer/rstudio-drivers-{{ db_drivers_version }}.tar"
     dest: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
-    mode: 0755
+    mode: "0755"
 
 - name: Extract Posit DB Drivers
   when: dir_content.files | length == 0
   ansible.builtin.unarchive:
     src: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
     dest: "/opt"
-    remote_src: yes
+    remote_src: true
 
 - name: Cleanup Posit DB Drivers tarball
   when: dir_content.files | length == 0

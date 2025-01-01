@@ -37,10 +37,10 @@ steps:
             memory: 1000Mi
             cpu: 4000m
         tolerations:
-          - key: 'CI'
-            operator: 'Equal'
-            value: 'true'
-            effect: 'NoSchedule'
+          - key: "CI"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
         nodeSelector:
           kubernetes.io/arch: amd64
           node.kubernetes.io/instance-type: AX42
@@ -90,10 +90,10 @@ services:
             memory: 1000Mi
             cpu: 4000m
         tolerations:
-          - key: 'CI'
-            operator: 'Equal'
-            value: 'true'
-            effect: 'NoSchedule'
+          - key: "CI"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
         nodeSelector:
           kubernetes.io/arch: amd64
           node.kubernetes.io/instance-type: AX42

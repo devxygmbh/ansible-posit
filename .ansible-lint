@@ -14,3 +14,6 @@ skip_list:
 exclude_paths:
   - ansible_collections/
   - tasks/
+  - roles/nginxinc.nginx_config/
+  - roles/nginxinc.nginx/
+  - roles/geerlingguy.certbot

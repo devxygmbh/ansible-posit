@@ -4,12 +4,13 @@
 
 - name: Check rstudio-server version when service exists
   when: "'services' in ansible_facts and 'rstudio-server.service' in ansible_facts.services"
-  command: "rstudio-server version"
+  ansible.builtin.command: "rstudio-server version"
   register: installed_workbench_general_version
   changed_when: false
   ignore_errors: true
 
 - name: Install Workbench
+  when: "'services' not in ansible_facts or ('services' in ansible_facts and 'rstudio-server.service' not in ansible_facts.services or installed_workbench_general_version.stdout.split()[0] != (workbench_general_version | replace('-', '+')))"
   block:
     - name: Define environment facts for Workbench download
       ansible.builtin.set_fact:
@@ -23,12 +24,14 @@
       ansible.builtin.get_url:
         url: "https://s3.amazonaws.com/rstudio-ide-build/server/{{ os_identifier }}{{ ansible_distribution_major_version }}/{{ arch_download }}/rstudio-workbench-{{ os_identifier }}-{{ workbench_general_version }}-{{ arch }}.{{ binary_type }}"
         dest: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
+        mode: "0775"
 
     - name: Download Posit Workbench (Ubuntu)
       when: ansible_distribution == 'Ubuntu'
       ansible.builtin.get_url:
         url: "https://s3.amazonaws.com/rstudio-ide-build/server/{{ os_identifier }}/{{ arch_download }}/rstudio-workbench-{{ workbench_general_version }}-{{ arch }}.{{ binary_type }}"
         dest: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
+        mode: "0775"
 
     - name: Install Posit Workbench (RedHat)
       when: ansible_facts['os_family'] == 'RedHat'
@@ -46,4 +49,3 @@
       ansible.builtin.file:
         path: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
         state: absent
-  when: "'services' not in ansible_facts or ('services' in ansible_facts and 'rstudio-server.service' not in ansible_facts.services or installed_workbench_general_version.stdout.split()[0] != (workbench_general_version | replace('-', '+')))"

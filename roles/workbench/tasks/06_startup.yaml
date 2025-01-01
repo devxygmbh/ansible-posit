@@ -1,6 +1,6 @@
 - name: Create local test user
   ansible.builtin.user:
-    name: "{{ workbench_general_local_test_user_name}}"
+    name: "{{ workbench_general_local_test_user_name }}"
     comment: "Posit Workbench Test User"
     shell: /bin/bash
     home: /home/posit

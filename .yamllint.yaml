@@ -13,7 +13,6 @@ rules:
   indentation:
     spaces: 2
     indent-sequences: true
-  line-length:
-    max: 256
+  line-length: disable
   new-lines:
     type: unix
