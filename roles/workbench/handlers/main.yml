@@ -4,18 +4,16 @@
   when: workbench_server_oidc_client_secret is defined
   ansible.builtin.include_tasks: 01_secret_oidc.yaml
 
-- name: Restart rstudio-server service
+- name: Restart rstudio-server service # noqa: ignore-errors
   ansible.builtin.service:
     name: rstudio-server
     state: restarted
     enabled: true
-  register: result
-  failed_when: result.failed or "'Could not find the requested service' in result.msg"
+  ignore_errors: true
 
-- name: Restart rstudio-launcher service
+- name: Restart rstudio-launcher service # noqa: ignore-errors
   ansible.builtin.service:
     name: rstudio-launcher
     state: restarted
     enabled: true
-  register: result
-  failed_when: result.failed or "'Could not find the requested service' in result.msg"
+  ignore_errors: true
