@@ -68,3 +68,4 @@ Temporary Items
 ansible_collections/
 roles/geerlingguy*
 roles/nginx*
+node_modules/
