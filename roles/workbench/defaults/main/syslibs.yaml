@@ -15,6 +15,7 @@ r_package_syslibs_debian:
   - libudunits2-dev
   - libxml2-dev
   - libz-dev
+  - unzip
 
 r_package_syslibs_redhat:
   - cairo
@@ -64,4 +65,5 @@ r_package_syslibs_redhat:
   - tzdata
   - udunits2-devel
   - unixODBC-devel
+  - unzip
   - zlib-devel
