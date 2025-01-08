@@ -43,7 +43,6 @@ issues: https://gitlab.com/devxy/ansible/posit/issues
 manifest:
   directives:
     - recursive-exclude ansible_collections/ **
-    - recursive-exclude readme/ **
     - recursive-exclude ansibledoctor/ **
     - recursive-exclude .woodpecker/ **
     - recursive-exclude .gitsv/ **
