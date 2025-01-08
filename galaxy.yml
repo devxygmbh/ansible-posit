@@ -42,6 +42,7 @@ issues: https://gitlab.com/devxy/ansible/posit/issues
 # with 'build_ignore'
 manifest:
   directives:
+    - recursive-include roles **.yml **.yaml **.json **.j2 README.md
     - recursive-exclude ansible_collections/ **
     - recursive-exclude ansibledoctor/ **
     - recursive-exclude .woodpecker/ **
@@ -50,3 +51,4 @@ manifest:
     - global-exclude *.cfg
     - global-exclude *.ini
     - global-exclude *.mjs
+    - exclude FILES.json MANIFEST.json
