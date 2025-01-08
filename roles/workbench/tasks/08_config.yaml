@@ -66,6 +66,16 @@
   loop:
     - { name: "vscode-user-settings.json", mode: "0644" }
 
+- name: Copy pam profile
+  ansible.builtin.template:
+    src: "{{ item.name }}.j2"
+    dest: "/etc/pam.d/{{ workbench_server_auth_pam_sessions_profile }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop:
+    - { name: "rstudio-pam", mode: "0644" }
+
 - name: Write openid-client-secret
   when: workbench_server_oidc_client_id is defined and workbench_server_oidc_client_secret is defined
   ansible.builtin.template:

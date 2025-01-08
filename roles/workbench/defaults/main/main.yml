@@ -131,7 +131,7 @@ workbench_server_auth_openid_username_claim: preferred_username
 workbench_server_auth_saml: 0
 # @var workbench_server_auth_pam_sessions_profile:type: string
 # @var workbench_server_auth_pam_sessions_profile:description: Auth PAM sessions profile
-workbench_server_auth_pam_sessions_profile: "{{ 'login' if ansible_os_family == 'RedHat' else 'su' }}"
+workbench_server_auth_pam_sessions_profile: rstudio
 # @var workbench_server_auth_pam_sessions_use_password:type: integer
 # @var workbench_server_auth_pam_sessions_use_password:description: Auth PAM sessions use password
 workbench_server_auth_pam_sessions_use_password: 0
