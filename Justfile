@@ -59,9 +59,12 @@ galaxy-publish:
     ansible-galaxy collection publish $tarball && \
     rm $tarball
 
+galaxy-build:
+    fish -c 'source ~/venv/ansible-posit/bin/activate.fish && ansible-galaxy collection build -f -vvv'
+
 init-venv:
     python3 -m venv ~/venv/ansible-posit && \
-    fish -c 'source ~/venv/ansible-posit/bin/activate.fish; python3 -m pip install --upgrade ansible-doctor[ansible-core] molecule-plugins[docker] cryptography'
+    fish -c 'source ~/venv/ansible-posit/bin/activate.fish; python3 -m pip install --upgrade ansible-doctor[ansible-core] molecule-plugins[docker] cryptography distlib'
 
 molecule scenario:
     source ~/venv/ansible-ds-core/bin/activate.fish && cd extensions && molecule test --scenario-name {{scenario}}
