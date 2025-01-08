@@ -17,6 +17,7 @@ steps:
         from_secret: GALAXY_TOKEN
     image: alpine/ansible:2.17.0
     commands:
+      - apk add py3-distlib
       - ansible-galaxy collection build
       - export tarball=$(ls | grep devxy-)
       - ansible-galaxy collection install $tarball
