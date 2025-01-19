@@ -33,7 +33,7 @@ steps:
             cpu: 1000m
 
   changelog:
-    image: docker.io/thegeeklab/git-sv:1.0.9
+    image: docker.io/thegeeklab/git-sv:1.0.10
     commands:
       - git sv current-version
       - git sv release-notes -t ${CI_COMMIT_TAG:-next} -o CHANGELOG.md
