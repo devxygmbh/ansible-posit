@@ -15,7 +15,7 @@ steps:
     environment:
       GALAXY_TOKEN:
         from_secret: GALAXY_TOKEN
-    image: alpine/ansible:2.17.0
+    image: alpine/ansible:2.18.1
     commands:
       - apk add py3-distlib
       - ansible-galaxy collection build
