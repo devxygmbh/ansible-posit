@@ -49,7 +49,7 @@ steps:
             cpu: 1000m
 
   create_release:
-    image: "gitlab/glab:v1.51.0"
+    image: "gitlab/glab:v1.52.0"
     environment:
       API_RW_TOKEN:
         from_secret: API_RW_TOKEN
