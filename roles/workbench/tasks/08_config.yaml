@@ -88,14 +88,3 @@
   notify:
     - Encrypt OIDC client secret
     - Restart rstudio-server service
-
-- name: Create /etc/pam.d/rstudio on RH
-  when: ansible_os_family == 'RedHat'
-  ansible.builtin.copy:
-    src: /etc/pam.d/login
-    dest: /etc/pam.d/rstudio
-    remote_src: true
-    owner: root
-    group: root
-    mode: "0644"
-  no_log: true
