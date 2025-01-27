@@ -184,6 +184,9 @@ workbench_server_user_homedir_path: /home
 # @var workbench_server_user_provisioning_start_uid:type: integer
 # @var workbench_server_user_provisioning_start_uid:description: Server user provisioning start UID
 workbench_server_user_provisioning_start_uid: 15000
+# @var workbench_server_user_provisioning_register_on_first_login:type: integer
+# @var workbench_server_user_provisioning_register_on_first_login:description: Whether to create local users via JIT provisioning for SSO logins
+workbench_server_user_provisioning_register_on_first_login: 0
 
 ## Session
 # https://docs.posit.co/ide/server-pro/reference/rsession_conf.html
