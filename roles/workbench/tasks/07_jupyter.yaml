@@ -12,12 +12,13 @@
   when: "item not in ansible_facts.packages"
 
 - name: "[Jupyter] Check for JupyterLab and JupyterNotebook updates"
-  ansible.builtin.command: "pip list --format=json"
+  ansible.builtin.command: "/usr/bin/pip3 list --format=json"
   register: installed_packages
   changed_when: false
 
 - name: "[Jupyter] Install JupyterLab and JupyterNotebook"
   ansible.builtin.pip:
+    executable: /usr/bin/pip3
     break_system_packages: true
     extra_args: --ignore-installed
     name: "{{ item }}"
