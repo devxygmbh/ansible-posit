@@ -1,8 +1,8 @@
-- name: Gather package facts
+- name: "[Jupyter] Gather package facts"
   ansible.builtin.package_facts:
     manager: auto
 
-- name: Install python3 development package
+- name: "[Jupyter]  Install python3 development package"
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
@@ -11,12 +11,12 @@
     - python3-pip
   when: "item not in ansible_facts.packages"
 
-- name: Check for JupyterLab and JupyterNotebook updates
+- name: "[Jupyter] Check for JupyterLab and JupyterNotebook updates"
   ansible.builtin.command: "pip list --format=json"
   register: installed_packages
   changed_when: false
 
-- name: Install JupyterLab and JupyterNotebook
+- name: "[Jupyter] Install JupyterLab and JupyterNotebook"
   ansible.builtin.pip:
     break_system_packages: true
     extra_args: --ignore-installed
