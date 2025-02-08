@@ -17,6 +17,7 @@ password include system-auth
 # pam_selinux.so close should be the first session rule
 session required pam_selinux.so close
 session optional pam_console.so
+session required pam_mkhomedir.so skel=/etc/skel umask=0077
 # pam_selinux.so open should only be followed by sessions to be executed in the user context
 session required pam_selinux.so open
 session required pam_namespace.so
@@ -34,6 +35,8 @@ session    required   pam_env.so readenv=1
 # Locale variables are also kept into /etc/default/locale in etch
 # reading this file *in addition to /etc/environment* does not hurt
 session    required   pam_env.so readenv=1 envfile=/etc/default/locale
+
+session required pam_mkhomedir.so skel=/etc/skel umask=0077
 
 # Enforces user limits defined in /etc/security/limits.conf
 session    required   pam_limits.so
