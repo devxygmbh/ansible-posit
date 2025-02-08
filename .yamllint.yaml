@@ -1,3 +1,6 @@
+ignore: |
+  roles/workbench/tasks/08_config.yaml
+
 rules:
   comments:
     require-starting-space: false

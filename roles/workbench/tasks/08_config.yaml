@@ -1,4 +1,4 @@
-- name: Create /etc/rstudio
+- name: "[Config] Create /etc/rstudio"
   ansible.builtin.file:
     path: /etc/rstudio
     state: directory
@@ -6,7 +6,7 @@
     owner: root
     group: "{{ workbench_server_server_user }}"
 
-- name: Apply Posit Workbench configuration (/etc/rstudio)
+- name: "[Config] Apply Posit Workbench configuration (/etc/rstudio)"
   ansible.builtin.template:
     src: "{{ item.file }}.j2"
     dest: "/etc/rstudio/{{ item.file }}"
@@ -56,7 +56,7 @@
   notify:
     - "{{ item.restart }}"
 
-- name: Add static files
+- name: "[Config] Add static files"
   ansible.builtin.copy:
     src: "{{ item.name }}"
     dest: "/etc/rstudio/{{ item.name }}"
@@ -66,7 +66,7 @@
   loop:
     - { name: "vscode-user-settings.json", mode: "0644" }
 
-- name: Copy pam profile
+- name: "[Config] Copy pam profile"
   ansible.builtin.template:
     src: "{{ item.name }}.j2"
     dest: "/etc/pam.d/{{ workbench_server_auth_pam_sessions_profile }}"
@@ -76,7 +76,7 @@
   loop:
     - { name: "rstudio-pam", mode: "0644" }
 
-- name: Write openid-client-secret
+- name: "[Config] Write openid-client-secret"
   when: workbench_server_oidc_client_id is defined and workbench_server_oidc_client_secret is defined
   ansible.builtin.template:
     src: openid-client-secret.j2
@@ -88,3 +88,43 @@
   notify:
     - Encrypt OIDC client secret
     - Restart rstudio-server service
+
+- name: "[Config] [RedHat] Create /etc/authselect/custom/pwb for SCIM user provisioning"
+  when: ansible_os_family == 'RedHat' and workbench_server_user_provisioning_enabled == 1
+  ansible.builtin.command:
+    cmd: authselect create-profile pwb --base-on=minimal
+    creates: /etc/authselect/custom/pwb
+
+- name: "[Config] [RedHat] Alter nsswitch.conf for SCIM user provisioning"
+  ansible.builtin.lineinfile:
+    path: /etc/authselect/custom/pwb/nsswitch.conf
+    regexp: "{{ item.search }}"
+    line: "{{ item.replace }}"
+  loop:
+    - {
+        search: 'passwd:     files {if "with-altfiles":altfiles }systemd',
+        replace: 'passwd:     pwb files {if "with-altfiles":altfiles }systemd {exclude if "with-custom-passwd"}',
+      }
+    - {
+        search: "shadow:     files",
+        replace: 'shadow:     pwb files                                       {exclude if "with-custom-shadow"}',
+      }
+    - {
+        search: 'group:      files {if "with-altfiles":altfiles }systemd',
+        replace: 'group:      files {if "with-altfiles":altfiles }systemd pwb {exclude if "with-custom-group"}',
+      }
+
+- name: "[Config] [RedHat] Enable custom nss profile"
+  when: ansible_os_family == 'RedHat' and workbench_server_user_provisioning_enabled == 1
+  ansible.builtin.command: authselect select --force custom/pwb with-mkhomedir
+
+- name: "[Config] [RedHat] Ensure oddjob-mkhomedir is installed"
+  ansible.builtin.dnf:
+    name: oddjob-mkhomedir
+    state: present
+
+- name: "[Config] [RedHat] Enable oddjob systemd for SCIM user provisioning"
+  ansible.builtin.systemd_service:
+    state: restarted
+    daemon_reload: true
+    name: oddjobd
