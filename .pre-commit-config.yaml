@@ -30,7 +30,7 @@ repos:
         args: [--strict, -c=.yamllint.yaml]
 
   - repo: https://github.com/ansible-community/ansible-lint
-    rev: v24.12.2
+    rev: v25.1.2
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
