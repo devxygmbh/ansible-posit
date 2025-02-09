@@ -4,6 +4,10 @@
   when: workbench_server_oidc_client_secret is defined
   ansible.builtin.include_tasks: 01_secret_oidc.yaml
 
+- name: Encrypt Postgresql Password
+  when: workbench_database_password is defined
+  ansible.builtin.include_tasks: 02_secret_postgresql_password.yaml
+
 - name: Restart rstudio-server service # noqa: ignore-errors
   ansible.builtin.service:
     name: rstudio-server
