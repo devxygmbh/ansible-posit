@@ -15,6 +15,10 @@
   ansible.builtin.command: "/usr/bin/pip3 list --format=json"
   register: installed_packages
   changed_when: false
+  
+- name: "[Jupyter] Extract installed package names"
+  ansible.builtin.set_fact:
+    installed_package_names: "{{ installed_packages.stdout | from_json | map(attribute='name') | list }}"
 
 - name: "[Jupyter] Install JupyterLab and JupyterNotebook"
   ansible.builtin.pip:
@@ -33,5 +37,5 @@
     - lckr_jupyterlab_variableinspector{{ workbench_jupyter_lckr_jupyterlab_variableinspector_version }}
     - jupyter-resource-usage{{ workbench_jupyter_jupyter_resource_usage_version }}
     - jupyter_scheduler{{ workbench_jupyter_jupyter_scheduler_version }}
-  when: item in installed_packages.stdout | from_json | map(attribute='name')
+  when: item not in installed_package_names
   notify: Restart rstudio-server service
