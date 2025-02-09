@@ -4,8 +4,10 @@
 
 # Specifies the database provider to use
 provider={{ workbench_database_provider }}
+{% if workbench_database_provider == "sqlite" %}
 # Directory in which the sqlite database will be written
 directory={{ workbench_database_directory}}
+{% endif %}
 
 {% if workbench_database_provider == "postgresql" %}
 # Specifies the host (hostname or IP address) of the database host
