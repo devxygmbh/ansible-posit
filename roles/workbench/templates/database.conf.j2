@@ -20,5 +20,7 @@ username={{ workbench_database_username }}
 password={{ workbench_database_password }}
 # Specifies the maximum amount of seconds allowed before a database connection attempt is considered failed
 connection-timeout-seconds={{ workbench_database_connection_timeout_seconds}}
+{% if workbench_database_connection_uri != "" %}
 connection-uri={{ workbench_database_connection_uri }}
+{% endif %}
 {% endif %}
