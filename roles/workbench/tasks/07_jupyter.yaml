@@ -11,31 +11,28 @@
     - python3-pip
   when: "item not in ansible_facts.packages"
 
-- name: "[Jupyter] Check for JupyterLab and JupyterNotebook updates"
+- name: "[Jupyter] Get installed pip packages with versions"
   ansible.builtin.command: "/usr/bin/pip3 list --format=json"
   register: installed_packages
   changed_when: false
-  
-- name: "[Jupyter] Extract installed package names"
-  ansible.builtin.set_fact:
-    installed_package_names: "{{ installed_packages.stdout | from_json | map(attribute='name') | list }}"
 
-- name: "[Jupyter] Install JupyterLab and JupyterNotebook"
+- name: "Create requirements file for Jupyter packages"
+  ansible.builtin.copy:
+    dest: "/tmp/jupyter_requirements.txt"
+    content: |
+      jupyterlab{{ workbench_jupyter_jupyterlab_version }}
+      notebook{{ workbench_jupyter_jupyternotebook_version }}
+      pwb_jupyterlab{{ workbench_jupyter_jupyterlab_extension_version }}
+      jupyterlab_gitlab{{ workbench_jupyter_jupyterlab_gitlab_version }}
+      jupyterlab-git
+      jupyterlab-code-formatter
+      lckr_jupyterlab_variableinspector{{ workbench_jupyter_lckr_jupyterlab_variableinspector_version }}
+      jupyter-resource-usage{{ workbench_jupyter_jupyter_resource_usage_version }}
+      jupyter_scheduler{{ workbench_jupyter_jupyter_scheduler_version }}
+
+- name: "Install Jupyter packages from requirements file"
   ansible.builtin.pip:
+    requirements: "/tmp/jupyter_requirements.txt"
     executable: /usr/bin/pip3
-    break_system_packages: true
-    extra_args: --ignore-installed
-    name: "{{ item }}"
     state: present
-  loop:
-    - jupyterlab{{ workbench_jupyter_jupyterlab_version }}
-    - notebook{{ workbench_jupyter_jupyternotebook_version }}
-    - pwb_jupyterlab{{ workbench_jupyter_jupyterlab_extension_version }}
-    - jupyterlab_gitlab{{ workbench_jupyter_jupyterlab_gitlab_version }}
-    - jupyterlab-git
-    - jupyterlab-code-formatter
-    - lckr_jupyterlab_variableinspector{{ workbench_jupyter_lckr_jupyterlab_variableinspector_version }}
-    - jupyter-resource-usage{{ workbench_jupyter_jupyter_resource_usage_version }}
-    - jupyter_scheduler{{ workbench_jupyter_jupyter_scheduler_version }}
-  when: item not in installed_package_names
   notify: Restart rstudio-server service
