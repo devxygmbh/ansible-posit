@@ -23,6 +23,13 @@
       - epel-release
       - dnf-plugins-core
 
+- name: Install build dependencies for R
+  when: ansible_facts['os_family'] == 'RedHat'
+  ansible.builtin.command:
+    cmd: "dnf builddep -y R"
+  register: dnf_result
+  changed_when: '"Nothing to do" not in dnf_result.stdout'
+
 - name: Gather package facts
   ansible.builtin.package_facts:
     manager: auto

@@ -19,6 +19,7 @@
 - name: "Create requirements file for Jupyter packages"
   ansible.builtin.copy:
     dest: "/tmp/jupyter_requirements.txt"
+    mode: "0644"
     content: |
       jupyterlab{{ workbench_jupyter_jupyterlab_version }}
       notebook{{ workbench_jupyter_jupyternotebook_version }}
