@@ -37,9 +37,6 @@
     path: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
     state: absent
 
-- name: Create odbcinst.ini from template
-  ansible.builtin.command: mv /opt/rstudio-drivers-{{ db_drivers_version }}/odbcinst.ini.sample /etc/odbcinst.ini
-
 - name: Check if odbcinst.ini exists
   ansible.builtin.stat:
     path: /etc/odbcinst.ini
@@ -52,6 +49,13 @@
     mode: "0644"
     remote_src: true
   when: odbcinst_ini_stat.stat.exists
+
+- name: Create odbcinst.ini from template
+  ansible.builtin.copy:
+    src: "/opt/rstudio-drivers-{{ db_drivers_version }}/odbcinst.ini.sample"
+    dest: /etc/odbcinst.ini
+    remote_src: true
+    mode: "0644"
 
 - name: Print message about backup
   ansible.builtin.debug:
@@ -70,4 +74,4 @@
   ansible.builtin.blockinfile:
     path: /etc/odbc.ini
     block: |
-      "{{ odbc_ini }}"
+      {{ odbc_ini }}
