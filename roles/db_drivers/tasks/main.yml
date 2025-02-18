@@ -69,6 +69,12 @@
     block: |
       "{{ extra_odbcinst_entries }}"
 
+- name: Insert professional driver version into file paths in odbcinst.ini
+  ansible.builtin.replace:
+    path: /etc/odbcinst.ini
+    regexp: '(/rstudio-drivers/)'
+    replace: '/rstudio-drivers-{{ db_drivers_version }}/'
+
 - name: Write odbc.ini
   when: odbc_ini != ""
   ansible.builtin.blockinfile:
