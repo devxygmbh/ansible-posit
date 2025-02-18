@@ -1,5 +1,3 @@
-# tasks file for db-drivers
-
 - name: Create directory for Posit DB Drivers
   ansible.builtin.file:
     path: "/opt/rstudio-drivers-{{ db_drivers_version }}"
@@ -39,9 +37,37 @@
     path: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
     state: absent
 
-- name: Create odbc.ini from template
-  when: dir_content.files | length == 0
+- name: Create odbcinst.ini from template
   ansible.builtin.command: mv /opt/rstudio-drivers-{{ db_drivers_version }}/odbcinst.ini.sample /etc/odbcinst.ini
-  args:
-    creates: /etc/odbcinst.ini
-    removes: /opt/rstudio-drivers-{{ db_drivers_version }}/odbcinst.ini.sample
+
+- name: Check if odbcinst.ini exists
+  ansible.builtin.stat:
+    path: /etc/odbcinst.ini
+  register: odbcinst_ini_stat
+
+- name: Backup existing odbcinst.ini if it exists
+  ansible.builtin.copy:
+    src: /etc/odbcinst.ini
+    dest: /tmp/odbcinst.ini.bak
+    mode: "0644"
+    remote_src: true
+  when: odbcinst_ini_stat.stat.exists
+
+- name: Print message about backup
+  ansible.builtin.debug:
+    msg: "Backup of /etc/odbcinst.ini created at /tmp/odbcinst.ini.bak"
+  when: odbcinst_ini_stat.stat.exists
+
+- name: Append additional odbcinst.ini entries
+  when: extra_odbcinst_entries != ""
+  ansible.builtin.blockinfile:
+    path: /etc/odbcinst.ini
+    block: |
+      "{{ extra_odbcinst_entries }}"
+
+- name: Write odbc.ini
+  when: odbc_ini != ""
+  ansible.builtin.blockinfile:
+    path: /etc/odbc.ini
+    block: |
+      "{{ odbc_ini }}"
