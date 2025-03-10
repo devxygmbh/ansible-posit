@@ -14,7 +14,6 @@
 # Icon must end with two \r
 Icon
 
-
 # Thumbnails
 ._*
 
@@ -69,3 +68,4 @@ ansible_collections/
 roles/geerlingguy*
 roles/nginx*
 node_modules/
+.ansible/
