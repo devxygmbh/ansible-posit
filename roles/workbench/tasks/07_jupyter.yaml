@@ -36,5 +36,5 @@
     requirements: "/tmp/jupyter_requirements.txt"
     executable: /usr/bin/pip3
     state: present
-    break_system_packages: true
+    extra_args: --break-system-packages
   notify: Restart rstudio-server service
