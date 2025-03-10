@@ -7,7 +7,7 @@ matrix:
 
 steps:
   - name: "Test devxy.posit.workbench"
-    image: library/docker:27.3.1-dind-alpine3.20
+    image: library/docker:28.0.1-dind-alpine3.21
     privileged: true
     environment:
       # force output of ANSI colors
@@ -72,7 +72,7 @@ steps:
 
 services:
   docker:
-    image: docker:27-dind
+    image: docker:28-dind
     privileged: true
     environment:
       DOCKER_TLS_CERTDIR: /dind-certs
