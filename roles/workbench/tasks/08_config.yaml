@@ -100,6 +100,7 @@
     creates: /etc/authselect/custom/pwb
 
 - name: "[Config] [RedHat] Alter nsswitch.conf for SCIM user provisioning"
+  when: ansible_os_family == 'RedHat' and workbench_server_user_provisioning_enabled == 1
   ansible.builtin.lineinfile:
     path: /etc/authselect/custom/pwb/nsswitch.conf
     regexp: "{{ item.search }}"
@@ -123,11 +124,13 @@
   ansible.builtin.command: authselect select --force custom/pwb with-mkhomedir
 
 - name: "[Config] [RedHat] Ensure oddjob-mkhomedir is installed"
+  when: ansible_os_family == 'RedHat' and workbench_server_user_provisioning_enabled == 1
   ansible.builtin.dnf:
     name: oddjob-mkhomedir
     state: present
 
 - name: "[Config] [RedHat] Enable oddjob systemd for SCIM user provisioning"
+  when: ansible_os_family == 'RedHat' and workbench_server_user_provisioning_enabled == 1
   ansible.builtin.systemd_service:
     state: restarted
     daemon_reload: true
