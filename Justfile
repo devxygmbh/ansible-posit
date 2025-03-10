@@ -50,7 +50,7 @@ start SERVER:
     hcloud server poweron {{SERVER}}
 
 ansible-doctor:
-    fish -c 'source ~/venv/ansible-ds-core/bin/activate.fish; ansible-doctor --version; ansible-doctor roles -r -f'
+    fish -c 'source ~/venv/ansible-posit/bin/activate.fish; ansible-doctor --version; ansible-doctor roles -r -f'
 
 galaxy-publish:
     ansible-galaxy collection build && \
@@ -67,4 +67,4 @@ init-venv:
     fish -c 'source ~/venv/ansible-posit/bin/activate.fish; python3 -m pip install --upgrade ansible-doctor[ansible-core] molecule-plugins[docker] cryptography distlib'
 
 molecule scenario:
-    source ~/venv/ansible-ds-core/bin/activate.fish && cd extensions && molecule test --scenario-name {{scenario}}
+    source ~/venv/ansible-posit/bin/activate.fish && cd extensions && molecule test --scenario-name {{scenario}}
