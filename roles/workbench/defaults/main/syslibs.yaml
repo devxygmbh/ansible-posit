@@ -16,6 +16,7 @@ r_package_syslibs_debian:
   - libxml2-dev
   - libz-dev
   - unzip
+  - openjdk-17-jdk
 
 r_package_syslibs_redhat:
   - cairo
@@ -34,8 +35,8 @@ r_package_syslibs_redhat:
   - ImageMagick-c++
   - ImageMagick-c++-devel
   - ImageMagick-libs
-  - java-17-openjdk
-  - java-17-openjdk-devel
+  - java-11-openjdk
+  - java-11-openjdk-devel
   - jq
   - jq-devel
   - libaio

@@ -44,3 +44,16 @@
     (ansible_facts['os_family'] == 'Suse') | ternary(r_package_syslibs_suse, [])))
     }}"
   when: "item not in ansible_facts.packages"
+
+- name: Find all R versions installed in /opt/R
+  ansible.builtin.find:
+    paths: /opt/R
+    patterns: "[0-9].[0-9].[0-9]"
+    recurse: false
+    file_type: directory
+  register: r_versions
+
+- name: Configure Java environment via javareconf
+  ansible.builtin.command: "{{ item.path }}/bin/R CMD javareconf"
+  loop: "{{ r_versions.files }}"
+  changed_when: false
