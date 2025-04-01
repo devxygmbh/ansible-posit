@@ -9,8 +9,17 @@
   changed_when: false
   ignore_errors: true
 
+- name: Set safe variables for check mode
+  ansible.builtin.set_fact:
+    installed_workbench_general_version:
+      stdout: "0.0.0"
+    rstudio_service_exists: true # Assume service exists in check mode
+  when: ansible_check_mode
+
 - name: Install Workbench
-  when: "'services' not in ansible_facts or ('services' in ansible_facts and 'rstudio-server.service' not in ansible_facts.services or installed_workbench_general_version.stdout.split()[0] != (workbench_general_version | replace('-', '+')))"
+  when:
+    - not ansible_check_mode
+    - ('services' not in ansible_facts or ('services' in ansible_facts and 'rstudio-server.service' not in ansible_facts.services or installed_workbench_general_version.stdout.split()[0] != (workbench_general_version | replace('-', '+'))))"
   block:
     - name: Define environment facts for Workbench download
       ansible.builtin.set_fact:
