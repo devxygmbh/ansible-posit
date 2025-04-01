@@ -19,7 +19,7 @@
 - name: Install Workbench
   when:
     - not ansible_check_mode
-    - ('services' not in ansible_facts or ('services' in ansible_facts and 'rstudio-server.service' not in ansible_facts.services or installed_workbench_general_version.stdout.split()[0] != (workbench_general_version | replace('-', '+'))))"
+    - "'services' not in ansible_facts or ('services' in ansible_facts and 'rstudio-server.service' not in ansible_facts.services or installed_workbench_general_version.stdout.split()[0] != (workbench_general_version | replace('-', '+')))"
   block:
     - name: Define environment facts for Workbench download
       ansible.builtin.set_fact:
