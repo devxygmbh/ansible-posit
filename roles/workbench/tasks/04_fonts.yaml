@@ -1,5 +1,7 @@
 - name: Configure fonts
-  when: workbench_fonts_install_custom_fonts | bool
+  when:
+    - not ansible_check_mode
+    - workbench_fonts_install_custom_fonts | bool
   block:
     - name: Download JetBrains Mono font
       ansible.builtin.get_url:

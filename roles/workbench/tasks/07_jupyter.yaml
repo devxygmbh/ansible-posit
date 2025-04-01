@@ -2,7 +2,7 @@
   ansible.builtin.package_facts:
     manager: auto
 
-- name: "[Jupyter]  Install python3 development package"
+- name: "[Jupyter] Install python3 development package"
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
@@ -32,6 +32,7 @@
       jupyter_scheduler{{ workbench_jupyter_jupyter_scheduler_version }}
 
 - name: "Install Jupyter packages from requirements file"
+  when: not ansible_check_mode
   ansible.builtin.pip:
     requirements: "/tmp/jupyter_requirements.txt"
     executable: /usr/bin/pip3
