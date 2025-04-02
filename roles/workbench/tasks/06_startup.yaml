@@ -1,3 +1,12 @@
+- name: Install required pip packages
+  delegate_to: localhost
+  ansible.builtin.pip:
+    name: "passlib"
+    state: present
+    break_system_packages: true
+  check_mode: false
+  when: workbench_general_local_test_user_create | bool
+
 - name: Create local test user
   ansible.builtin.user:
     name: "{{ workbench_general_local_test_user_name }}"
