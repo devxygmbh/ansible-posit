@@ -2,7 +2,7 @@ galaxy_info:
   author: Patrick Schratz
   description: "Installs Posit Workbench <https://posit.co/>"
   company: devXY GmbH
-  issue_tracker_url: https://gitlab.com/devxy/ansible/posit/issues
+  issue_tracker_url: https://codefloe.com/devxy/ansible-posit/issues
 
   license: AGPL-3.0-or-later
 

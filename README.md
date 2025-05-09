@@ -1,6 +1,6 @@
 # Ansible Collection "Posit"
 
-[![status-badge](https://ci.gitlab.devxy.io/api/badges/36/status.svg)](https://ci.gitlab.devxy.io/repos/36)
+[![status-badge](https://ci.codefloe.com/api/badges/109/status.svg)](https://ci.codefloe.com/repos/109)
 
 Collection to install Posit PBC software.
 
@@ -16,7 +16,8 @@ ansible-galaxy collection install devxy.posit
 
 Refer to the `README.md` files within each individual role:
 
-- [workbench](https://gitlab.com/devxy/ansible/posit/-/blob/main/roles/workbench/README.md)
+- [workbench](https://codefloe.com/devxy/ansible-posit/src/branch/main/roles/workbench/README.md)
+- [db_drivers](https://codefloe.com/devxy/ansible-posit/src/branch/main/roles/db_drivers/README.md)
 
 ## Testing
 
