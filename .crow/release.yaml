@@ -18,6 +18,8 @@ steps:
     image: alpine/ansible:2.18.1
     commands:
       - apk add py3-distlib
+      # replace version in galaxy.yml
+      - "sed -i 's/version: .*/version: ${CI_COMMIT_TAG#v}/' galaxy.yml"
       - ansible-galaxy collection build
       - export tarball=$(ls | grep devxy-)
       - ansible-galaxy collection install $tarball
@@ -45,3 +47,15 @@ steps:
       title: ${CI_COMMIT_TAG}
     when:
       event: tag
+
+  "Push changes to repo":
+    image: docker.io/appleboy/drone-git-push:1.1.1
+    settings:
+      remote: ssh://{$CI_REPO_CLONE_SSH_URL}
+      branch: main
+      commit: true
+      ssh_key:
+        from_secret: devxy_bot_ssh_key
+      commit_message: "[skip ci] Update galaxy.yml after release"
+    when:
+      - event: tag
