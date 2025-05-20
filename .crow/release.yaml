@@ -51,11 +51,13 @@ steps:
   "Push changes to repo":
     image: docker.io/appleboy/drone-git-push:1.1.1
     settings:
-      remote: ssh://{$CI_REPO_CLONE_SSH_URL}
+      remote: ${CI_REPO_CLONE_SSH_URL}
       branch: main
       commit: true
       ssh_key:
         from_secret: devxy_bot_ssh_key
       commit_message: "[skip ci] Update galaxy.yml after release"
+      commit_author: devxy-bot
+      commit_author_email: no-reply@devxy.io
     when:
       - event: tag
