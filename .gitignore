@@ -69,3 +69,5 @@ roles/geerlingguy*
 roles/nginx*
 node_modules/
 .ansible/
+CHANGELOG.md
+*.tar.gz
