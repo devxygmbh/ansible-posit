@@ -7,7 +7,7 @@ matrix:
 
 steps:
   - name: "Test devxy.posit.workbench"
-    image: library/docker:28.2.1-dind-alpine3.21
+    image: library/docker:28.2.2-dind-alpine3.21
     privileged: true
     environment:
       # force output of ANSI colors
