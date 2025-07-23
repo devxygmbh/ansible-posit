@@ -16,9 +16,12 @@ steps:
     image: docker.io/thegeeklab/git-sv:2.0.3
     commands: |
       apk add -q --no-cache curl jq sed
+
       git sv rn -o changelog.md
+
       export RELEASE_NOTES=$(cat changelog.md)
-      export ISSUE_NUMBER=$(curl -s "${CI_FORGE_URL}/api/v1/repos/${CI_REPO}/issues?state=open&q=Changelog%20for%20upcoming%20version" | jq '.[].number')
+      export ISSUE_NUMBER=$(curl -s "${CI_FORGE_URL}/api/v1/repos/${CI_REPO}/issues?state=open&q=Changelog%20for%20upcoming%20version" \
+      | jq '[.[] | select(.title == "Changelog for upcoming version")]' | jq '.[0].number // empty')
 
       echo $RELEASE_NOTES
 
