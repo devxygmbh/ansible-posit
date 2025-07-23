@@ -50,7 +50,7 @@ start SERVER:
     hcloud server poweron {{SERVER}}
 
 ansible-doctor:
-    fish -c 'source ~/venv/ansible-posit/bin/activate.fish; ansible-doctor --version; ansible-doctor roles -r -f'
+    fish -c 'source ~/venv/ansible-posit/bin/activate.fish; ansible-doctor --version; ansible-doctor roles -r -f; prettier -w .'
 
 galaxy-publish:
     ansible-galaxy collection build && \
