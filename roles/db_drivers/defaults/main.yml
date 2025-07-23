@@ -1,6 +1,6 @@
 # defaults file for db-drivers
 
-db_drivers_version: 2024.03.0
+db_drivers_version: 2025.03.0
 
 extra_odbcinst_entries: ""
 
