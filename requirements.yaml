@@ -2,7 +2,7 @@ collections:
   - name: devxy.data_science_core
     version: 1.0.4
   - name: community.crypto
-    version: 2.26.3
+    version: 2.26.4
 roles:
   - name: nginxinc.nginx
     version: 0.25.0
