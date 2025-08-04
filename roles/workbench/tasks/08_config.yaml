@@ -132,6 +132,6 @@
 - name: "[Config] [RedHat] Enable oddjob systemd for SCIM user provisioning"
   when: ansible_os_family == 'RedHat' and workbench_server_user_provisioning_enabled == 1
   ansible.builtin.systemd_service:
-    state: restarted
+    state: started
     daemon_reload: true
     name: oddjobd
