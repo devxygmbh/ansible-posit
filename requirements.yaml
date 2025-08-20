@@ -9,4 +9,4 @@ roles:
   - name: nginxinc.nginx_config
     version: 0.7.1
   - name: geerlingguy.certbot
-    version: 5.4.0
+    version: 5.4.1
