@@ -11,7 +11,7 @@
 - name: Install passlib on Alpine using apk
   delegate_to: localhost
   become: true
-  ansible.builtin.apk:
+  community.general.apk:
     name: py3-passlib
     state: present
   check_mode: false
