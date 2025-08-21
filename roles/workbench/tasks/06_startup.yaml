@@ -1,11 +1,56 @@
-- name: Install required pip packages
+# passlib is required for password_hash() - runs on Ansible controller
+- name: Check if running on Alpine Linux
   delegate_to: localhost
+  become: false
+  ansible.builtin.stat:
+    path: /etc/alpine-release
+  register: alpine_check
+  when: workbench_general_local_test_user_create | bool
+  run_once: true
+
+- name: Install passlib on Alpine using apk
+  delegate_to: localhost
+  become: true
+  ansible.builtin.apk:
+    name: py3-passlib
+    state: present
+  check_mode: false
+  changed_when: false
+  when:
+    - workbench_general_local_test_user_create | bool
+    - alpine_check.stat.exists | default(false)
+  run_once: true
+
+- name: Install passlib using pip on non-Alpine systems
+  delegate_to: localhost
+  become: false
   ansible.builtin.pip:
     name: "passlib"
     state: present
-    break_system_packages: true
+    extra_args: "--user --break-system-packages" # break-system-packages for PEP 668
   check_mode: false
-  when: workbench_general_local_test_user_create | bool
+  changed_when: false
+  failed_when: false # Don't fail if already installed
+  register: pip_install
+  when:
+    - workbench_general_local_test_user_create | bool
+    - not (alpine_check.stat.exists | default(false))
+  run_once: true
+
+- name: Fallback - Try system pip with break-system-packages if user install failed
+  delegate_to: localhost
+  become: true
+  ansible.builtin.pip:
+    name: "passlib"
+    state: present
+    extra_args: "--break-system-packages"
+  check_mode: false
+  changed_when: false
+  when:
+    - workbench_general_local_test_user_create | bool
+    - not (alpine_check.stat.exists | default(false))
+    - pip_install is failed
+  run_once: true
 
 - name: Create local test user
   ansible.builtin.user:
