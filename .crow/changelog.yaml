@@ -1,6 +1,6 @@
 clone:
   git:
-    image: docker.io/thegeeklab/wp-git-clone:1.0.21
+    image: codeberg.org/crow-plugins/clone:1.0.1
     settings:
       tags: true
 
@@ -9,19 +9,16 @@ when:
   branch: ${CI_REPO_DEFAULT_BRANCH}
 
 steps:
-  - name: "Upcoming Changelog"
+  - name: 'Upcoming Changelog'
     environment:
       ISSUE_TOKEN:
         from_secret: codefloe_issue_rw_token_devxy_bot
     image: docker.io/thegeeklab/git-sv:2.0.4
     commands: |
       apk add -q --no-cache curl jq sed
-
       git sv rn -o changelog.md
-
       export RELEASE_NOTES=$(cat changelog.md)
-      export ISSUE_NUMBER=$(curl -s "${CI_FORGE_URL}/api/v1/repos/${CI_REPO}/issues?state=open&q=Changelog%20for%20upcoming%20version" \
-      | jq '[.[] | select(.title == "Changelog for upcoming version")]' | jq '.[0].number // empty')
+      export ISSUE_NUMBER=$(curl -s "${CI_FORGE_URL}/api/v1/repos/${CI_REPO}/issues?state=open&q=Changelog%20for%20upcoming%20version" | jq '.[].number')
 
       echo $RELEASE_NOTES
 
