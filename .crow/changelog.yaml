@@ -9,11 +9,11 @@ when:
   branch: ${CI_REPO_DEFAULT_BRANCH}
 
 steps:
-  - name: 'Upcoming Changelog'
+  - name: "Upcoming Changelog"
     environment:
       ISSUE_TOKEN:
         from_secret: codefloe_issue_rw_token_devxy_bot
-    image: docker.io/thegeeklab/git-sv:2.0.4
+    image: reg.devxy.io/proxy_cache/thegeeklab/git-sv:2.0.4
     commands: |
       apk add -q --no-cache curl jq sed
       git sv rn -o changelog.md
