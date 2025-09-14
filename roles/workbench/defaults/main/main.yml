@@ -1,7 +1,7 @@
 ## General
 # @var workbench_general_version:type: string
 # @var workbench_general_version:description: Workbench version
-workbench_general_version: "2025.05.1-513.pro3"
+workbench_general_version: "2025.09.0-387.pro2"
 # @var workbench_general_local_test_user_create:type: boolean
 # @var workbench_general_local_test_user_create:description: Whether to create a local (test) user
 workbench_general_local_test_user_create: false
