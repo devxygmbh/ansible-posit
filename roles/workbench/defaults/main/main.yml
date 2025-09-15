@@ -46,6 +46,9 @@ workbench_server_server_load_balancing_enabled: 0
 # @var workbench_server_server_versions_scan:type: integer
 # @var workbench_server_server_versions_scan:description: Server versions scan
 workbench_server_server_versions_scan: 0
+# @var workbench_server_server_product_check:type: integer
+# @var workbench_server_server_product_check:description: Server versions scan
+workbench_server_server_product_check: 0
 
 # @var workbench_server_launcher_address:type: string
 # @var workbench_server_launcher_address:description: Launcher address
