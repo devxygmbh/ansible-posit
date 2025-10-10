@@ -166,6 +166,9 @@ workbench_server_monitor_audit_r_console: none
 # @var workbench_server_monitor_shared_storage_path:type: string
 # @var workbench_server_monitor_shared_storage_path:description: Monitor shared storage path
 workbench_server_monitor_shared_storage_path: /var/lib/rstudio-server/shared-storage
+# @var workbench_server_monitor_shared_storage_path:type: string
+# @var workbench_server_monitor_shared_storage_path:description: Whether rrd-based monitoring is enabled
+workbench_server_monitor_rrd_enabled: 1
 
 # @var workbench_metrics_enabled:type: integer
 # @var workbench_metrics_enabled:description: Metrics enabled
