@@ -7,6 +7,8 @@ Installs Posit Professional Drivers <https://posit.co/>
 - [Requirements](#requirements)
 - [Default Variables](#default-variables)
   - [db_drivers_version](#db_drivers_version)
+  - [extra_odbcinst_entries](#extra_odbcinst_entries)
+  - [odbc_ini](#odbc_ini)
 - [Dependencies](#dependencies)
 - [License](#license)
 - [Author](#author)
@@ -24,7 +26,23 @@ Installs Posit Professional Drivers <https://posit.co/>
 #### Default value
 
 ```YAML
-db_drivers_version: 2024.03.0
+db_drivers_version: 2025.03.0
+```
+
+### extra_odbcinst_entries
+
+#### Default value
+
+```YAML
+extra_odbcinst_entries: ''
+```
+
+### odbc_ini
+
+#### Default value
+
+```YAML
+odbc_ini: ''
 ```
 
 ## Dependencies
