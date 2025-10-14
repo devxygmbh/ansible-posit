@@ -74,6 +74,9 @@ workbench_server_launcher_verify_ssl_certs: 1
 # @var workbench_server_launcher_session_callback_verify_ssl_certs:type: integer
 # @var workbench_server_launcher_session_callback_verify_ssl_certs:description: Launcher session callback verify SSL certificates
 workbench_server_launcher_session_callback_verify_ssl_certs: 1
+# @var workbench_server_launcher_enable_cgroups:type: integer
+# @var workbench_server_launcher_enable_cgroups:description: Enables/disables cgroups for local launcher resource limits
+workbench_server_launcher_enable_cgroups: 0
 
 # @var workbench_server_www_thread_pool_size:type: integer
 # @var workbench_server_www_thread_pool_size:description: WWW thread pool size
