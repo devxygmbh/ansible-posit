@@ -6,7 +6,7 @@
 
 - Creation of localhost SSL certificates for secure launcher communication (via `mkcert`)
 - Automatic encoding of secrets
-- Idempotent creation of `secure-cookie-key`
+- Idempotent creation of `secure-cookie-key` and `session-rpc-key`
 - Smart restarts on configuration file changes
 
 ## Outbound Connectivity
