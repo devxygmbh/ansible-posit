@@ -26,7 +26,7 @@ steps:
       - ansible-galaxy collection publish --token $GALAXY_TOKEN $tarball
 
   changelog:
-    image: reg.devxy.io/docker.io/thegeeklab/git-sv:2.0.8
+    image: reg.devxy.io/docker.io/thegeeklab/git-sv:2.0.9
     commands:
       - apk add --no-cache -q sed
       - git sv current-version
