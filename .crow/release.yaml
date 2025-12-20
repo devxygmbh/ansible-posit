@@ -15,7 +15,7 @@ steps:
     environment:
       GALAXY_TOKEN:
         from_secret: GALAXY_TOKEN
-    image: alpine/ansible:2.18.6
+    image: alpine/ansible:2.20.0
     commands:
       - apk add py3-distlib
       # replace version in galaxy.yml
