@@ -12,9 +12,9 @@
 
 - name: Enable appropriate repository for RedHat 8 or 9
   community.general.dnf_config_manager:
-    name: "{{ 'crb' if ansible_distribution_major_version | int == 9 else 'powertools' }}"
+    name: "{{ 'crb' if ansible_facts['distribution_major_version'] | int == 9 else 'powertools' }}"
     state: enabled
-  when: ansible_distribution_major_version | int in [8, 9] and ansible_facts['os_family'] == 'RedHat'
+  when: ansible_facts['distribution_major_version'] | int in [8, 9] and ansible_facts['os_family'] == 'RedHat'
 
 - name: Install EPEL
   when: ansible_facts['os_family'] == 'RedHat'

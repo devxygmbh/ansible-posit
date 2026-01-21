@@ -94,13 +94,13 @@
     - Restart rstudio-server service
 
 - name: "[Config] [RedHat] Create /etc/authselect/custom/pwb for SCIM user provisioning"
-  when: ansible_os_family == 'RedHat' and workbench_server_user_provisioning_enabled == 1
+  when: ansible_facts['os_family'] == 'RedHat' and workbench_server_user_provisioning_enabled == 1
   ansible.builtin.command:
     cmd: authselect create-profile pwb --base-on=minimal
     creates: /etc/authselect/custom/pwb
 
 - name: "[Config] [RedHat] Alter nsswitch.conf for SCIM user provisioning"
-  when: ansible_os_family == 'RedHat' and workbench_server_user_provisioning_enabled == 1
+  when: ansible_facts['os_family'] == 'RedHat' and workbench_server_user_provisioning_enabled == 1
   ansible.builtin.lineinfile:
     path: /etc/authselect/custom/pwb/nsswitch.conf
     regexp: "{{ item.search }}"
@@ -120,17 +120,17 @@
       }
 
 - name: "[Config] [RedHat] Enable custom nss profile"
-  when: ansible_os_family == 'RedHat' and workbench_server_user_provisioning_enabled == 1
+  when: ansible_facts['os_family'] == 'RedHat' and workbench_server_user_provisioning_enabled == 1
   ansible.builtin.command: authselect select --force custom/pwb with-mkhomedir
 
 - name: "[Config] [RedHat] Ensure oddjob-mkhomedir is installed"
-  when: ansible_os_family == 'RedHat' and workbench_server_user_provisioning_enabled == 1
+  when: ansible_facts['os_family'] == 'RedHat' and workbench_server_user_provisioning_enabled == 1
   ansible.builtin.dnf:
     name: oddjob-mkhomedir
     state: present
 
 - name: "[Config] [RedHat] Enable oddjob systemd for SCIM user provisioning"
-  when: ansible_os_family == 'RedHat' and workbench_server_user_provisioning_enabled == 1
+  when: ansible_facts['os_family'] == 'RedHat' and workbench_server_user_provisioning_enabled == 1
   ansible.builtin.systemd_service:
     state: started
     daemon_reload: true

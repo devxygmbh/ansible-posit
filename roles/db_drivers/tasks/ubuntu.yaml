@@ -11,5 +11,5 @@
   loop:
     - unixodbc
     - unixodbc-dev
-    - "{{ 'libaio1t64' if ansible_distribution_version is version('21.04', '>=') else 'libaio1' }}"
+    - "{{ 'libaio1t64' if ansible_facts['distribution_version'] is version('21.04', '>=') else 'libaio1' }}"
     - libsasl2-dev

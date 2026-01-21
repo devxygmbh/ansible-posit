@@ -9,10 +9,12 @@ skip_list:
   - galaxy[no-changelog]
   - schema[meta-runtime]
   - yaml[empty-lines]
+  - args[module]  # Experimental rule with false positives for community.crypto modules
 
 # otherwise ansible-lint scans the roles/collections from requirements.yml
 exclude_paths:
   - ansible_collections/
+  - extensions/molecule/  # Molecule playbooks depend on external collection roles
   - tasks/
   - roles/nginxinc.nginx_config/
   - roles/nginxinc.nginx/

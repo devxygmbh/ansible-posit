@@ -2,7 +2,7 @@
 
 Installs Posit Professional Drivers <https://posit.co/>
 
-## Table of content
+## Table of contents
 
 - [Requirements](#requirements)
 - [Default Variables](#default-variables)

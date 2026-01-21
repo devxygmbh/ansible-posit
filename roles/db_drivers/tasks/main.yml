@@ -9,7 +9,7 @@
   ansible.builtin.import_tasks: redhat.yaml
 
 - name: Execute Ubuntu tasks
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_facts['distribution'] == 'Ubuntu'
   ansible.builtin.import_tasks: ubuntu.yaml
 
 - name: Check if directory is empty
