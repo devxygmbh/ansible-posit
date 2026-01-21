@@ -6,11 +6,11 @@ when:
 
 steps:
   - name: editorconfig
-    image: reg.devxy.io/docker.io/mstruebing/editorconfig-checker:v3.6.0
+    image: cr.codefloe.com/docker.io/mstruebing/editorconfig-checker:v3.6.0
     depends_on: []
 
   - name: prettier
-    image: reg.devxy.io/docker.io/woodpeckerci/plugin-prettier:1.4.1
+    image: cr.codefloe.com/docker.io/woodpeckerci/plugin-prettier:1.4.1
     pull: true
     depends_on: []
     settings:
@@ -22,6 +22,6 @@ steps:
     when:
       - event: pull_request
       - event: pull_request_edited
-    image: reg.devxy.io/docker.io/commitlint/commitlint:20.3.1
+    image: cr.codefloe.com/docker.io/commitlint/commitlint:20.3.1
     commands:
       - echo $${CI_COMMIT_PULL_REQUEST_TITLE} | commitlint
