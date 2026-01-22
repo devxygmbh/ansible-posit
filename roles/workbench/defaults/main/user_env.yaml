@@ -1,0 +1,4 @@
+# User environment configuration defaults
+
+# @var workbench_user_env_enabled:description: Enable user environment configuration (SSH agent, PATH, GPG_TTY)
+workbench_user_env_enabled: true
