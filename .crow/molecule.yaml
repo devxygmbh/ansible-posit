@@ -7,7 +7,7 @@ matrix:
 
 steps:
   - name: "Test devxy.posit.workbench"
-    image: cr.codefloe.com/docker.io/library/docker:28-dind
+    image: cr.codefloe.com/docker.io/library/docker:29-dind
     privileged: true
     environment:
       # force output of ANSI colors
