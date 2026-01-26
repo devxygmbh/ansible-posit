@@ -107,7 +107,7 @@
     line: "{{ item.replace }}"
   loop:
     - {
-        search: 'passwd:     files {if "with-altfiles":altfiles }systemd',
+        search: 'passwd:     files \{if "with-altfiles":altfiles \}systemd',
         replace: 'passwd:     pwb files {if "with-altfiles":altfiles }systemd {exclude if "with-custom-passwd"}',
       }
     - {
@@ -115,8 +115,8 @@
         replace: 'shadow:     pwb files                                       {exclude if "with-custom-shadow"}',
       }
     - {
-        search: 'group:      files {if "with-altfiles":altfiles }systemd',
-        replace: 'group:      files {if "with-altfiles":altfiles }systemd pwb {exclude if "with-custom-group"}',
+        search: 'group:      files \{if "with-altfiles":altfiles \}systemd',
+        replace: 'group:      pwb files {if "with-altfiles":altfiles }systemd {exclude if "with-custom-group"}',
       }
 
 - name: "[Config] [RedHat] Enable custom nss profile"
