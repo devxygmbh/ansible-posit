@@ -37,7 +37,7 @@ steps:
       event: tag
 
   "Create release":
-    image: cr.codefloe.com/docker.io/woodpeckerci/plugin-release:0.2.6
+    image: cr.codefloe.com/docker.io/woodpeckerci/plugin-release:0.3.0
     settings:
       note: CHANGELOG.md
       api_key:
