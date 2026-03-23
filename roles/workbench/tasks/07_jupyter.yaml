@@ -41,7 +41,9 @@
   changed_when: false
 
 - name: "Build pip extra args"
-  when: workbench_jupyter_install_packages | bool
+  when:
+    - workbench_jupyter_install_packages | bool
+    - not ansible_check_mode
   vars:
     pip_version: "{{ pip_version_output.stdout | regex_search('pip ([0-9.]+)', '\\1') | first }}"
     pip_supports_break_system_packages: "{{ pip_version is version('23.0.1', '>=') }}"
