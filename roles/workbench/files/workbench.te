@@ -450,9 +450,12 @@ allow workbench_domain { default_t unlabeled_t }:file manage_file_perms;
 allow workbench_domain { default_t unlabeled_t }:lnk_file manage_lnk_file_perms;
 allow workbench_domain { default_t unlabeled_t }:sock_file manage_sock_file_perms;
 
-# Allow monitor to scan /proc entries for any process (it reads /proc/<pid>/stat for all PIDs)
+# Allow server and worker to scan /proc entries for any process
+# Server reads /proc/<pid>/stat for monitoring; worker (rsession) scans /proc for session management
 allow workbench_server_t domain:dir search_dir_perms;
 allow workbench_server_t domain:file read_file_perms;
+allow workbench_worker_t domain:dir search_dir_perms;
+allow workbench_worker_t domain:file read_file_perms;
 
 # Allow worker (kallichore/kcserver) to read /proc/<pid>/task for kernel threads
 allow workbench_worker_t kernel_t:dir list_dir_perms;
