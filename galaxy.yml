@@ -42,7 +42,7 @@ issues: https://codefloe.com/devxy/ansible-posit/issues
 # with 'build_ignore'
 manifest:
   directives:
-    - recursive-include roles **.yml **.yaml **.json **.j2 README.md
+    - recursive-include roles **.yml **.yaml **.json **.j2 **.te **.if **.fc README.md
     - recursive-exclude ansible_collections/ **
     - recursive-exclude ansibledoctor/ **
     - recursive-exclude .woodpecker/ **
