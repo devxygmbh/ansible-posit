@@ -39,7 +39,7 @@
 
 - name: Fallback - Try system pip with break-system-packages if user install failed
   delegate_to: localhost
-  become: true
+  become: false
   ansible.builtin.pip:
     name: "passlib"
     state: present
