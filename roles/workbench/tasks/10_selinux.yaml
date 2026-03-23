@@ -21,6 +21,11 @@
   changed_when: semodule_remove_old.rc == 0
   failed_when: false
 
+- name: "[SELinux] Clean policy build directory"
+  ansible.builtin.file:
+    path: /tmp/workbench-selinux
+    state: absent
+
 - name: "[SELinux] Create policy build directory"
   ansible.builtin.file:
     path: /tmp/workbench-selinux
