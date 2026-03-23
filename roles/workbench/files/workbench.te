@@ -465,7 +465,7 @@ allow workbench_worker_t initrc_tmp_t:dir manage_dir_perms;
 allow workbench_worker_t initrc_tmp_t:file manage_file_perms;
 
 # Allow worker to stat ssh-agent binary (referenced in profile.d scripts)
-allow workbench_worker_t ssh_agent_exec_t:file { getattr read execute open };
+allow workbench_worker_t ssh_agent_exec_t:file { getattr read execute execute_no_trans open };
 
 # Allow rsession to read /dev/log symlink for syslog
 allow workbench_worker_t devlog_t:lnk_file read_lnk_file_perms;
