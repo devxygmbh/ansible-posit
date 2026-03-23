@@ -88,6 +88,9 @@ require {
   type sysctl_fs_t;
   type default_t;
   type kernel_t;
+  type initrc_tmp_t;
+  type ssh_agent_exec_t;
+  type devlog_t;
   attribute can_change_process_identity;
   attribute can_change_process_role;
   role sysadm_r;
@@ -453,6 +456,17 @@ allow workbench_server_t domain:file read_file_perms;
 
 # Allow worker (kallichore/kcserver) to read /proc/<pid>/task for kernel threads
 allow workbench_worker_t kernel_t:dir list_dir_perms;
+
+# Allow worker to access /tmp/pwb-* dirs labeled initrc_tmp_t (created before policy was applied)
+allow workbench_worker_t initrc_tmp_t:dir manage_dir_perms;
+allow workbench_worker_t initrc_tmp_t:file manage_file_perms;
+
+# Allow worker to stat ssh-agent binary (referenced in profile.d scripts)
+allow workbench_worker_t ssh_agent_exec_t:file { getattr read execute open };
+
+# Allow rsession to read /dev/log symlink for syslog
+allow workbench_worker_t devlog_t:lnk_file read_lnk_file_perms;
+allow workbench_worker_t devlog_t:sock_file write;
 
 # Silence non-essential audit noise
 dontaudit workbench_server_t workbench_domain:process { noatsecure };
