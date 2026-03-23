@@ -444,7 +444,7 @@ allow workbench_server_t domain:dir search_dir_perms;
 allow workbench_server_t domain:file read_file_perms;
 
 # Allow worker (kallichore/kcserver) to read /proc/<pid>/task for kernel threads
-allow workbench_worker_t kernel_t:dir read_dir_perms;
+allow workbench_worker_t kernel_t:dir list_dir_perms;
 
 # Silence non-essential audit noise
 dontaudit workbench_server_t workbench_domain:process { noatsecure };
