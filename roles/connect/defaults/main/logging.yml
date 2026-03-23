@@ -1,0 +1,24 @@
+## Logging Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#Logging
+
+# @var connect_logging_service_log:type: string
+# @var connect_logging_service_log:description: Path to service log file
+connect_logging_service_log: /var/log/rstudio/rstudio-connect/rstudio-connect.log
+# @var connect_logging_service_log_level:type: string
+# @var connect_logging_service_log_level:description: Service log level (DEBUG, INFO, WARNING, ERROR)
+connect_logging_service_log_level: INFO
+# @var connect_logging_service_log_format:type: string
+# @var connect_logging_service_log_format:description: Service log format (TEXT or JSON)
+connect_logging_service_log_format: TEXT
+# @var connect_logging_access_log:type: string
+# @var connect_logging_access_log:description: Path to access log file
+connect_logging_access_log: /var/log/rstudio/rstudio-connect/rstudio-connect.access.log
+# @var connect_logging_access_log_format:type: string
+# @var connect_logging_access_log_format:description: Access log format (COMMON, COMBINED, or JSON)
+connect_logging_access_log_format: COMMON
+# @var connect_logging_audit_log:type: string
+# @var connect_logging_audit_log:description: Path to audit log file
+connect_logging_audit_log: ""
+# @var connect_logging_audit_log_format:type: string
+# @var connect_logging_audit_log_format:description: Audit log format (JSON)
+connect_logging_audit_log_format: JSON

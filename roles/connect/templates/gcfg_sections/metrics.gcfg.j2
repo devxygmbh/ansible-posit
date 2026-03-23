@@ -1,0 +1,21 @@
+[Metrics]
+Enabled = {{ connect_metrics_enabled | lower }}
+{% if connect_metrics_data_path %}
+DataPath = {{ connect_metrics_data_path }}
+{% endif %}
+Interval = {{ connect_metrics_interval }}
+RRDEnabled = {{ connect_metrics_rrd_enabled | lower }}
+GraphiteEnabled = {{ connect_metrics_graphite_enabled | lower }}
+{% if connect_metrics_graphite_enabled %}
+{% if connect_metrics_graphite_host %}
+GraphiteHost = {{ connect_metrics_graphite_host }}
+{% endif %}
+GraphitePort = {{ connect_metrics_graphite_port }}
+{% if connect_metrics_graphite_client_id %}
+GraphiteClientId = {{ connect_metrics_graphite_client_id }}
+{% endif %}
+{% endif %}
+Instrumentation = {{ connect_metrics_instrumentation | lower }}
+{% if connect_metrics_prometheus_listen %}
+PrometheusListen = {{ connect_metrics_prometheus_listen }}
+{% endif %}

@@ -1,0 +1,8 @@
+# handlers file for connect
+
+- name: Restart rstudio-connect service # noqa: ignore-errors
+  ansible.builtin.service:
+    name: rstudio-connect
+    state: restarted
+    enabled: true
+  ignore_errors: true

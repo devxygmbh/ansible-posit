@@ -1,0 +1,53 @@
+### MANAGED BY ANSIBLE ###
+# This file is managed by Ansible. Any changes made directly to this file will be lost.
+# Please make any changes to the appropriate Ansible variables.
+# https://docs.posit.co/ide/server-pro/admin/job_launcher/slurm_plugin.html
+
+# Slurm service user (required) - must have cluster-admin privileges
+slurm-service-user={{ workbench_launcher_slurm_service_user }}
+
+# Job management
+job-expiry-hours={{ workbench_launcher_slurm_job_expiry_hours }}
+user-storage-path={{ workbench_launcher_slurm_user_storage_path }}
+max-output-stream-seconds={{ workbench_launcher_slurm_max_output_stream_seconds }}
+max-output-file-wait-seconds={{ workbench_launcher_slurm_max_output_file_wait_seconds }}
+
+# Slurm binaries path (leave empty for default PATH)
+{% if workbench_launcher_slurm_bin_path | length > 0 %}
+slurm-bin-path={{ workbench_launcher_slurm_bin_path }}
+{% endif %}
+
+# Execution settings
+rsandbox-path={{ workbench_launcher_slurm_rsandbox_path }}
+unprivileged={{ workbench_launcher_slurm_unprivileged }}
+allow-requeue={{ workbench_launcher_slurm_allow_requeue }}
+persist-env-vars={{ workbench_launcher_slurm_persist_env_vars }}
+
+# GPU settings
+enable-gpus={{ workbench_launcher_slurm_enable_gpus }}
+enable-gres={{ workbench_launcher_slurm_enable_gres }}
+{% if workbench_launcher_slurm_gpu_types | length > 0 %}
+gpu-types={{ workbench_launcher_slurm_gpu_types }}
+{% endif %}
+{% if workbench_launcher_slurm_default_gpu_brand | length > 0 %}
+default-gpu-brand={{ workbench_launcher_slurm_default_gpu_brand }}
+{% endif %}
+
+# Singularity/Apptainer support
+{% if workbench_launcher_slurm_singularity_image_directory | length > 0 %}
+singularity-image-directory={{ workbench_launcher_slurm_singularity_image_directory }}
+{% endif %}
+
+# Profile configuration
+profile-config={{ workbench_launcher_slurm_profile_config }}
+
+# Server settings
+server-user={{ workbench_launcher_slurm_server_user }}
+{% if workbench_launcher_slurm_thread_pool_size > 0 %}
+thread-pool-size={{ workbench_launcher_slurm_thread_pool_size }}
+{% endif %}
+
+# Logging and debugging
+enable-debug-logging={{ workbench_launcher_slurm_enable_debug_logging }}
+scratch-path={{ workbench_launcher_slurm_scratch_path }}
+logging-dir={{ workbench_launcher_slurm_logging_dir }}

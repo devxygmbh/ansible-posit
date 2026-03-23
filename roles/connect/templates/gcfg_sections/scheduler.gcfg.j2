@@ -1,0 +1,28 @@
+[Scheduler]
+MaxProcesses = {{ connect_scheduler_max_processes }}
+MaxConnsPerProcess = {{ connect_scheduler_max_conns_per_process }}
+LoadFactor = {{ connect_scheduler_load_factor }}
+InitTimeout = {{ connect_scheduler_init_timeout }}
+IdleTimeout = {{ connect_scheduler_idle_timeout }}
+MinProcessesLimit = {{ connect_scheduler_min_processes_limit }}
+MaxProcessesLimit = {{ connect_scheduler_max_processes_limit }}
+ConnectionTimeout = {{ connect_scheduler_connection_timeout }}
+ReadTimeout = {{ connect_scheduler_read_timeout }}
+{% if connect_scheduler_memory_request != "0" %}
+MemoryRequest = {{ connect_scheduler_memory_request }}
+{% endif %}
+{% if connect_scheduler_memory_limit != "0" %}
+MemoryLimit = {{ connect_scheduler_memory_limit }}
+{% endif %}
+{% if connect_scheduler_cpu_request != "0" %}
+CPURequest = {{ connect_scheduler_cpu_request }}
+{% endif %}
+{% if connect_scheduler_cpu_limit != "0" %}
+CPULimit = {{ connect_scheduler_cpu_limit }}
+{% endif %}
+{% if connect_scheduler_nvidia_gpu_limit > 0 %}
+NvidiaGPULimit = {{ connect_scheduler_nvidia_gpu_limit }}
+{% endif %}
+{% if connect_scheduler_amd_gpu_limit > 0 %}
+AMDGPULimit = {{ connect_scheduler_amd_gpu_limit }}
+{% endif %}

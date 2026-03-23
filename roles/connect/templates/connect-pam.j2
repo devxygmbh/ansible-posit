@@ -1,0 +1,33 @@
+# PAM configuration for Posit Connect
+# MANAGED BY ANSIBLE
+
+{% if connect_auth_provider in ['oauth2', 'saml'] %}
+# This allows root to authenticate without a password (required for PAM sessions with external auth)
+auth sufficient pam_rootok.so
+account sufficient pam_rootok.so
+{% endif %}
+{% if ansible_facts['os_family'] == 'RedHat' %}
+auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
+auth substack system-auth
+auth include postlogin
+account required pam_nologin.so
+account include system-auth
+password include system-auth
+session required pam_selinux.so close
+session optional pam_console.so
+session required pam_mkhomedir.so skel=/etc/skel umask=0077
+session required pam_selinux.so open
+session required pam_namespace.so
+session optional pam_keyinit.so force revoke
+session include system-auth
+session include postlogin
+-session optional pam_ck_connector.so
+{% else %}
+session    required   pam_env.so readenv=1
+session    required   pam_env.so readenv=1 envfile=/etc/default/locale
+session required pam_mkhomedir.so skel=/etc/skel umask=0077
+session    required   pam_limits.so
+@include common-auth
+@include common-account
+@include common-session
+{% endif %}

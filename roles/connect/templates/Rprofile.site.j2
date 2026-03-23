@@ -1,0 +1,9 @@
+# MANAGED BY ANSIBLE
+{% if connect_artifactory_enabled | bool and connect_artifactory_username | length > 0 %}
+local({
+  options(
+    download.file.method = "curl",
+    download.file.extra = "--netrc-file /etc/R/netrc"
+  )
+})
+{% endif %}

@@ -1,3 +1,6 @@
+# Install Posit Workbench from default sources (AWS S3)
+# This task file is used when workbench_artifactory_enabled is false (default)
+
 # the task is skipped in alma9 in docker, hence escaping is needed for dependent ones
 - name: Check if rstudio-server service exists
   ansible.builtin.service_facts:

@@ -1,4 +1,5 @@
 - name: "[Jupyter] Gather package facts"
+  when: workbench_jupyter_install_packages | bool
   ansible.builtin.package_facts:
     manager: auto
 
@@ -9,14 +10,16 @@
   loop:
     - "{{ 'python3-dev' if ansible_facts['os_family'] == 'Debian' else 'python3-devel' }}"
     - python3-pip
-  when: "item not in ansible_facts.packages"
+  when: "workbench_jupyter_install_packages | bool and item not in ansible_facts.packages"
 
 - name: "[Jupyter] Get installed pip packages with versions"
+  when: workbench_jupyter_install_packages | bool
   ansible.builtin.command: "/usr/bin/pip3 list --format=json"
   register: installed_packages
   changed_when: false
 
 - name: "Create requirements file for Jupyter packages"
+  when: workbench_jupyter_install_packages | bool
   ansible.builtin.copy:
     dest: "/tmp/jupyter_requirements.txt"
     mode: "0644"
@@ -31,11 +34,35 @@
       jupyter-resource-usage{{ workbench_jupyter_jupyter_resource_usage_version }}
       jupyter_scheduler{{ workbench_jupyter_jupyter_scheduler_version }}
 
+- name: "Get pip version"
+  when: workbench_jupyter_install_packages | bool
+  ansible.builtin.command: "/usr/bin/pip3 --version"
+  register: pip_version_output
+  changed_when: false
+
+- name: "Build pip extra args"
+  when: workbench_jupyter_install_packages | bool
+  vars:
+    pip_version: "{{ pip_version_output.stdout | regex_search('pip ([0-9.]+)', '\\1') | first }}"
+    pip_supports_break_system_packages: "{{ pip_version is version('23.0.1', '>=') }}"
+  ansible.builtin.set_fact:
+    jupyter_pip_extra_args: >-
+      {{ '--break-system-packages' if pip_supports_break_system_packages else '' }}
+      {{ '--index-url ' + workbench_jupyter_pip_index_url if workbench_jupyter_pip_index_url | length > 0 else '' }}
+      {{ '--trusted-host ' + workbench_jupyter_pip_trusted_host if workbench_jupyter_pip_trusted_host | length > 0 else '' }}
+
 - name: "Install Jupyter packages from requirements file"
-  when: not ansible_check_mode
+  when:
+    - workbench_jupyter_install_packages | bool
+    - not ansible_check_mode
   ansible.builtin.pip:
     requirements: "/tmp/jupyter_requirements.txt"
     executable: /usr/bin/pip3
     state: present
-    extra_args: "--break-system-packages"
+    extra_args: "{{ jupyter_pip_extra_args }}"
   notify: Restart rstudio-server service
+
+- name: "Skip Jupyter package installation"
+  when: not workbench_jupyter_install_packages | bool
+  ansible.builtin.debug:
+    msg: "Skipping Jupyter package installation - workbench_jupyter_install_packages is false"

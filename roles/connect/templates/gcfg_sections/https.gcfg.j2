@@ -1,0 +1,18 @@
+[HTTPS]
+{% if connect_https_listen %}
+Listen = {{ connect_https_listen }}
+{% endif %}
+{% if connect_https_unix_domain_socket %}
+UnixDomainSocket = {{ connect_https_unix_domain_socket }}
+{% endif %}
+{% if connect_https_key %}
+Key = {{ connect_https_key }}
+{% endif %}
+{% if connect_https_certificate %}
+Certificate = {{ connect_https_certificate }}
+{% endif %}
+MinimumTLS = {{ connect_https_minimum_tls }}
+Permanent = {{ connect_https_permanent | lower }}
+{% if connect_https_permanent %}
+StrictTransportSecurityMaxAge = {{ connect_https_strict_transport_security_max_age }}
+{% endif %}

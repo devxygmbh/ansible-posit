@@ -1,6 +1,6 @@
 - name: Create directory for Posit DB Drivers
   ansible.builtin.file:
-    path: "/opt/rstudio-drivers-{{ db_drivers_version }}"
+    path: "{{ db_drivers_install_dir }}/rstudio-drivers-{{ db_drivers_version }}"
     state: directory
     mode: "0775"
 
@@ -12,30 +12,15 @@
   when: ansible_facts['distribution'] == 'Ubuntu'
   ansible.builtin.import_tasks: ubuntu.yaml
 
-- name: Check if directory is empty
-  ansible.builtin.find:
-    paths: "/opt/rstudio-drivers-{{ db_drivers_version }}"
-  register: dir_content
+# Download from Artifactory when enabled
+- name: Import 01_download_artifactory.yaml
+  when: db_drivers_artifactory_enabled | bool
+  ansible.builtin.import_tasks: 01_download_artifactory.yaml
 
-- name: Download Posit DB Drivers
-  when: dir_content.files | length == 0
-  ansible.builtin.get_url:
-    url: "https://cdn.rstudio.com/drivers/7C152C12/installer/rstudio-drivers-{{ db_drivers_version }}.tar"
-    dest: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
-    mode: "0755"
-
-- name: Extract Posit DB Drivers
-  when: dir_content.files | length == 0 and not ansible_check_mode
-  ansible.builtin.unarchive:
-    src: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
-    dest: "/opt"
-    remote_src: true
-
-- name: Cleanup Posit DB Drivers tarball
-  when: dir_content.files | length == 0
-  ansible.builtin.file:
-    path: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
-    state: absent
+# Download from default source when Artifactory is disabled
+- name: Import 01_download_default.yaml
+  when: not db_drivers_artifactory_enabled | bool
+  ansible.builtin.import_tasks: 01_download_default.yaml
 
 - name: Check if odbcinst.ini exists
   ansible.builtin.stat:
@@ -52,7 +37,7 @@
 
 - name: Create odbcinst.ini from template
   ansible.builtin.copy:
-    src: "/opt/rstudio-drivers-{{ db_drivers_version }}/odbcinst.ini.sample"
+    src: "{{ db_drivers_install_dir }}/rstudio-drivers-{{ db_drivers_version }}/odbcinst.ini.sample"
     dest: /etc/odbcinst.ini
     remote_src: true
     mode: "0644"
@@ -70,11 +55,11 @@
     block: |
       "{{ extra_odbcinst_entries }}"
 
-- name: Insert professional driver version into file paths in odbcinst.ini
+- name: Update driver paths in odbcinst.ini to match install directory and version
   ansible.builtin.replace:
     path: /etc/odbcinst.ini
-    regexp: "(/rstudio-drivers/)"
-    replace: "/rstudio-drivers-{{ db_drivers_version }}/"
+    regexp: "/opt/rstudio-drivers/"
+    replace: "{{ db_drivers_install_dir }}/rstudio-drivers-{{ db_drivers_version }}/"
 
 - name: Write odbc.ini
   when: odbc_ini != ""

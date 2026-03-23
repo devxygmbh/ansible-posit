@@ -1,0 +1,16 @@
+[R]
+Enabled = {{ connect_r_enabled | lower }}
+PackageRepositoryResolution = {{ connect_r_package_repository_resolution }}
+{% if connect_r_executable %}
+Executable = {{ connect_r_executable }}
+{% endif %}
+{% for exe in connect_r_executables %}
+Executable = {{ exe }}
+{% endfor %}
+{% if not connect_r_executable and connect_r_executables | length == 0 %}
+{% if r_interpreter_versions is defined %}
+{% for version in r_interpreter_versions %}
+Executable = {{ r_installation_dir | default(connect_r_base_path) }}/{{ version }}/{{ connect_r_bin_path }}
+{% endfor %}
+{% endif %}
+{% endif %}

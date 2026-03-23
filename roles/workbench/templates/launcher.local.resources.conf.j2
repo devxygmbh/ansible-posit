@@ -1,0 +1,9 @@
+; MANAGED BY ANSIBLE
+{% for profile in workbench_launcher_local_resources %}
+[{{ profile.id }}]
+{% if profile.name is defined %}
+name="{{ profile.name }}"
+{% endif %}
+cpus={{ profile.cpus }}
+mem-mb={{ profile.mem_mb }}
+{% endfor %}

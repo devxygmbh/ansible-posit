@@ -1,0 +1,54 @@
+### MANAGED BY ANSIBLE ###
+# This file is managed by Ansible. Any changes made directly to this file will be lost.
+# Please make any changes to the appropriate Ansible variables.
+# https://docs.posit.co/ide/server-pro/admin/job_launcher/slurm_plugin.html
+#
+# Sections: [*] = global defaults, [@groupname] = group, [username] = user
+# Profiles are processed top to bottom; later matches override earlier ones.
+
+{% for profile in workbench_launcher_slurm_profiles %}
+[{{ profile.section }}]
+{% if profile.default_cpus is defined %}
+default-cpus={{ profile.default_cpus }}
+{% endif %}
+{% if profile.max_cpus is defined %}
+max-cpus={{ profile.max_cpus }}
+{% endif %}
+{% if profile.default_mem_mb is defined %}
+default-mem-mb={{ profile.default_mem_mb }}
+{% endif %}
+{% if profile.max_mem_mb is defined %}
+max-mem-mb={{ profile.max_mem_mb }}
+{% endif %}
+{% if profile.default_gpus is defined %}
+default-gpus={{ profile.default_gpus }}
+{% endif %}
+{% if profile.max_gpus is defined %}
+max-gpus={{ profile.max_gpus }}
+{% endif %}
+{% for key, value in profile.items() if key.startswith('default_gpus_') and key != 'default_gpus' %}
+{{ key | replace('_', '-') }}={{ value }}
+{% endfor %}
+{% for key, value in profile.items() if key.startswith('max_gpus_') and key != 'max_gpus' %}
+{{ key | replace('_', '-') }}={{ value }}
+{% endfor %}
+{% if profile.allowed_partitions is defined %}
+allowed-partitions={{ profile.allowed_partitions }}
+{% endif %}
+{% if profile.default_partition is defined %}
+default-partition={{ profile.default_partition }}
+{% endif %}
+{% if profile.resource_profiles is defined %}
+resource-profiles={{ profile.resource_profiles }}
+{% endif %}
+{% if profile.allow_custom_resources is defined %}
+allow-custom-resources={{ profile.allow_custom_resources }}
+{% endif %}
+{% if profile.singularity_image_directory is defined %}
+singularity-image-directory={{ profile.singularity_image_directory }}
+{% endif %}
+{% if profile.default_singularity_image is defined %}
+default-singularity-image={{ profile.default_singularity_image }}
+{% endif %}
+
+{% endfor %}

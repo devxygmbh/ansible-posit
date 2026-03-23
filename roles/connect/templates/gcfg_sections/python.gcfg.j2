@@ -1,0 +1,15 @@
+[Python]
+Enabled = {{ connect_python_enabled | lower }}
+{% if connect_python_executable %}
+Executable = {{ connect_python_executable }}
+{% endif %}
+{% for exe in connect_python_executables %}
+Executable = {{ exe }}
+{% endfor %}
+{% if not connect_python_executable and connect_python_executables | length == 0 %}
+{% if python_interpreter_versions is defined %}
+{% for version in python_interpreter_versions %}
+Executable = {{ python_installation_dir | default(connect_python_base_path) }}/{{ version }}/{{ connect_python_bin_path }}
+{% endfor %}
+{% endif %}
+{% endif %}

@@ -1,0 +1,16 @@
+[Quarto]
+Enabled = {{ connect_quarto_enabled | lower }}
+{% if connect_quarto_executable %}
+Executable = {{ connect_quarto_executable }}
+{% endif %}
+{% for exe in connect_quarto_executables %}
+Executable = {{ exe }}
+{% endfor %}
+{% if not connect_quarto_executable and connect_quarto_executables | length == 0 %}
+{% if quarto_versions is defined %}
+{% for version in quarto_versions %}
+Executable = {{ quarto_installation_dir | default(connect_quarto_base_path) }}/quarto-{{ version }}/{{ connect_quarto_bin_path }}
+{% endfor %}
+{% endif %}
+{% endif %}
+VersionMatching = {{ connect_quarto_version_matching }}

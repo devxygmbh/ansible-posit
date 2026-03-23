@@ -1,0 +1,15 @@
+## Branding Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#Branding
+
+# @var connect_branding_enabled:type: boolean
+# @var connect_branding_enabled:description: Enable custom branding
+connect_branding_enabled: false
+# @var connect_branding_display_name:type: string
+# @var connect_branding_display_name:description: Custom display name
+connect_branding_display_name: ""
+# @var connect_branding_logo:type: string
+# @var connect_branding_logo:description: Path to custom logo file
+connect_branding_logo: ""
+# @var connect_branding_favicon:type: string
+# @var connect_branding_favicon:description: Path to custom favicon file
+connect_branding_favicon: ""

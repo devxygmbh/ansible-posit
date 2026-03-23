@@ -3,11 +3,15 @@
 - name: Import 01_syslibs.yaml
   ansible.builtin.import_tasks: 01_syslibs.yaml
 
-- name: Import 02_install.yaml
-  ansible.builtin.import_tasks: 02_install.yaml
+# Install from Artifactory when enabled
+- name: Include 02a_install_posit_artifactory.yaml
+  when: workbench_artifactory_enabled | bool
+  ansible.builtin.include_tasks: 02a_install_posit_artifactory.yaml
 
-- name: Import 03_renv.yaml
-  ansible.builtin.import_tasks: 03_renv.yaml
+# Install from default sources when Artifactory is disabled
+- name: Include 02a_install_posit_default.yaml
+  when: not workbench_artifactory_enabled | bool
+  ansible.builtin.include_tasks: 02a_install_posit_default.yaml
 
 - name: Import 04_fonts.yaml
   ansible.builtin.import_tasks: 04_fonts.yaml
@@ -26,3 +30,9 @@
 
 - name: Import 09_user_env.yaml
   ansible.builtin.import_tasks: 09_user_env.yaml
+
+- name: Include 10_selinux.yaml
+  when:
+    - ansible_facts['os_family'] == 'RedHat'
+    - ansible_facts['selinux']['status'] == 'enabled'
+  ansible.builtin.include_tasks: 10_selinux.yaml

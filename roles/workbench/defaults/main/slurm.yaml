@@ -1,0 +1,128 @@
+## Slurm Launcher Plugin (launcher.slurm.conf)
+# https://docs.posit.co/ide/server-pro/admin/job_launcher/slurm_plugin.html
+
+# @var workbench_launcher_slurm_enabled:type: boolean
+# @var workbench_launcher_slurm_enabled:description: Enable Slurm launcher plugin configuration
+workbench_launcher_slurm_enabled: false
+
+# @var workbench_launcher_slurm_service_user:type: string
+# @var workbench_launcher_slurm_service_user:description: User with privileges to query the Slurm cluster (required)
+workbench_launcher_slurm_service_user: slurm
+
+# @var workbench_launcher_slurm_bin_path:type: string
+# @var workbench_launcher_slurm_bin_path:description: Installation location of Slurm command utilities (leave empty for default PATH)
+workbench_launcher_slurm_bin_path: ""
+
+# @var workbench_launcher_slurm_job_expiry_hours:type: integer
+# @var workbench_launcher_slurm_job_expiry_hours:description: Number of hours before completed jobs are removed from the system
+workbench_launcher_slurm_job_expiry_hours: 24
+
+# @var workbench_launcher_slurm_user_storage_path:type: string
+# @var workbench_launcher_slurm_user_storage_path:description: Default location to store Slurm job output (supports {HOME} and {USER} templates)
+workbench_launcher_slurm_user_storage_path: "~/.local/share/rstudio/launcher/"
+
+# @var workbench_launcher_slurm_max_output_stream_seconds:type: integer
+# @var workbench_launcher_slurm_max_output_stream_seconds:description: Maximum seconds to keep job output stream open after completion
+workbench_launcher_slurm_max_output_stream_seconds: 30
+
+# @var workbench_launcher_slurm_max_output_file_wait_seconds:type: integer
+# @var workbench_launcher_slurm_max_output_file_wait_seconds:description: Maximum seconds to wait for output files creation
+workbench_launcher_slurm_max_output_file_wait_seconds: 30
+
+# @var workbench_launcher_slurm_rsandbox_path:type: string
+# @var workbench_launcher_slurm_rsandbox_path:description: Location of the rsandbox executable
+workbench_launcher_slurm_rsandbox_path: /usr/lib/rstudio-server/bin/rsandbox
+
+# @var workbench_launcher_slurm_unprivileged:type: integer
+# @var workbench_launcher_slurm_unprivileged:description: Run Launcher in unprivileged mode without root permissions
+workbench_launcher_slurm_unprivileged: 0
+
+# @var workbench_launcher_slurm_enable_gpus:type: integer
+# @var workbench_launcher_slurm_enable_gpus:description: Allow users to request GPU resources
+workbench_launcher_slurm_enable_gpus: 0
+
+# @var workbench_launcher_slurm_enable_gres:type: integer
+# @var workbench_launcher_slurm_enable_gres:description: Allow users to request arbitrary GRES resources
+workbench_launcher_slurm_enable_gres: 0
+
+# @var workbench_launcher_slurm_gpu_types:type: string
+# @var workbench_launcher_slurm_gpu_types:description: Comma-separated list of GPU types available (e.g., tesla,v100)
+workbench_launcher_slurm_gpu_types: ""
+
+# @var workbench_launcher_slurm_default_gpu_brand:type: string
+# @var workbench_launcher_slurm_default_gpu_brand:description: Default GPU brand for Singularity (nvidia, amd, or intel)
+workbench_launcher_slurm_default_gpu_brand: ""
+
+# @var workbench_launcher_slurm_allow_requeue:type: integer
+# @var workbench_launcher_slurm_allow_requeue:description: Allow jobs to be requeued by Slurm
+workbench_launcher_slurm_allow_requeue: 0
+
+# @var workbench_launcher_slurm_persist_env_vars:type: integer
+# @var workbench_launcher_slurm_persist_env_vars:description: Persist environment variables across session restarts
+workbench_launcher_slurm_persist_env_vars: 1
+
+# @var workbench_launcher_slurm_profile_config:type: string
+# @var workbench_launcher_slurm_profile_config:description: Path to user/group profiles configuration file
+workbench_launcher_slurm_profile_config: /etc/rstudio/launcher.slurm.profiles.conf
+
+# @var workbench_launcher_slurm_enable_debug_logging:type: integer
+# @var workbench_launcher_slurm_enable_debug_logging:description: Enable verbose debug logging
+workbench_launcher_slurm_enable_debug_logging: 0
+
+# @var workbench_launcher_slurm_scratch_path:type: string
+# @var workbench_launcher_slurm_scratch_path:description: Scratch directory for temporary state
+workbench_launcher_slurm_scratch_path: /var/lib/rstudio-launcher
+
+# @var workbench_launcher_slurm_logging_dir:type: string
+# @var workbench_launcher_slurm_logging_dir:description: Directory for debug log output
+workbench_launcher_slurm_logging_dir: /var/log/rstudio/launcher
+
+# @var workbench_launcher_slurm_server_user:type: string
+# @var workbench_launcher_slurm_server_user:description: User to run the plugin as (typically managed by Launcher)
+workbench_launcher_slurm_server_user: rstudio-server
+
+# @var workbench_launcher_slurm_thread_pool_size:type: integer
+# @var workbench_launcher_slurm_thread_pool_size:description: Thread pool size for the plugin (0 = auto, CPUs x 2)
+workbench_launcher_slurm_thread_pool_size: 0
+
+# @var workbench_launcher_slurm_singularity_image_directory:type: string
+# @var workbench_launcher_slurm_singularity_image_directory:description: Directory for Singularity/Apptainer images (must be on shared storage)
+workbench_launcher_slurm_singularity_image_directory: ""
+
+## Slurm User/Group Profiles (launcher.slurm.profiles.conf)
+# https://docs.posit.co/ide/server-pro/admin/job_launcher/slurm_plugin.html
+
+# @var workbench_launcher_slurm_profiles:type: list
+# @var workbench_launcher_slurm_profiles:description: >
+#   List of Slurm user/group profiles. Each entry should have a 'section' key
+#   ([*] for global, [@groupname] for groups, [username] for users) and any of the
+#   available profile settings. Profiles are processed top to bottom, later matches override earlier ones.
+# @var workbench_launcher_slurm_profiles:example: >
+#   workbench_launcher_slurm_profiles:
+#     - section: "*"
+#       default_cpus: 1
+#       default_mem_mb: 512
+#       max_cpus: 2
+#       max_mem_mb: 1024
+#       allowed_partitions: "mars,jupiter"
+#     - section: "@power-users"
+#       max_cpus: 20
+#       max_mem_mb: 20480
+#     - section: "jsmith"
+#       max_cpus: 3
+workbench_launcher_slurm_profiles: []
+# Available profile settings (use underscores in variable names, rendered as hyphens):
+#   default_cpus              - Default CPUs for jobs (0 = infinite)
+#   max_cpus                  - Maximum CPUs allowed (0 = infinite)
+#   default_mem_mb            - Default memory in MB (0 = infinite)
+#   max_mem_mb                - Maximum memory in MB (0 = infinite)
+#   default_gpus              - Default GPUs (when gpu-types is empty)
+#   max_gpus                  - Maximum GPUs (when gpu-types is empty)
+#   default_gpus_<type>       - Default GPUs of specific type (e.g., default_gpus_v100)
+#   max_gpus_<type>           - Maximum GPUs of specific type (e.g., max_gpus_tesla)
+#   allowed_partitions        - Comma-separated list of allowed partitions
+#   default_partition         - Default partition for jobs
+#   resource_profiles         - Available resource profiles
+#   allow_custom_resources    - Allow custom resource profile (0/1, default: 1)
+#   singularity_image_directory - Path to Singularity/Apptainer images
+#   default_singularity_image - Default Singularity image name

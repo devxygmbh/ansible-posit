@@ -5,7 +5,7 @@
   block:
     - name: Download JetBrains Mono font
       ansible.builtin.get_url:
-        url: "https://github.com/JetBrains/JetBrainsMono/releases/download/v{{ workbench_fonts_jetbrains_mono_version }}/JetBrainsMono-{{ workbench_fonts_jetbrains_mono_version }}.zip"
+        url: "{{ workbench_fonts_jetbrains_mono_url }}"
         dest: "/tmp/JetBrainsMono-{{ workbench_fonts_jetbrains_mono_version }}.zip"
         mode: "0775"
 

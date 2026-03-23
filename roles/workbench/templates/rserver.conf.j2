@@ -11,10 +11,14 @@ server-license-type={{ workbench_server_server_license_type }}
 license-warning-days={{ workbench_server_server_license_warning_days }}
 server-project-sharing={{ workbench_server_server_project_sharing }}
 admin-enabled={{ workbench_server_server_admin_enabled }}
+{% if workbench_server_server_admin_group is defined and workbench_server_server_admin_group | length > 0 %}
+admin-group={{ workbench_server_server_admin_group }}
+{% endif %}
 # requires a shared postgres database config)
 load-balancing-enabled={{ workbench_server_server_load_balancing_enabled }}
 r-versions-scan={{ workbench_server_server_versions_scan }}
 server-product-check={{ workbench_server_server_product_check }}
+server-health-check-enabled={{ workbench_server_server_health_check_enabled }}
 
 ### Launcher
 launcher-address={{ workbench_server_launcher_address }}
@@ -25,11 +29,13 @@ launcher-use-ssl={{ workbench_server_launcher_use_ssl }}
 launcher-sessions-enabled={{ workbench_server_launcher_sessions_enabled }}
 launcher-verify-ssl-certs={{ workbench_server_launcher_verify_ssl_certs }}
 launcher-sessions-callback-verify-ssl-certs={{ workbench_server_launcher_session_callback_verify_ssl_certs }}
+audited-jobs-private-key-path={{ workbench_server_launcher_audited_jobs_private_key_path }}
 
 ### WWW
 
 www-thread-pool-size={{ workbench_server_www_thread_pool_size }}
 www-enable-origin-check={{ workbench_server_www_enable_origin_check }}
+www-same-site={{ workbench_server_www_same_site }}
 ssl-enabled={{ workbench_server_www_ssl_enabled }}
 {% if workbench_server_www_ssl_certificate is defined and workbench_server_www_ssl_certificate_key is defined and workbench_server_www_ssl_enabled == 1 %}
 ssl-certificate={{ workbench_server_www_ssl_certificate }}
@@ -51,7 +57,11 @@ db-connection-timeout={{ workbench_server_db_connection_timeout }}
 
 ### auth
 auth-timeout-minutes={{ workbench_server_auth_timeout_minutes }}
+{% if workbench_server_auth_required_user_group is defined and workbench_server_auth_required_user_group | length > 0 %}
+auth-required-user-group={{ workbench_server_auth_required_user_group }}
+{% endif %}
 auth-pam-require-password-prompt={{ workbench_server_auth_pam_require_password_prompt }}
+auth-encrypt-password={{ workbench_server_auth_encrypt_password }}
 auth-cookies-force-secure={{ workbench_server_auth_cookies_force_secure }}
 auth-openid={{ workbench_server_auth_openid }}
 {% if workbench_server_auth_openid_base_uri is defined %}
@@ -86,6 +96,7 @@ monitor-data-path={{ workbench_server_monitor_data_path }}
 monitor-rstudio-session-metrics={{ workbench_server_monitor_rstudio_session_metrics }}
 audit-data-path={{ workbench_server_monitor_audit_data_path }}
 audit-r-console={{ workbench_server_monitor_audit_r_console }}
+audit-r-console-format={{ workbench_server_monitor_audit_r_console_format }}
 server-shared-storage-path={{ workbench_server_monitor_shared_storage_path }}
 monitor-rrd-enabled={{ workbench_server_monitor_rrd_enabled }}
 

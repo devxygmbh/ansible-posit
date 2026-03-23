@@ -1,0 +1,15 @@
+## Applications Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#Applications
+
+# @var connect_applications_run_as_current_user:type: boolean
+# @var connect_applications_run_as_current_user:description: Run applications as the publishing user
+connect_applications_run_as_current_user: false
+# @var connect_applications_supervisor_accounts:type: string
+# @var connect_applications_supervisor_accounts:description: Comma-separated list of supervisor account names
+connect_applications_supervisor_accounts: ""
+# @var connect_applications_supervisor_path:type: string
+# @var connect_applications_supervisor_path:description: Path to supervisor script
+connect_applications_supervisor_path: "/opt/rstudio-connect/scripts/supervisor.sh"
+# @var connect_applications_supervisor_script:type: string
+# @var connect_applications_supervisor_script:description: Supervisor script content (verbatim)
+connect_applications_supervisor_script: ""

@@ -1,0 +1,42 @@
+## Database Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#Database
+
+# @var connect_database_provider:type: string
+# @var connect_database_provider:description: Database provider (SQLite or PostgreSQL)
+connect_database_provider: SQLite
+
+## SQLite Configuration
+# @var connect_database_sqlite_dir:type: string
+# @var connect_database_sqlite_dir:description: Directory for SQLite database file
+connect_database_sqlite_dir: /var/lib/rstudio-connect/db
+
+## PostgreSQL Configuration
+# @var connect_database_postgres_url:type: string
+# @var connect_database_postgres_url:description: PostgreSQL connection URL
+connect_database_postgres_url: ""
+# @var connect_database_postgres_host:type: string
+# @var connect_database_postgres_host:description: PostgreSQL host
+connect_database_postgres_host: localhost
+# @var connect_database_postgres_port:type: integer
+# @var connect_database_postgres_port:description: PostgreSQL port
+connect_database_postgres_port: 5432
+# @var connect_database_postgres_database:type: string
+# @var connect_database_postgres_database:description: PostgreSQL database name
+connect_database_postgres_database: connect
+# @var connect_database_postgres_user:type: string
+# @var connect_database_postgres_user:description: PostgreSQL username
+connect_database_postgres_user: connect
+# @var connect_database_postgres_password:type: string
+# @var connect_database_postgres_password:description: PostgreSQL password
+connect_database_postgres_password: ""
+
+## Connection Pool
+# @var connect_database_max_idle_connections:type: integer
+# @var connect_database_max_idle_connections:description: Maximum idle database connections
+connect_database_max_idle_connections: 5
+# @var connect_database_max_open_connections:type: integer
+# @var connect_database_max_open_connections:description: Maximum open database connections
+connect_database_max_open_connections: 10
+# @var connect_database_connection_max_lifetime:type: string
+# @var connect_database_connection_max_lifetime:description: Maximum connection lifetime
+connect_database_connection_max_lifetime: "60s"

@@ -2,6 +2,27 @@
 
 db_drivers_version: 2025.03.0
 
+# @var db_drivers_install_dir:type: string
+# @var db_drivers_install_dir:description: Base directory for DB drivers installation (version is appended)
+db_drivers_install_dir: /opt
+
 extra_odbcinst_entries: ""
 
 odbc_ini: ""
+
+## Artifactory Configuration
+# @var db_drivers_artifactory_enabled:type: boolean
+# @var db_drivers_artifactory_enabled:description: Enable JFrog Artifactory for DB drivers download
+db_drivers_artifactory_enabled: false
+# @var db_drivers_artifactory_base_url:type: string
+# @var db_drivers_artifactory_base_url:description: Base URL for JFrog Artifactory
+db_drivers_artifactory_base_url: ""
+# @var db_drivers_artifactory_repo:type: string
+# @var db_drivers_artifactory_repo:description: Artifactory repository path for DB drivers
+db_drivers_artifactory_repo: "posit-drivers"
+# @var db_drivers_artifactory_username:type: string
+# @var db_drivers_artifactory_username:description: Artifactory username (if auth required)
+db_drivers_artifactory_username: ""
+# @var db_drivers_artifactory_password:type: string
+# @var db_drivers_artifactory_password:description: Artifactory password/token (if auth required)
+db_drivers_artifactory_password: ""

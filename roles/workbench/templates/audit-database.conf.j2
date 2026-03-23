@@ -1,0 +1,23 @@
+### MANAGED BY ANSIBLE ###
+# This file is managed by Ansible. Any changes made directly to this file will be lost.
+# Please make any changes to the appropriate Ansible variables.
+
+provider={{ workbench_audit_database_provider }}
+{% if workbench_audit_database_provider == "sqlite" %}
+directory={{ workbench_audit_database_directory }}
+{% endif %}
+
+{% if workbench_audit_database_provider == "postgresql" %}
+{% if workbench_audit_database_connection_uri %}
+connection-uri={{ workbench_audit_database_connection_uri }}
+{% else %}
+host={{ workbench_audit_database_host }}
+port={{ workbench_audit_database_port }}
+database={{ workbench_audit_database_database }}
+username={{ workbench_audit_database_username }}
+password={{ workbench_audit_database_password }}
+{% endif %}
+{% if workbench_audit_database_pool_size > 0 %}
+pool-size={{ workbench_audit_database_pool_size }}
+{% endif %}
+{% endif %}

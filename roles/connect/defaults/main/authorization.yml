@@ -1,0 +1,30 @@
+## Authorization Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#Authorization
+
+# @var connect_authorization_default_user_role:type: string
+# @var connect_authorization_default_user_role:description: Default role for new users (viewer, publisher, administrator)
+connect_authorization_default_user_role: viewer
+# @var connect_authorization_user_groups:type: boolean
+# @var connect_authorization_user_groups:description: Enable user groups
+connect_authorization_user_groups: false
+# @var connect_authorization_viewers_can_request_privileges:type: boolean
+# @var connect_authorization_viewers_can_request_privileges:description: Allow viewers to request publisher privileges
+connect_authorization_viewers_can_request_privileges: true
+# @var connect_authorization_publishers_can_own_groups:type: boolean
+# @var connect_authorization_publishers_can_own_groups:description: Publishers can own groups
+connect_authorization_publishers_can_own_groups: true
+# @var connect_authorization_publishers_can_add_users:type: boolean
+# @var connect_authorization_publishers_can_add_users:description: Publishers can add users
+connect_authorization_publishers_can_add_users: false
+# @var connect_authorization_publishers_can_manage_vanities:type: boolean
+# @var connect_authorization_publishers_can_manage_vanities:description: Publishers can manage vanity URLs
+connect_authorization_publishers_can_manage_vanities: true
+# @var connect_authorization_publishers_can_manage_run_as:type: boolean
+# @var connect_authorization_publishers_can_manage_run_as:description: Publishers can manage RunAs users
+connect_authorization_publishers_can_manage_run_as: false
+# @var connect_authorization_viewers_can_only_see_themselves:type: boolean
+# @var connect_authorization_viewers_can_only_see_themselves:description: Viewers can only see their own content
+connect_authorization_viewers_can_only_see_themselves: false
+# @var connect_authorization_user_info_editable_by:type: string
+# @var connect_authorization_user_info_editable_by:description: Who can edit user info (self, admin, adminAndSelf)
+connect_authorization_user_info_editable_by: Admin

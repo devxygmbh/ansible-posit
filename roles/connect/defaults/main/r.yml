@@ -1,0 +1,41 @@
+## R Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#R
+
+# @var connect_r_enabled:type: boolean
+# @var connect_r_enabled:description: Enable R support
+connect_r_enabled: true
+
+# @var connect_r_executable:type: string
+# @var connect_r_executable:description: Path to single R executable
+connect_r_executable: ""
+
+# @var connect_r_executables:type: list
+# @var connect_r_executables:description: List of R executable paths (explicit)
+connect_r_executables: []
+
+# @var connect_r_base_path:type: string
+# @var connect_r_base_path:description: Base path for R installations (fallback if r_installation_dir not set)
+connect_r_base_path: /opt/R
+
+# @var connect_r_bin_path:type: string
+# @var connect_r_bin_path:description: Relative path to R binary within version directory
+connect_r_bin_path: bin/R
+# @var connect_r_package_repository_resolution:type: string
+# @var connect_r_package_repository_resolution:description: >
+#   Controls how Connect combines configured RPackageRepository entries with
+#   repositories from published content. Values: lax (merge both), strict
+#   (configured only), legacy (content-first with overrides), lockfile (content only).
+connect_r_package_repository_resolution: lax
+
+# Dynamic executable generation:
+# If r_interpreter_versions is defined (from data_science_core role),
+# executables are automatically generated using:
+#   - r_installation_dir (from data_science_core) if set
+#   - connect_r_base_path as fallback
+#
+# Path: {{ r_installation_dir | default(connect_r_base_path) }}/{{ version }}/{{ connect_r_bin_path }}
+#
+# Example: With r_interpreter_versions: ["4.3.3", "4.4.2"]
+# Generates:
+#   /opt/R/4.3.3/bin/R
+#   /opt/R/4.4.2/bin/R

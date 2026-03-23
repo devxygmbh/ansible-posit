@@ -1,0 +1,15 @@
+{% if connect_packages_http_proxy or connect_packages_https_proxy %}
+[Packages]
+{% if connect_packages_http_proxy %}
+HTTPProxy = {{ connect_packages_http_proxy }}
+{% endif %}
+{% if connect_packages_https_proxy %}
+HTTPSProxy = {{ connect_packages_https_proxy }}
+{% endif %}
+{% endif %}
+
+{% for repo in connect_r_package_repositories %}
+[RPackageRepository "{{ repo.name }}"]
+URL = {{ repo.url }}
+
+{% endfor %}

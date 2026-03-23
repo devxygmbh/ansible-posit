@@ -14,46 +14,16 @@
   community.general.dnf_config_manager:
     name: "{{ 'crb' if ansible_facts['distribution_major_version'] | int == 9 else 'powertools' }}"
     state: enabled
-  when: ansible_facts['distribution_major_version'] | int in [8, 9] and ansible_facts['os_family'] == 'RedHat'
+  when:
+    - workbench_syslibs_manage_repos | default(true)
+    - ansible_distribution_major_version | int in [8, 9]
+    - ansible_facts['os_family'] == 'RedHat'
 
 - name: Install EPEL
-  when: ansible_facts['os_family'] == 'RedHat'
+  when:
+    - workbench_syslibs_manage_repos | default(true)
+    - ansible_facts['os_family'] == 'RedHat'
   ansible.builtin.dnf:
     name:
       - epel-release
       - dnf-plugins-core
-
-- name: Install build dependencies for R
-  when: ansible_facts['os_family'] == 'RedHat'
-  ansible.builtin.command:
-    cmd: "dnf builddep -y R"
-  register: dnf_result
-  changed_when: '"Nothing to do" not in dnf_result.stdout'
-
-- name: Gather package facts
-  ansible.builtin.package_facts:
-    manager: auto
-
-- name: Install required system libraries
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: present
-  loop: "{{
-    (ansible_facts['os_family'] == 'Debian') | ternary(r_package_syslibs_debian,
-    (ansible_facts['os_family'] == 'RedHat') | ternary(r_package_syslibs_redhat,
-    (ansible_facts['os_family'] == 'Suse') | ternary(r_package_syslibs_suse, [])))
-    }}"
-  when: "item not in ansible_facts.packages"
-
-- name: Find all R versions installed in /opt/R
-  ansible.builtin.find:
-    paths: /opt/R
-    patterns: "[0-9].[0-9].[0-9]"
-    recurse: false
-    file_type: directory
-  register: r_versions
-
-- name: Configure Java environment via javareconf
-  ansible.builtin.command: "{{ item.path }}/bin/R CMD javareconf"
-  loop: "{{ r_versions.files }}"
-  changed_when: false

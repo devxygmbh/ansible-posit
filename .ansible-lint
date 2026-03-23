@@ -11,6 +11,20 @@ skip_list:
   - yaml[empty-lines]
   - args[module]  # Experimental rule with false positives for community.crypto modules
 
+# Mock modules/roles that may not be installed (e.g., in pre-commit environments)
+mock_modules:
+  - community.crypto.openssl_privatekey
+  - community.crypto.openssl_publickey
+  - community.crypto.x509_certificate
+
+mock_roles:
+  - devxy.data_science_core.r
+  - devxy.data_science_core.python
+  - devxy.data_science_core.quarto
+  - nginxinc.nginx
+  - nginxinc.nginx_config
+  - geerlingguy.certbot
+
 # otherwise ansible-lint scans the roles/collections from requirements.yml
 exclude_paths:
   - ansible_collections/

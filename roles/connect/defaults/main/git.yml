@@ -1,0 +1,30 @@
+## Git Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#Git
+
+# @var connect_git_enabled:type: boolean
+# @var connect_git_enabled:description: Enable Git support
+connect_git_enabled: true
+# @var connect_git_executable:type: string
+# @var connect_git_executable:description: Path to Git executable
+connect_git_executable: ""
+# @var connect_git_polling_frequency:type: string
+# @var connect_git_polling_frequency:description: Repository polling interval
+connect_git_polling_frequency: "5m"
+# @var connect_git_concurrency:type: integer
+# @var connect_git_concurrency:description: Concurrent git operations
+connect_git_concurrency: 1
+
+## Git Credentials (for private repositories)
+# @var connect_git_credentials:type: list
+# @var connect_git_credentials:description: >
+#   List of Git credentials. Each entry should have: host, username, password, protocol (optional, defaults to https)
+# @var connect_git_credentials:example: >
+#   connect_git_credentials:
+#     - host: github.com
+#       username: myuser
+#       password: mytoken
+#     - host: gitlab.example.com
+#       username: deploy
+#       password: secret
+#       protocol: https
+connect_git_credentials: []

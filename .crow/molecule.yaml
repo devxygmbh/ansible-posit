@@ -1,74 +1,50 @@
 when:
-  event: [push, cron, manual]
+  - event: push
+    branch: ${CI_REPO_DEFAULT_BRANCH}
+  - event: [manual, cron, pull_request]
 
 matrix:
-  SCENARIO:
-    - workbench_default
+  include:
+    - SCENARIO: workbench_default
+      WHEN: "roles/workbench/**"
+
+    - SCENARIO: workbench_artifactory
+      WHEN: "roles/workbench/**"
+
+    - SCENARIO: db_drivers_artifactory
+      WHEN: "roles/db_drivers/**"
 
 steps:
-  - name: "Test devxy.posit.workbench"
-    image: cr.codefloe.com/docker.io/library/docker:29-dind
+  - name: "Test ${SCENARIO}"
+    image: reg.devxy.io/docker.io/library/docker:28-dind
     privileged: true
     environment:
       # force output of ANSI colors
       PY_COLORS: 1
-      DOCKER_HOST: tcp://docker:2376
-      DOCKER_CERT_PATH: "/dind-certs/client"
-      DOCKER_TLS_VERIFY: "1"
-    volumes:
-      - ci-tmp-rwx:/dind-certs
+      DOCKER_HOST: tcp://docker:2375
+      ANSIBLE_ROLES_PATH: ./roles
     commands:
-      - apk add -q --no-cache python3 python3-dev py3-pip gcc git curl build-base autoconf automake py3-cryptography linux-headers musl-dev libffi-dev openssl-dev openssh yaml-dev
+      - apk add -q --no-cache python3 python3-dev py3-pip gcc git curl build-base autoconf automake py3-cryptography linux-headers musl-dev libffi-dev openssl-dev openssh yaml-dev ca-certificates
       - python3 --version
       - python3 -m venv ~/venv/ansible-molecule
       - source ~/venv/ansible-molecule/bin/activate
-      - python3 -m pip install -q 'ansible-core<2.17' molecule-plugins[docker] cryptography
+      # ansible-core<2.17 for compat with rhel8
+      - python3 -m pip install -q ansible-doctor "ansible-core<2.17" molecule-plugins[docker] cryptography
       - ansible --version
       - molecule --version
       - cd extensions
       - molecule test --scenario-name ${SCENARIO}
-    backend_options:
-      kubernetes:
-        resources:
-          requests:
-            memory: 300Mi
-            cpu: 500m
-          limits:
-            memory: 1000Mi
-            cpu: 4000m
-        tolerations:
-          - key: "CI"
-            operator: "Equal"
-            value: "true"
-            effect: "NoSchedule"
-        nodeSelector:
-          kubernetes.io/arch: amd64
-          node.kubernetes.io/instance-type: AX42
+    when:
+      - path: ${WHEN}
 
 services:
   docker:
-    image: cr.codefloe.com/docker.io/docker:28-dind
-    privileged: true
     environment:
-      DOCKER_TLS_CERTDIR: /dind-certs
-    volumes:
-      - ci-tmp-rwx:/dind-certs
+      DOCKER_TLS_CERTDIR: ""
+    image: reg.devxy.io/docker.io/library/docker:28-dind
+    commands: dockerd --tls=false --host=tcp://0.0.0.0:2375
+    privileged: true
     ports:
-      - 2376
-    backend_options:
-      kubernetes:
-        resources:
-          requests:
-            memory: 600Mi
-            cpu: 500m
-          limits:
-            memory: 1000Mi
-            cpu: 4000m
-        tolerations:
-          - key: "CI"
-            operator: "Equal"
-            value: "true"
-            effect: "NoSchedule"
-        nodeSelector:
-          kubernetes.io/arch: amd64
-          node.kubernetes.io/instance-type: AX42
+      - 2375
+    when:
+      - path: ${WHEN}

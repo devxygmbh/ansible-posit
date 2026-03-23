@@ -1,0 +1,33 @@
+## Metrics Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#Metrics
+
+# @var connect_metrics_enabled:type: boolean
+# @var connect_metrics_enabled:description: Enable metrics collection
+connect_metrics_enabled: true
+# @var connect_metrics_data_path:type: string
+# @var connect_metrics_data_path:description: Metrics data directory
+connect_metrics_data_path: ""
+# @var connect_metrics_interval:type: string
+# @var connect_metrics_interval:description: Collection interval
+connect_metrics_interval: "10s"
+# @var connect_metrics_rrd_enabled:type: boolean
+# @var connect_metrics_rrd_enabled:description: Enable RRD storage
+connect_metrics_rrd_enabled: true
+# @var connect_metrics_graphite_enabled:type: boolean
+# @var connect_metrics_graphite_enabled:description: Enable Graphite export
+connect_metrics_graphite_enabled: false
+# @var connect_metrics_graphite_host:type: string
+# @var connect_metrics_graphite_host:description: Graphite server hostname
+connect_metrics_graphite_host: ""
+# @var connect_metrics_graphite_port:type: integer
+# @var connect_metrics_graphite_port:description: Graphite server port
+connect_metrics_graphite_port: 2003
+# @var connect_metrics_graphite_client_id:type: string
+# @var connect_metrics_graphite_client_id:description: Graphite client identifier
+connect_metrics_graphite_client_id: ""
+# @var connect_metrics_instrumentation:type: boolean
+# @var connect_metrics_instrumentation:description: Enable detailed instrumentation
+connect_metrics_instrumentation: false
+# @var connect_metrics_prometheus_listen:type: string
+# @var connect_metrics_prometheus_listen:description: Prometheus listen address (e.g., :9108)
+connect_metrics_prometheus_listen: ""

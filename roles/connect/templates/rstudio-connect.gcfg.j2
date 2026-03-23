@@ -1,0 +1,43 @@
+; MANAGED BY ANSIBLE
+; This file is managed by Ansible. Any changes made directly to this file will be lost.
+; Please make any changes to the appropriate Ansible variables.
+
+{% include 'gcfg_sections/server.gcfg.j2' %}
+
+{% include 'gcfg_sections/http.gcfg.j2' %}
+
+{% if connect_https_enabled %}
+{% include 'gcfg_sections/https.gcfg.j2' %}
+{% endif %}
+
+{% include 'gcfg_sections/database.gcfg.j2' %}
+
+{% include 'gcfg_sections/authentication.gcfg.j2' %}
+
+{% include 'gcfg_sections/authorization.gcfg.j2' %}
+
+{% if connect_server_email_provider == 'SMTP' and connect_smtp_host %}
+{% include 'gcfg_sections/smtp.gcfg.j2' %}
+{% endif %}
+
+{% include 'gcfg_sections/scheduler.gcfg.j2' %}
+
+{% include 'gcfg_sections/python.gcfg.j2' %}
+
+{% include 'gcfg_sections/r.gcfg.j2' %}
+
+{% include 'gcfg_sections/quarto.gcfg.j2' %}
+
+{% include 'gcfg_sections/git.gcfg.j2' %}
+
+{% include 'gcfg_sections/applications.gcfg.j2' %}
+
+{% include 'gcfg_sections/packages.gcfg.j2' %}
+
+{% include 'gcfg_sections/metrics.gcfg.j2' %}
+
+{% if connect_branding_enabled %}
+{% include 'gcfg_sections/branding.gcfg.j2' %}
+{% endif %}
+
+{% include 'gcfg_sections/logging.gcfg.j2' %}

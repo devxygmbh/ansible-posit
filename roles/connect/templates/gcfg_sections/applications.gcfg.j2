@@ -1,0 +1,8 @@
+[Applications]
+RunAsCurrentUser = {{ connect_applications_run_as_current_user | lower }}
+{% if connect_applications_supervisor_accounts %}
+SupervisorAccounts = {{ connect_applications_supervisor_accounts }}
+{% endif %}
+{% if connect_applications_supervisor_script %}
+Supervisor = {{ connect_applications_supervisor_path }}
+{% endif %}

@@ -1,0 +1,51 @@
+[Server]
+DataDir = {{ connect_server_data_dir }}
+{% if connect_server_temp_dir %}
+TempDir = {{ connect_server_temp_dir }}
+{% endif %}
+{% if connect_server_address %}
+Address = {{ connect_server_address }}
+{% endif %}
+{% if connect_server_sender_email %}
+SenderEmail = {{ connect_server_sender_email }}
+{% endif %}
+{% if connect_server_sender_email_display_name %}
+SenderEmailDisplayName = {{ connect_server_sender_email_display_name }}
+{% endif %}
+EmailProvider = {{ connect_server_email_provider }}
+{% if connect_server_email_subject_prefix %}
+EmailSubjectPrefix = {{ connect_server_email_subject_prefix }}
+{% endif %}
+{% if connect_server_dashboard_path %}
+DashboardPath = {{ connect_server_dashboard_path }}
+{% endif %}
+{% if connect_server_root_redirect %}
+RootRedirect = {{ connect_server_root_redirect }}
+{% endif %}
+HideVersion = {{ connect_server_hide_version | lower }}
+CompilationConcurrency = {{ connect_server_compilation_concurrency }}
+{% if connect_server_public_warning %}
+PublicWarning = {{ connect_server_public_warning }}
+{% endif %}
+{% if connect_server_logged_in_warning %}
+LoggedInWarning = {{ connect_server_logged_in_warning }}
+{% endif %}
+HideEmailAddresses = {{ connect_server_hide_email_addresses | lower }}
+MailAll = {{ connect_server_mail_all | lower }}
+SameSite = {{ connect_server_same_site }}
+FrameOptionsContent = {{ connect_server_frame_options_content }}
+FrameOptionsDashboard = {{ connect_server_frame_options_dashboard }}
+UseFIPSEncryption = {{ connect_server_use_fips_encryption | lower }}
+GalleryEnabled = {{ connect_server_gallery_enabled | lower }}
+WhatsNewEnabled = {{ connect_server_whats_new_enabled | lower }}
+ProductCheck = {{ connect_server_product_check | lower }}
+SystemCheckOnStartup = {{ connect_server_system_check_on_startup | lower }}
+{% if connect_server_system_check_frequency != "0" %}
+SystemCheckFrequency = {{ connect_server_system_check_frequency }}
+{% endif %}
+{% for header in connect_server_custom_headers %}
+CustomHeader = {{ header }}
+{% endfor %}
+
+[Licensing]
+LicenseType = {{ connect_server_license_type }}

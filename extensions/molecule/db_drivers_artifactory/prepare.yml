@@ -1,0 +1,51 @@
+# Prepare phase - Set up a mock HTTP server for DB Drivers only
+
+- name: Prepare mock Artifactory for DB Drivers
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Install Python HTTP server dependencies
+      ansible.builtin.package:
+        name:
+          - python3
+        state: present
+
+    - name: Create mock Artifactory directory structure
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - /opt/mock-artifactory
+        - /opt/mock-artifactory/posit-drivers
+
+    - name: Download DB Drivers to mock Artifactory
+      ansible.builtin.get_url:
+        url: "https://cdn.rstudio.com/drivers/7C152C12/installer/rstudio-drivers-2025.03.0.tar"
+        dest: "/opt/mock-artifactory/posit-drivers/rstudio-drivers-2025.03.0.tar"
+        mode: "0644"
+      failed_when: false
+      register: download_db_drivers
+
+    - name: Start mock Artifactory HTTP server in background
+      ansible.builtin.shell: |
+        nohup python3 -m http.server 8080 --directory /opt/mock-artifactory > /tmp/mock-artifactory.log 2>&1 &
+        echo $!
+      register: http_server_pid
+      changed_when: true
+
+    - name: Wait for HTTP server to be ready
+      ansible.builtin.wait_for:
+        port: 8080
+        delay: 2
+        timeout: 30
+
+    - name: Test HTTP server accessibility
+      ansible.builtin.uri:
+        url: "http://localhost:8080/posit-drivers/rstudio-drivers-2025.03.0.tar"
+        return_content: false
+      register: http_test
+      retries: 3
+      delay: 5
+      until: http_test.status == 200

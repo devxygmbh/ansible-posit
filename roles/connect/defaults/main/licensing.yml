@@ -1,0 +1,15 @@
+## Licensing Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#Licensing
+
+# @var connect_licensing_license_type:type: string
+# @var connect_licensing_license_type:description: License mode (local or remote)
+connect_licensing_license_type: local
+# @var connect_licensing_expiration_email:type: boolean
+# @var connect_licensing_expiration_email:description: Send email on license expiration
+connect_licensing_expiration_email: true
+# @var connect_licensing_expiration_ui_warning:type: boolean
+# @var connect_licensing_expiration_ui_warning:description: Show dashboard expiration warning
+connect_licensing_expiration_ui_warning: true
+# @var connect_licensing_users_limit_ui_warning:type: boolean
+# @var connect_licensing_users_limit_ui_warning:description: Show user limit warning
+connect_licensing_users_limit_ui_warning: true

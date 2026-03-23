@@ -1,0 +1,11 @@
+- name: Converge
+  hosts: all
+  gather_facts: true
+
+  vars:
+    # Skip optional downloads to speed up tests
+    r_interpreter_versions: []
+    python_interpreter_versions: []
+
+  roles:
+    - role: connect

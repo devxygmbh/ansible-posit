@@ -1,0 +1,37 @@
+## Quarto Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#Quarto
+
+# @var connect_quarto_enabled:type: boolean
+# @var connect_quarto_enabled:description: Enable Quarto support
+connect_quarto_enabled: true
+
+# @var connect_quarto_executable:type: string
+# @var connect_quarto_executable:description: Path to single Quarto executable
+connect_quarto_executable: ""
+
+# @var connect_quarto_executables:type: list
+# @var connect_quarto_executables:description: List of Quarto executable paths (explicit)
+connect_quarto_executables: []
+
+# @var connect_quarto_base_path:type: string
+# @var connect_quarto_base_path:description: Base path for Quarto installations (fallback if quarto_installation_dir not set)
+connect_quarto_base_path: /opt/quarto
+
+# @var connect_quarto_bin_path:type: string
+# @var connect_quarto_bin_path:description: Relative path to Quarto binary within version directory
+connect_quarto_bin_path: bin/quarto
+
+# @var connect_quarto_version_matching:type: string
+# @var connect_quarto_version_matching:description: Version matching mode (exact, major, minor, nearest)
+connect_quarto_version_matching: "nearest"
+# Dynamic executable generation:
+# If quarto_versions is defined, executables are automatically generated using:
+#   - quarto_installation_dir (from data_science_core) if set
+#   - connect_quarto_base_path as fallback
+#
+# Path: {{ quarto_installation_dir | default(connect_quarto_base_path) }}/quarto-{{ version }}/{{ connect_quarto_bin_path }}
+#
+# Example: With quarto_versions: ["1.4.557", "1.5.57"]
+# Generates:
+#   /opt/quarto/quarto-1.4.557/bin/quarto
+#   /opt/quarto/quarto-1.5.57/bin/quarto

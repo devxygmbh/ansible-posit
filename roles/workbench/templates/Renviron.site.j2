@@ -1,0 +1,4 @@
+# MANAGED BY ANSIBLE
+{% if workbench_artifactory_enabled | bool and workbench_artifactory_username | length > 0 %}
+NETRC=/etc/R/netrc
+{% endif %}

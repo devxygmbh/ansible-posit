@@ -1,0 +1,11 @@
+[Branding]
+Enabled = {{ connect_branding_enabled | lower }}
+{% if connect_branding_display_name %}
+DisplayName = {{ connect_branding_display_name }}
+{% endif %}
+{% if connect_branding_logo %}
+Logo = {{ connect_branding_logo }}
+{% endif %}
+{% if connect_branding_favicon %}
+Favicon = {{ connect_branding_favicon }}
+{% endif %}

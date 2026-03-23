@@ -1,0 +1,17 @@
+# tasks file for connect
+
+# Install from Artifactory when enabled
+- name: Include 02a_install_connect_artifactory.yaml
+  when: connect_artifactory_enabled | bool
+  ansible.builtin.include_tasks: 02a_install_connect_artifactory.yaml
+
+# Install from default sources when Artifactory is disabled
+- name: Include 02a_install_connect_default.yaml
+  when: not connect_artifactory_enabled | bool
+  ansible.builtin.include_tasks: 02a_install_connect_default.yaml
+
+- name: Import 03_license.yaml
+  ansible.builtin.import_tasks: 03_license.yaml
+
+- name: Import 04_config.yaml
+  ansible.builtin.import_tasks: 04_config.yaml

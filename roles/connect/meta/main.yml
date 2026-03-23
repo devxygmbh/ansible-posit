@@ -1,0 +1,23 @@
+galaxy_info:
+  author: Patrick Schratz
+  description: "Installs Posit Connect <https://posit.co/>"
+  company: devXY GmbH
+  issue_tracker_url: https://codefloe.com/devxy/ansible-posit/issues
+
+  license: AGPL-3.0-or-later
+
+  min_ansible_version: "2.9"
+
+  platforms:
+    - name: EL
+      versions:
+        - "all"
+    - name: Ubuntu
+      versions:
+        - "all"
+  galaxy_tags:
+    - posit
+    - datascience
+    - connect
+
+dependencies: []

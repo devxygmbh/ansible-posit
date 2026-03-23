@@ -1,0 +1,68 @@
+# Install Posit Workbench from JFrog Artifactory
+# This task file is used when workbench_artifactory_enabled is true
+
+- name: Check if rstudio-server service exists
+  ansible.builtin.service_facts:
+
+- name: Check rstudio-server version when service exists
+  when: "'services' in ansible_facts and 'rstudio-server.service' in ansible_facts.services"
+  ansible.builtin.command: "rstudio-server version"
+  register: installed_workbench_general_version
+  changed_when: false
+  ignore_errors: true
+
+- name: Set safe variables for check mode
+  ansible.builtin.set_fact:
+    installed_workbench_general_version:
+      stdout: "0.0.0"
+    rstudio_service_exists: true # Assume service exists in check mode
+  when: ansible_check_mode
+
+- name: Install Workbench from Artifactory
+  when:
+    - not ansible_check_mode
+    - "'services' not in ansible_facts or ('services' in ansible_facts and 'rstudio-server.service' not in ansible_facts.services or installed_workbench_general_version.stdout.split()[0] != (workbench_general_version | replace('-', '+')))"
+  block:
+    - name: Define environment facts for Workbench download
+      ansible.builtin.set_fact:
+        binary_type: "{{ 'rpm' if ansible_facts['os_family'] == 'RedHat' else 'deb' }}"
+        os_identifier: "{{ 'rhel' if ansible_facts['os_family'] == 'RedHat' else 'jammy' if ansible_distribution_release in ['jammy', 'noble'] else 'default' }}"
+        arch: "{{ 'arm64' if ansible_architecture == 'aarch64' and ansible_facts['os_family'] == 'Debian' else 'aarch64' if ansible_architecture == 'aarch64' and ansible_facts['os_family'] == 'RedHat' else 'x86_64' if ansible_architecture == 'x86_64' and ansible_facts['os_family'] == 'RedHat' else 'amd64' if ansible_architecture == 'x86_64' and ansible_facts['os_family'] == 'Debian' }}"
+        arch_download: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x86_64' if ansible_architecture == 'x86_64' and ansible_facts['os_family'] == 'RedHat' else 'amd64' if ansible_architecture == 'x86_64' and ansible_facts['os_family'] == 'Debian' }}"
+
+    - name: Construct Artifactory URL for Posit Workbench (RedHat)
+      when: ansible_facts['os_family'] == 'RedHat'
+      ansible.builtin.set_fact:
+        workbench_download_url: "{{ workbench_artifactory_base_url }}/{{ workbench_artifactory_posit_repo }}/rstudio-workbench-{{ os_identifier }}-{{ workbench_general_version }}-{{ arch }}.{{ binary_type }}"
+
+    - name: Construct Artifactory URL for Posit Workbench (Ubuntu)
+      when: ansible_distribution == 'Ubuntu'
+      ansible.builtin.set_fact:
+        workbench_download_url: "{{ workbench_artifactory_base_url }}/{{ workbench_artifactory_posit_repo }}/{{ os_identifier }}/{{ arch_download }}/rstudio-workbench-{{ workbench_general_version }}-{{ arch }}.{{ binary_type }}"
+
+    - name: Download Posit Workbench from Artifactory
+      ansible.builtin.get_url:
+        url: "{{ workbench_download_url }}"
+        dest: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
+        mode: "0775"
+        timeout: 120
+        url_username: "{{ workbench_artifactory_username if workbench_artifactory_username else omit }}"
+        url_password: "{{ workbench_artifactory_password if workbench_artifactory_password else omit }}"
+        force_basic_auth: "{{ true if workbench_artifactory_username else false }}"
+
+    - name: Install Posit Workbench (RedHat)
+      when: ansible_facts['os_family'] == 'RedHat'
+      ansible.builtin.dnf:
+        name: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
+        disable_gpg_check: true
+        state: present
+
+    - name: Install Posit Workbench (Ubuntu)
+      when: ansible_distribution == 'Ubuntu'
+      ansible.builtin.apt:
+        deb: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
+
+    - name: Cleanup downloaded assets
+      ansible.builtin.file:
+        path: "/tmp/workbench-{{ workbench_general_version }}.{{ binary_type }}"
+        state: absent

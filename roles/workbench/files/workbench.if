@@ -1,0 +1,521 @@
+## <summary>policy for workbench</summary>
+
+########################################
+## <summary>
+##  Execute workbench_exec_t in the workbench domain.
+## </summary>
+## <param name="domain">
+## <summary>
+##  Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`workbench_domtrans',`
+  gen_require(`
+    type workbench_t, workbench_exec_t;
+  ')
+
+  corecmd_search_bin($1)
+  domtrans_pattern($1, workbench_exec_t, workbench_t)
+')
+
+########################################
+## <summary>
+##  Execute workbench_server_exec_t in the workbench_server domain.
+## </summary>
+## <param name="domain">
+## <summary>
+##  Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`workbench_server_domtrans',`
+  gen_require(`
+    type workbench_server_t, workbench_server_exec_t;
+  ')
+
+  corecmd_search_bin($1)
+  domtrans_pattern($1, workbench_server_exec_t, workbench_server_t)
+')
+
+########################################
+## <summary>
+##  Execute workbench_worker_exec_t in the workbench_worker domain.
+## </summary>
+## <param name="domain">
+## <summary>
+##  Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`workbench_worker_domtrans',`
+  gen_require(`
+    type workbench_worker_t, workbench_worker_exec_t;
+  ')
+
+  corecmd_search_bin($1)
+  domtrans_pattern($1, workbench_worker_exec_t, workbench_worker_t)
+')
+
+######################################
+## <summary>
+##  Execute workbench in the caller domain.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`workbench_exec',`
+  gen_require(`
+    type workbench_exec_t;
+  ')
+
+  corecmd_search_bin($1)
+  can_exec($1, workbench_exec_t)
+')
+
+######################################
+## <summary>
+##  Execute workbench_server in the caller domain.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`workbench_server_exec',`
+  gen_require(`
+    type workbench_server_exec_t;
+  ')
+
+  corecmd_search_bin($1)
+  can_exec($1, workbench_server_exec_t)
+')
+
+######################################
+## <summary>
+##  Execute workbench_worker in the caller domain.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`workbench_worker_exec',`
+  gen_require(`
+    type workbench_worker_exec_t;
+  ')
+
+  corecmd_search_bin($1)
+  can_exec($1, workbench_worker_exec_t)
+')
+
+######################################
+## <summary>
+##  Define Workbench daemon domain type
+## </summary>
+## <param name="type">
+##  <summary>
+##  Name of type to be defined
+##  </summary>
+## </param>
+#
+interface(`workbench_domain_type',`
+  type $1_t;
+  workbench_file_type($1_exec_t)
+  typeattribute $1_t workbench_domain;
+  init_daemon_domain($1_t, $1_exec_t)
+')
+
+######################################
+## <summary>
+##  Define Workbench file type
+## </summary>
+## <param name="type">
+##  <summary>
+##  Name of type to be defined
+##  </summary>
+## </param>
+#
+interface(`workbench_file_type',`
+  type $1;
+  typeattribute $1 workbench_file;
+  fs_associate($1)
+  fs_associate_tmpfs($1)
+')
+
+######################################
+## <summary>
+##  Define Workbench file type shared between domains
+## </summary>
+## <param name="type">
+##  <summary>
+##  Name of type to be defined
+##  </summary>
+## </param>
+#
+interface(`workbench_shared_file_type',`
+  workbench_file_type($1)
+  allow workbench_domain $1:file { manage_file_perms map execute };
+  allow workbench_domain $1:lnk_file { manage_lnk_file_perms };
+  ifdef(`has_watch',`allow workbench_domain $1:file watch;')
+  allow workbench_domain $1:dir manage_dir_perms;
+')
+
+######################################
+## <summary>
+##  Apply permissions for sockets, FIFOs, and FDs
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+## <param name="subject">
+##  <summary>
+##  Domain of files to be accessed.
+##  </summary>
+## </param>
+#
+interface(`workbench_sock_file',`
+  allow $1 $2:sock_file manage_sock_file_perms;
+  allow $1 $2:fifo_file { manage_fifo_file_perms ioctl getattr };
+  allow $1 $2:unix_stream_socket { create_stream_socket_perms connectto };
+  allow $1 $2:unix_dgram_socket { create_socket_perms };
+  allow $1 $2:tcp_socket { rw_stream_socket_perms };
+  allow $1 $2:fd { use };
+')
+
+######################################
+## <summary>
+##  Set file transition for sockets in /run
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+## <param name="filename">
+##  <summary>
+##  Exact filename of a socket in /run
+##  </summary>
+## </param>
+#
+interface(`workbench_socket_filetrans',`
+  filetrans_pattern($1, var_run_t, workbench_runtime_t, sock_file, $2)
+')
+
+######################################
+## <summary>
+##  Set file transition rules for shared permissions on named files
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`workbench_named_filetrans',`
+  # TODO: maybe some of these could be made narrower
+  workbench_socket_filetrans($1, "rserver.socket")
+  workbench_socket_filetrans($1, "rserver-launcher.socket")
+  workbench_socket_filetrans($1, "rserver-monitor.socket")
+  workbench_socket_filetrans($1, "rserver-admin.socket")
+  workbench_socket_filetrans($1, "user-service.socket")
+  workbench_socket_filetrans($1, "session-server-rpc.socket")
+  filetrans_pattern($1, var_run_t, workbench_file_t, dir, "rstudio-server")
+  files_var_lib_filetrans($1, workbench_file_t, dir, "rstudio-launcher")
+  files_var_lib_filetrans($1, workbench_file_t, dir, "rstudio-server")
+  files_var_lib_filetrans($1, workbench_file_t, file, "session-rpc-key")
+  files_var_lib_filetrans($1, workbench_file_t, dir, ".local")
+  files_var_lib_filetrans($1, workbench_file_t, dir, ".config")
+  files_var_lib_filetrans($1, workbench_file_t, dir, ".prof")
+  files_lock_filetrans($1, workbench_lock_t, dir, "rstudio-server")
+  files_etc_filetrans($1, workbench_file_t, dir, "rstudio")
+  logging_log_filetrans($1, workbench_file_t, dir, "rstudio")
+  filetrans_pattern($1, root_t, workbench_file_t, file, ".rstudio-desktop")
+')
+
+######################################
+## <summary>
+##  Set file transition rules for shared permissions
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`workbench_common_filetrans',`
+  files_usr_filetrans($1, workbench_file_t, dir)
+  files_usr_filetrans($1, workbench_file_t, file)
+  files_var_filetrans($1, workbench_file_t, dir)
+  files_var_filetrans($1, workbench_file_t, file)
+  files_var_lib_filetrans($1, workbench_file_t, dir)
+  files_var_lib_filetrans($1, workbench_file_t, file)
+  files_tmp_filetrans($1, workbench_file_t, dir)
+  files_tmp_filetrans($1, workbench_file_t, file)
+  files_etc_filetrans($1, workbench_file_t, dir)
+  files_etc_filetrans($1, workbench_file_t, file)
+  logging_log_filetrans($1, workbench_file_t, file)
+  files_lock_filetrans($1, workbench_lock_t, dir)
+  files_lock_filetrans($1, workbench_lock_t, file)
+  ifdef(`has_runtime', `
+    files_runtime_filetrans($1, workbench_runtime_t, file)
+    files_runtime_filetrans($1, workbench_runtime_t, sock_file)
+    files_runtime_filetrans($1, workbench_runtime_t, fifo_file)
+    files_runtime_filetrans($1, workbench_runtime_t, dir)
+  ',`
+    files_pid_filetrans($1, workbench_runtime_t, file)
+    files_pid_filetrans($1, workbench_runtime_t, sock_file)
+    files_pid_filetrans($1, workbench_runtime_t, fifo_file)
+    files_pid_filetrans($1, workbench_runtime_t, dir)
+  ')
+  workbench_named_filetrans($1)
+')
+
+######################################
+## <summary>
+##  Allow the domain to read and execute files in user home folders
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`workbench_user_home',`
+  # read/write files in home folders
+  userdom_manage_home_role(system_r, $1)
+  ifdef(`has_userdom_admin',`
+    userdom_manage_admin_files($1)
+    userdom_manage_admin_dirs($1)
+  ')
+  ifdef(`has_gconf',`gnome_read_generic_data_home_files($1)')
+  ifdef(`has_xdg_data',`xdg_manage_data($1)')
+
+  # execute binaries in home folders
+  allow $1 user_home_t:file { execute execute_no_trans map };
+  ifdef(`has_gconf',`allow $1 gconf_home_t:file { execute map };')
+  ifdef(`has_userdom_admin',`allow $1 admin_home_t:file { execute map };')
+  ifdef(`has_xdg_data',`allow $1 xdg_data_t:file { execute map };')
+')
+
+######################################
+## <summary>
+##  Apply permissions shared between workbench_t, workbench_server_t, and workbench_worker_t
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`workbench_common_read',`
+  # read Workbench domain information
+  allow $1 workbench_domain:dir list_dir_perms;
+  allow $1 workbench_domain:file read_file_perms;
+  allow $1 workbench_domain:process { getattr };
+  allow $1 workbench_file:lnk_file { read };
+  allow $1 workbench_server_t:lnk_file { read };
+
+  # run core userspace binaries and shells, load userspace libraries
+  corecmd_read_bin_files($1)
+  corecmd_exec_bin($1)
+  corecmd_exec_shell($1)
+  corecmd_shell_domtrans($1, workbench_worker_t)
+  allow $1 shell_exec_t:file { entrypoint execute_no_trans execute };
+  allow $1 lib_t:file { execute_no_trans getattr open read };
+
+  # use ldd
+  libs_exec_ld_so($1)
+
+  # exec/kill other non-server Workbench programs and share fds
+  allow $1 workbench_exec_t:file { execute execute_no_trans getattr open read map ioctl };
+  allow $1 workbench_worker_exec_t:file { execute execute_no_trans getattr open read map ioctl };
+  allow $1 workbench_server_exec_t:file { getattr open read map ioctl };
+  allow $1 workbench_t:capability { kill };
+  allow $1 workbench_worker_t:capability { kill };
+  allow $1 workbench_t:process { sigkill signal };
+  allow $1 workbench_worker_t:process { sigkill signal };
+  domain_use_interactive_fds($1)
+
+  # apply common permissions to Workbench sockets
+  workbench_sock_file($1, workbench_file_t)
+  workbench_sock_file($1, workbench_runtime_t)
+  workbench_sock_file($1, workbench_t)
+  workbench_sock_file($1, workbench_server_t)
+  workbench_sock_file($1, workbench_worker_t)
+
+  # inspect cgroup files and extended attributes
+  fs_list_cgroup_dirs($1)
+  fs_read_cgroup_files($1)
+  fs_getattr_xattr_fs($1)
+
+  # work with /proc and /sys
+  # init_t is /proc/1/, needed to tell which init system is in use
+  allow $1 init_t:dir list_dir_perms;
+  allow $1 init_t:file read_file_perms;
+  allow $1 init_t:lnk_file read_lnk_file_perms;
+  kernel_list_proc($1)
+  kernel_getattr_proc($1)
+  kernel_search_network_sysctl($1)
+  kernel_read_net_sysctls($1)
+  kernel_read_vm_sysctls($1)
+  kernel_read_kernel_sysctls($1)
+  ifdef(`has_search_sysctls',`
+    kernel_search_fs_sysctls($1)
+    kernel_read_vm_overcommit_sysctl($1)
+  ',`
+    kernel_read_vm_overcommit_sysctls($1)
+  ')
+  ifdef(`has_read_proc', `
+    kernel_read_proc_files($1)
+    kernel_read_state($1)
+  ',`
+    kernel_read_system_state($1)
+  ')
+  kernel_read_proc_symlinks($1)
+  kernel_read_network_state($1)
+  dev_read_sysfs($1)
+
+  # work with ptys
+  userdom_use_user_terminals($1)
+  userdom_use_inherited_user_terminals($1)
+
+  # resolve DNS, access network config, connect/bind to sockets, use ping
+  sysnet_dns_name_resolve($1)
+  corenet_tcp_connect_http_port($1)
+  corenet_tcp_connect_generic_port($1)
+  corenet_tcp_connect_all_unreserved_ports($1)
+  corenet_tcp_bind_generic_port($1)
+  corenet_tcp_bind_all_unreserved_ports($1)
+  corenet_all_recvfrom_unlabeled($1)
+  nis_use_ypbind_uncond($1)
+  hostname_exec($1)
+  netutils_domtrans_ping($1)
+
+  # talk to hostnamed via D-BUS
+  ifdef(`has_hostnamed_config', `systemd_hostnamed_read_config($1)')
+  ifdef(`has_xdg_config', `xdg_read_config_files($1)')
+  ifdef(`systemd_dbus_chat_hostnamed', `systemd_dbus_chat_hostnamed($1)')
+
+  # file transition rules
+  workbench_common_filetrans($1)
+
+  # read system configuration files
+  files_read_usr_files($1)
+  files_read_usr_symlinks($1)
+  files_read_etc_files($1)
+  files_read_config_files($1)
+  miscfiles_read_localization($1)
+  miscfiles_read_all_certs($1)
+
+  # read files/dirs with open permissions
+  files_read_world_readable_files($1)
+  files_list_default($1)
+
+  # read files in /var and /tmp
+  files_list_var_lib($1)
+  files_read_var_lib_files($1)
+  files_read_var_lib_symlinks($1)
+  logging_list_logs($1)
+  logging_read_all_logs($1)
+  fs_getattr_tmpfs($1)
+  fs_manage_tmpfs_files($1)
+  fs_manage_tmpfs_dirs($1)
+
+  # read man pages
+  miscfiles_read_man_pages($1)
+
+  # read/write temp files
+  files_manage_generic_tmp_dirs($1)
+  files_manage_generic_tmp_files($1)
+  ifdef(`has_map_generic_tmp', `files_map_generic_tmp_files($1)')
+  userdom_manage_user_tmp_dirs($1)
+  userdom_manage_user_tmp_files($1)
+  ifdef(`has_map_user_tmp',
+    `userdom_map_user_tmp_files($1)',
+    `userdom_map_tmp_files($1)'
+  )
+  allow $1 tmp_t:sock_file manage_sock_file_perms;
+')
+
+######################################
+## <summary>
+##  Allow the specified domain to transition into the workbench_server_t domain
+##  but only through the workbench_initrc_t entrypoints
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`workbench_domtrans_from',`
+  allow $1 workbench_initrc_t:file { getattr open read execute execute_no_trans };
+  allow $1 workbench_domain:process { transition };
+  allow $1 workbench_server_t:file { getattr open read execute execute_no_trans };
+  domtrans_pattern($1, workbench_initrc_t, workbench_server_t)
+  domtrans_pattern($1, workbench_server_t, workbench_server_t) # is this necessary?
+')
+
+######################################
+## <summary>
+##  Allow the specified domain to transition into the workbench_server_t domain
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`workbench_server_domtrans_from',`
+  workbench_domtrans_from($1)
+  allow $1 workbench_server_exec_t:file { execute execute_no_trans open read map ioctl };
+  allow $1 workbench_initrc_t:file { entrypoint };
+  domtrans_pattern($1, workbench_server_exec_t, workbench_server_t)
+')
+
+######################################
+## <summary>
+##  Apply permissions shared between workbench_t and workbench_server_t
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`workbench_common',`
+  workbench_common_read($1)
+  workbench_user_home($1)
+
+  # manage own gid/uid, override filesystem DACs as root, file ownership, rlimits, run code from RAM
+  allow $1 self:capability { chown dac_override dac_read_search fowner fsetid setgid setuid };
+  allow $1 self:process { getpgid setpgid setrlimit execmem getcap getsched };
+  allow $1 self:passwd rootok;
+
+  # use all user identity resolvers and resolve permissions
+  auth_use_pam($1)
+  selinux_compute_access_vector($1)
+
+  # exec server programs
+  allow $1 workbench_server_exec_t:file { execute_no_trans open read map ioctl }; # execute?
+
+  # write to the syslog
+  logging_send_syslog_msg($1)
+  ifdef(`has_refpolicy_syslog',`logging_read_syslog_pid($1)')
+  logging_mmap_journal($1)
+  ifdef(`has_systemd_journal',`systemd_read_journal_files($1)')
+
+  # mount directories
+  ifdef(`has_rootfs',
+    `files_mounton_rootfs($1)',
+    `files_mounton_root($1)'
+  )
+')

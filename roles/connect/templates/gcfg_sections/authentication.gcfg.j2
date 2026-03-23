@@ -1,0 +1,84 @@
+[Authentication]
+Provider = {{ connect_auth_provider }}
+{% if connect_auth_name %}
+Name = {{ connect_auth_name }}
+{% endif %}
+Lifetime = {{ connect_auth_lifetime }}
+Inactivity = {{ connect_auth_inactivity }}
+APIKeyAuth = {{ connect_auth_api_key_auth | lower }}
+
+{% if connect_auth_provider == 'pam' %}
+[PAM]
+Service = {{ connect_auth_pam_service }}
+ForwardPassword = {{ connect_auth_pam_forward_password | lower }}
+UseSession = {{ connect_auth_pam_use_session | lower }}
+{% endif %}
+
+{% if connect_auth_provider == 'oauth2' %}
+[OAuth2]
+{% if connect_auth_oauth2_client_id %}
+ClientId = {{ connect_auth_oauth2_client_id }}
+{% endif %}
+{% if connect_auth_oauth2_client_secret %}
+ClientSecret = {{ connect_auth_oauth2_client_secret }}
+{% endif %}
+{% if connect_auth_oauth2_openid_issuer %}
+OpenIDConnectIssuer = {{ connect_auth_oauth2_openid_issuer }}
+{% endif %}
+{% if connect_auth_oauth2_scopes %}
+Scopes = {{ connect_auth_oauth2_scopes }}
+{% endif %}
+UniqueIdClaim = {{ connect_auth_oauth2_unique_id_claim }}
+EmailClaim = {{ connect_auth_oauth2_email_claim }}
+{% if connect_auth_oauth2_username_claim %}
+UsernameClaim = {{ connect_auth_oauth2_username_claim }}
+{% endif %}
+RegisterOnFirstLogin = {{ connect_auth_oauth2_register_on_first_login | lower }}
+{% endif %}
+
+{% if connect_auth_provider == 'saml' %}
+[SAML]
+{% if connect_auth_saml_idp_metadata_url %}
+IdPMetaDataURL = {{ connect_auth_saml_idp_metadata_url }}
+{% endif %}
+{% if connect_auth_saml_idp_metadata_path %}
+IdPMetaDataPath = {{ connect_auth_saml_idp_metadata_path }}
+{% endif %}
+{% if connect_auth_saml_sp_entity_id %}
+SPEntityId = {{ connect_auth_saml_sp_entity_id }}
+{% endif %}
+UniqueIdAttribute = {{ connect_auth_saml_unique_id_attribute }}
+{% if connect_auth_saml_username_attribute %}
+UsernameAttribute = {{ connect_auth_saml_username_attribute }}
+{% endif %}
+{% if connect_auth_saml_email_attribute %}
+EmailAttribute = {{ connect_auth_saml_email_attribute }}
+{% endif %}
+{% endif %}
+
+{% if connect_auth_provider == 'ldap' %}
+[LDAP]
+{% if connect_auth_ldap_server_address %}
+ServerAddress = {{ connect_auth_ldap_server_address }}
+{% endif %}
+{% if connect_auth_ldap_bind_dn %}
+BindDN = {{ connect_auth_ldap_bind_dn }}
+{% endif %}
+{% if connect_auth_ldap_bind_password %}
+BindPassword = {{ connect_auth_ldap_bind_password }}
+{% endif %}
+{% if connect_auth_ldap_user_search_base_dn %}
+UserSearchBaseDN = {{ connect_auth_ldap_user_search_base_dn }}
+{% endif %}
+UserObjectClass = {{ connect_auth_ldap_user_object_class }}
+UserUniqueIdAttribute = {{ connect_auth_ldap_user_unique_id_attribute }}
+UserEmailAttribute = {{ connect_auth_ldap_user_email_attribute }}
+UserFirstNameAttribute = {{ connect_auth_ldap_user_first_name_attribute }}
+UserLastNameAttribute = {{ connect_auth_ldap_user_last_name_attribute }}
+{% if connect_auth_ldap_group_search_base_dn %}
+GroupSearchBaseDN = {{ connect_auth_ldap_group_search_base_dn }}
+{% endif %}
+{% if connect_auth_ldap_group_object_class %}
+GroupObjectClass = {{ connect_auth_ldap_group_object_class }}
+{% endif %}
+{% endif %}

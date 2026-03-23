@@ -1,0 +1,34 @@
+## Python Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#Python
+
+# @var connect_python_enabled:type: boolean
+# @var connect_python_enabled:description: Enable Python support
+connect_python_enabled: true
+
+# @var connect_python_executable:type: string
+# @var connect_python_executable:description: Path to single Python executable
+connect_python_executable: ""
+
+# @var connect_python_executables:type: list
+# @var connect_python_executables:description: List of Python executable paths (explicit)
+connect_python_executables: []
+
+# @var connect_python_base_path:type: string
+# @var connect_python_base_path:description: Base path for Python installations (fallback if python_installation_dir not set)
+connect_python_base_path: /opt/python
+
+# @var connect_python_bin_path:type: string
+# @var connect_python_bin_path:description: Relative path to Python binary within version directory
+connect_python_bin_path: bin/python3
+# Dynamic executable generation:
+# If python_interpreter_versions is defined (from data_science_core role),
+# executables are automatically generated using:
+#   - python_installation_dir (from data_science_core) if set
+#   - connect_python_base_path as fallback
+#
+# Path: {{ python_installation_dir | default(connect_python_base_path) }}/{{ version }}/{{ connect_python_bin_path }}
+#
+# Example: With python_interpreter_versions: ["3.12", "3.13"]
+# Generates:
+#   /opt/python/3.12/bin/python3
+#   /opt/python/3.13/bin/python3

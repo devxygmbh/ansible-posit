@@ -12,6 +12,26 @@ workbench_general_local_test_user_name: posit
 # @var workbench_general_local_test_user_password:description: Local test user password
 workbench_general_local_test_user_password: posit
 
+## Artifactory Configuration
+# @var workbench_artifactory_enabled:type: boolean
+# @var workbench_artifactory_enabled:description: Enable JFrog Artifactory for downloads (R, Python, Posit software)
+workbench_artifactory_enabled: false
+# @var workbench_artifactory_base_url:type: string
+# @var workbench_artifactory_base_url:description: Base URL for JFrog Artifactory
+workbench_artifactory_base_url: ""
+# @var workbench_artifactory_posit_repo:type: string
+# @var workbench_artifactory_posit_repo:description: Artifactory repository path for Posit software
+workbench_artifactory_posit_repo: "posit-software"
+# @var workbench_artifactory_username:type: string
+# @var workbench_artifactory_username:description: Artifactory username (if auth required)
+workbench_artifactory_username: ""
+# @var workbench_artifactory_password:type: string
+# @var workbench_artifactory_password:description: Artifactory password/token (if auth required)
+workbench_artifactory_password: ""
+# @var workbench_artifactory_cran_repo:type: string
+# @var workbench_artifactory_cran_repo:description: Artifactory repository path for CRAN packages
+workbench_artifactory_cran_repo: "cran-remote"
+
 ## Server
 # @var workbench_server_user:type: string
 # @var workbench_server_user:description: Server user
@@ -40,6 +60,9 @@ workbench_server_server_project_sharing: 1
 # @var workbench_server_server_admin_enabled:type: integer
 # @var workbench_server_server_admin_enabled:description: Server admin enabled
 workbench_server_server_admin_enabled: 1
+# @var workbench_server_server_admin_group:type: string
+# @var workbench_server_server_admin_group:description: Limits admin dashboard access to users belonging to the specified group
+workbench_server_server_admin_group: ""
 # @var workbench_server_server_load_balancing_enabled:type: integer
 # @var workbench_server_server_load_balancing_enabled:description: Server load balancing enabled
 workbench_server_server_load_balancing_enabled: 0
@@ -49,6 +72,9 @@ workbench_server_server_versions_scan: 0
 # @var workbench_server_server_product_check:type: integer
 # @var workbench_server_server_product_check:description: Server versions scan
 workbench_server_server_product_check: 0
+# @var workbench_server_server_health_check_enabled:type: integer
+# @var workbench_server_server_health_check_enabled:description: Enable the /health-check endpoint for monitoring
+workbench_server_server_health_check_enabled: 1
 
 # @var workbench_server_launcher_address:type: string
 # @var workbench_server_launcher_address:description: Launcher address
@@ -74,9 +100,36 @@ workbench_server_launcher_verify_ssl_certs: 1
 # @var workbench_server_launcher_session_callback_verify_ssl_certs:type: integer
 # @var workbench_server_launcher_session_callback_verify_ssl_certs:description: Launcher session callback verify SSL certificates
 workbench_server_launcher_session_callback_verify_ssl_certs: 1
-# @var workbench_server_launcher_enable_cgroups:type: integer
-# @var workbench_server_launcher_enable_cgroups:description: Enables/disables cgroups for local launcher resource limits
-workbench_server_launcher_enable_cgroups: 0
+# @var workbench_launcher_enable_cgroups:type: integer
+# @var workbench_launcher_enable_cgroups:description: Enables/disables cgroups for local launcher resource limits (requires cgroups v2 delegation on RHEL 9+)
+workbench_launcher_enable_cgroups: 0
+
+### Local Plugin (launcher.local.conf)
+# @var workbench_launcher_local_job_expiry_hours:type: integer
+# @var workbench_launcher_local_job_expiry_hours:description: Hours before completed jobs are removed from the system
+workbench_launcher_local_job_expiry_hours: 24
+# @var workbench_launcher_local_save_unspecified_output:type: integer
+# @var workbench_launcher_local_save_unspecified_output:description: Save stdout/stderr for jobs that did not specify output
+workbench_launcher_local_save_unspecified_output: 1
+# @var workbench_launcher_local_unprivileged:type: integer
+# @var workbench_launcher_local_unprivileged:description: Run child processes without root permissions
+workbench_launcher_local_unprivileged: 0
+
+# @var workbench_launcher_local_resources:type: list
+# @var workbench_launcher_local_resources:description: >
+#   Named resource profiles for /etc/rstudio/launcher.local.resources.conf.
+#   Defines selectable resource profiles shown in the session launcher UI.
+#   Each entry has: id (section name), and required keys: cpus, mem_mb. Optional: name.
+# @var workbench_launcher_local_resources:example: >
+#   workbench_launcher_local_resources:
+#     - { id: "default", name: "Default (1 CPU, 4G mem)", cpus: 1, mem_mb: 4096 }
+#     - { id: "medium", name: "Medium (2 CPUs, 8G mem)", cpus: 2, mem_mb: 8192 }
+#     - { id: "large", name: "Large (4 CPUs, 16G mem)", cpus: 4, mem_mb: 16384 }
+workbench_launcher_local_resources:
+  - id: "default"
+    name: "Default (2 CPU, 4G mem)"
+    cpus: 2
+    mem_mb: 4096
 
 # @var workbench_server_www_thread_pool_size:type: integer
 # @var workbench_server_www_thread_pool_size:description: WWW thread pool size
@@ -84,6 +137,9 @@ workbench_server_www_thread_pool_size: 2
 # @var workbench_server_www_enable_origin_check:type: integer
 # @var workbench_server_www_enable_origin_check:description: WWW enable origin check
 workbench_server_www_enable_origin_check: 0
+# @var workbench_server_www_same_site:type: string
+# @var workbench_server_www_same_site:description: SameSite attribute for cookies (none, lax, strict)
+workbench_server_www_same_site: lax
 # @var workbench_server_www_ssl_enabled:type: integer
 # @var workbench_server_www_ssl_enabled:description: WWW SSL enabled
 workbench_server_www_ssl_enabled: 0
@@ -117,9 +173,15 @@ workbench_server_db_connection_timeout: 15
 # @var workbench_server_auth_timeout_minutes:type: integer
 # @var workbench_server_auth_timeout_minutes:description: Auth timeout minutes
 workbench_server_auth_timeout_minutes: 5040
+# @var workbench_server_auth_required_user_group:type: string
+# @var workbench_server_auth_required_user_group:description: Specifies a group that users must be in to be able to use Workbench
+workbench_server_auth_required_user_group: ""
 # @var workbench_server_auth_pam_require_password_prompt:type: integer
 # @var workbench_server_auth_pam_require_password_prompt:description: Auth PAM require password prompt
 workbench_server_auth_pam_require_password_prompt: 1
+# @var workbench_server_auth_encrypt_password:type: integer
+# @var workbench_server_auth_encrypt_password:description: Encrypt password sent from login form (recommended to keep enabled)
+workbench_server_auth_encrypt_password: 1
 # @var workbench_server_auth_pam_sessions_enabled:type: integer
 # @var workbench_server_auth_pam_sessions_enabled:description: Auth PAM sessions enabled
 workbench_server_auth_pam_sessions_enabled: 1
@@ -166,6 +228,9 @@ workbench_server_monitor_audit_data_path: /var/lib/rstudio-server/audit
 # @var workbench_server_monitor_audit_r_console:type: string
 # @var workbench_server_monitor_audit_r_console:description: Monitor audit R console
 workbench_server_monitor_audit_r_console: none
+# @var workbench_server_monitor_audit_r_console_format:type: string
+# @var workbench_server_monitor_audit_r_console_format:description: Audit R console format (csv or json)
+workbench_server_monitor_audit_r_console_format: csv
 # @var workbench_server_monitor_shared_storage_path:type: string
 # @var workbench_server_monitor_shared_storage_path:description: Monitor shared storage path
 workbench_server_monitor_shared_storage_path: /var/lib/rstudio-server/shared-storage
@@ -261,7 +326,7 @@ workbench_database_database: workbenchdb
 workbench_database_username: workbench_db_user
 # @var workbench_database_password:type: string
 # @var workbench_database_password:description: Database password
-workbench_database_password: workbench_db_password
+workbench_database_password: ""
 # @var workbench_database_port:type: integer
 # @var workbench_database_port:description: Database port
 workbench_database_port: 5432
@@ -272,14 +337,51 @@ workbench_database_connection_timeout_seconds: 10
 # @var workbench_database_connection_uri:description: Database connection URI
 workbench_database_connection_uri: ""
 
+## Audit Database
+# https://docs.posit.co/ide/server-pro/admin/database/audit/configuration.html
+
+# @var workbench_audit_database_enabled:type: boolean
+# @var workbench_audit_database_enabled:description: Enable audit database configuration
+workbench_audit_database_enabled: true
+# @var workbench_audit_database_provider:type: string
+# @var workbench_audit_database_provider:description: Audit database provider (sqlite or postgresql)
+workbench_audit_database_provider: sqlite
+# @var workbench_audit_database_directory:type: string
+# @var workbench_audit_database_directory:description: Directory for SQLite audit database
+workbench_audit_database_directory: /var/lib/rstudio-server
+# @var workbench_audit_database_host:type: string
+# @var workbench_audit_database_host:description: PostgreSQL host for audit database
+workbench_audit_database_host: localhost
+# @var workbench_audit_database_port:type: integer
+# @var workbench_audit_database_port:description: PostgreSQL port for audit database
+workbench_audit_database_port: 5432
+# @var workbench_audit_database_database:type: string
+# @var workbench_audit_database_database:description: PostgreSQL database name for audit database
+workbench_audit_database_database: audit_db
+# @var workbench_audit_database_username:type: string
+# @var workbench_audit_database_username:description: PostgreSQL username for audit database
+workbench_audit_database_username: ""
+# @var workbench_audit_database_password:type: string
+# @var workbench_audit_database_password:description: PostgreSQL password for audit database
+workbench_audit_database_password: ""
+# @var workbench_audit_database_connection_uri:type: string
+# @var workbench_audit_database_connection_uri:description: PostgreSQL connection URI (overrides host/port/database)
+workbench_audit_database_connection_uri: ""
+# @var workbench_audit_database_pool_size:type: integer
+# @var workbench_audit_database_pool_size:description: Connection pool size (0 for automatic)
+workbench_audit_database_pool_size: 0
+
 ## Fonts
 
 # @var workbench_fonts_install_custom_fonts:type: boolean
-# @var workbench_fonts_install_custom_fonts:description: Install custom fonts
+# @var workbench_fonts_install_custom_fonts:description: Install custom fonts (set to false to skip external font downloads)
 workbench_fonts_install_custom_fonts: true
 # @var workbench_fonts_jetbrains_mono_version:type: string
 # @var workbench_fonts_jetbrains_mono_version:description: JetBrains Mono version
 workbench_fonts_jetbrains_mono_version: "2.304"
+# @var workbench_fonts_jetbrains_mono_url:type: string
+# @var workbench_fonts_jetbrains_mono_url:description: Download URL for JetBrains Mono font archive (override for Artifactory)
+workbench_fonts_jetbrains_mono_url: "https://github.com/JetBrains/JetBrainsMono/releases/download/v{{ workbench_fonts_jetbrains_mono_version }}/JetBrainsMono-{{ workbench_fonts_jetbrains_mono_version }}.zip"
 
 ## Launcher
 # https://docs.posit.co/ide/server-pro/reference/launcher_conf.html
@@ -310,6 +412,12 @@ workbench_launcher_cluster_exe: /usr/lib/rstudio-server/bin/rstudio-local-launch
 # @var workbench_launcher_server_enable_debug_logging:type: integer
 # @var workbench_launcher_server_enable_debug_logging:description: Launcher server enable debug logging
 workbench_launcher_server_enable_debug_logging: 0
+# @var workbench_launcher_logging_dir:type: string
+# @var workbench_launcher_logging_dir:description: Directory where launcher writes log files
+workbench_launcher_logging_dir: /var/log/rstudio/launcher
+# @var workbench_launcher_scratch_path:type: string
+# @var workbench_launcher_scratch_path:description: Scratch directory where the launcher and its plugins write temporary state
+workbench_launcher_scratch_path: /var/lib/rstudio-launcher
 
 # @var workbench_launcher_enable_ssl:type: integer
 # @var workbench_launcher_enable_ssl:description: Launcher enable SSL
@@ -320,6 +428,13 @@ workbench_launcher_certificate_file: /var/lib/rstudio-launcher/localhost.crt
 # @var workbench_launcher_certificate_key_file:type: string
 # @var workbench_launcher_certificate_key_file:description: Launcher certificate key file
 workbench_launcher_certificate_key_file: /var/lib/rstudio-launcher/localhost.key
+# @var workbench_server_launcher_audited_jobs_private_key_path:type: string
+# @var workbench_server_launcher_audited_jobs_private_key_path:description: Path to the private key used for signing audited job submissions
+workbench_server_launcher_audited_jobs_private_key_path: /etc/rstudio/launcher.pem
+
+# @var workbench_launcher_env:type: dict
+# @var workbench_launcher_env:description: Additional environment variables for launcher sessions (launcher-env file)
+workbench_launcher_env: {}
 
 ### Logging (logging.conf)
 
@@ -358,6 +473,15 @@ workbench_logging_warn_syslog: 1
 ### Jupyter (jupyter.conf)
 # https://docs.posit.co/ide/server-pro/jupyter_sessions/configuration.html
 
+# @var workbench_jupyter_install_packages:type: boolean
+# @var workbench_jupyter_install_packages:description: Install Jupyter packages via pip (set to false to skip external pip installs)
+workbench_jupyter_install_packages: true
+# @var workbench_jupyter_pip_index_url:type: string
+# @var workbench_jupyter_pip_index_url:description: Custom pip index URL (e.g., Artifactory PyPI proxy, leave empty for default PyPI)
+workbench_jupyter_pip_index_url: ""
+# @var workbench_jupyter_pip_trusted_host:type: string
+# @var workbench_jupyter_pip_trusted_host:description: Trusted host for pip (hostname only, no protocol)
+workbench_jupyter_pip_trusted_host: ""
 # @var workbench_jupyter_notebooks_enabled:type: integer
 # @var workbench_jupyter_notebooks_enabled:description: Jupyter notebooks enabled
 workbench_jupyter_notebooks_enabled: 0

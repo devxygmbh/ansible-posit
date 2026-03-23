@@ -1,0 +1,20 @@
+[Git]
+Enabled = {{ connect_git_enabled | lower }}
+{% if connect_git_executable %}
+Executable = {{ connect_git_executable }}
+{% endif %}
+PollingFrequency = {{ connect_git_polling_frequency }}
+Concurrency = {{ connect_git_concurrency }}
+
+{% for cred in connect_git_credentials %}
+[GitCredential]
+Host = {{ cred.host }}
+Username = {{ cred.username }}
+Password = {{ cred.password }}
+{% if cred.protocol is defined %}
+Protocol = {{ cred.protocol }}
+{% else %}
+Protocol = https
+{% endif %}
+
+{% endfor %}

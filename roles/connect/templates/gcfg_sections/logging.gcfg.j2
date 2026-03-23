@@ -1,0 +1,10 @@
+[Logging]
+ServiceLog = {{ connect_logging_service_log }}
+ServiceLogLevel = {{ connect_logging_service_log_level }}
+ServiceLogFormat = {{ connect_logging_service_log_format }}
+AccessLog = {{ connect_logging_access_log }}
+AccessLogFormat = {{ connect_logging_access_log_format }}
+{% if connect_logging_audit_log %}
+AuditLog = {{ connect_logging_audit_log }}
+AuditLogFormat = {{ connect_logging_audit_log_format }}
+{% endif %}

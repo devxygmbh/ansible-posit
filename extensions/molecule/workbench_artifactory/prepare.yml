@@ -1,0 +1,77 @@
+# Prepare phase - Set up a mock HTTP server to simulate Artifactory
+# This downloads the actual files and serves them via a simple HTTP server
+# Note: With network_mode=host, all containers share the network stack.
+# Only one HTTP server can bind port 8080, so every container must have
+# all OS-specific files available regardless of its own OS family.
+
+- name: Prepare mock Artifactory
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Install Python HTTP server dependencies
+      ansible.builtin.package:
+        name:
+          - python3
+        state: present
+
+    - name: Define architecture variables
+      ansible.builtin.set_fact:
+        wb_version: "2025.09.0-387.pro2"
+        wb_rhel_arch: "{{ 'aarch64' if ansible_architecture == 'aarch64' else 'x86_64' }}"
+        wb_rhel_arch_download: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x86_64' }}"
+        wb_deb_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }}"
+
+    - name: Create mock Artifactory directory structure
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - /opt/mock-artifactory
+        - /opt/mock-artifactory/posit-software
+        - "/opt/mock-artifactory/posit-software/jammy/{{ wb_deb_arch }}"
+        - /opt/mock-artifactory/posit-drivers
+
+    - name: Download Posit Workbench (RedHat) to mock Artifactory
+      ansible.builtin.get_url:
+        url: "https://s3.amazonaws.com/rstudio-ide-build/server/rhel9/{{ wb_rhel_arch_download }}/rstudio-workbench-rhel-{{ wb_version }}-{{ wb_rhel_arch }}.rpm"
+        dest: "/opt/mock-artifactory/posit-software/rstudio-workbench-rhel-{{ wb_version }}-{{ wb_rhel_arch }}.rpm"
+        mode: "0644"
+      failed_when: false
+
+    - name: Download Posit Workbench (Ubuntu) to mock Artifactory
+      ansible.builtin.get_url:
+        url: "https://s3.amazonaws.com/rstudio-ide-build/server/jammy/{{ wb_deb_arch }}/rstudio-workbench-{{ wb_version }}-{{ wb_deb_arch }}.deb"
+        dest: "/opt/mock-artifactory/posit-software/jammy/{{ wb_deb_arch }}/rstudio-workbench-{{ wb_version }}-{{ wb_deb_arch }}.deb"
+        mode: "0644"
+      failed_when: false
+
+    - name: Download DB Drivers to mock Artifactory
+      ansible.builtin.get_url:
+        url: "https://cdn.rstudio.com/drivers/7C152C12/installer/rstudio-drivers-2025.03.0.tar"
+        dest: "/opt/mock-artifactory/posit-drivers/rstudio-drivers-2025.03.0.tar"
+        mode: "0644"
+      failed_when: false
+
+    - name: Start mock Artifactory HTTP server in background
+      ansible.builtin.shell: |
+        nohup python3 -m http.server 8080 --directory /opt/mock-artifactory > /tmp/mock-artifactory.log 2>&1 &
+        echo $!
+      register: http_server_pid
+      changed_when: true
+
+    - name: Wait for HTTP server to be ready
+      ansible.builtin.wait_for:
+        port: 8080
+        delay: 2
+        timeout: 30
+
+    - name: Test HTTP server accessibility
+      ansible.builtin.uri:
+        url: "http://localhost:8080/"
+        return_content: false
+      register: http_test
+      retries: 3
+      delay: 5
+      until: http_test.status == 200

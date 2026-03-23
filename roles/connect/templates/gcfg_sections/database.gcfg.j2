@@ -1,0 +1,25 @@
+[Database]
+Provider = {{ connect_database_provider }}
+MaxIdleConnections = {{ connect_database_max_idle_connections }}
+MaxOpenConnections = {{ connect_database_max_open_connections }}
+ConnectionMaxLifetime = {{ connect_database_connection_max_lifetime }}
+
+{% if connect_database_provider == 'SQLite' %}
+[SQLite]
+Dir = {{ connect_database_sqlite_dir }}
+{% endif %}
+
+{% if connect_database_provider == 'PostgreSQL' %}
+[Postgres]
+{% if connect_database_postgres_url %}
+URL = {{ connect_database_postgres_url }}
+{% else %}
+Host = {{ connect_database_postgres_host }}
+Port = {{ connect_database_postgres_port }}
+Database = {{ connect_database_postgres_database }}
+User = {{ connect_database_postgres_user }}
+{% if connect_database_postgres_password %}
+Password = {{ connect_database_postgres_password }}
+{% endif %}
+{% endif %}
+{% endif %}

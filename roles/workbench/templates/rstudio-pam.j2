@@ -1,10 +1,6 @@
-{% if workbench_server_auth_openid == 1 or workbench_server_auth_saml == 1 %}
-# This is needed in addition when using OIDC auth (see https://docs.rstudio.com/ide/server-pro/latest/r-sessions.html#session-pam-profile)
-account sufficient pam_rootok.so
-
-# This allows root to su without passwords (this is required)
+# Allow root to open PAM sessions on behalf of users (required for Job Launcher and external auth)
 auth sufficient pam_rootok.so
-{% endif %}
+account sufficient pam_rootok.so
 {% if ansible_facts['os_family'] == 'RedHat' %}
 # from https://support.posit.co/hc/en-us/articles/360016587973-Integrating-RStudio-Workbench-RStudio-Server-Pro-with-Active-Directory-using-CentOS-RHEL
 #%PAM-1.0

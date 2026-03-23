@@ -1,0 +1,23 @@
+## HTTP Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#HTTP
+
+# @var connect_http_listen:type: string
+# @var connect_http_listen:description: Address and port to listen on for HTTP (e.g., :3939 or 0.0.0.0:3939)
+connect_http_listen: ":3939"
+# @var connect_http_unix_domain_socket:type: string
+# @var connect_http_unix_domain_socket:description: Unix domain socket for HTTP
+connect_http_unix_domain_socket: ""
+# @var connect_http_no_warning:type: boolean
+# @var connect_http_no_warning:description: Suppress HTTP warning in logs
+connect_http_no_warning: false
+# @var connect_http_force_secure:type: boolean
+# @var connect_http_force_secure:description: Force secure cookies even over HTTP (use behind SSL-terminating proxy)
+connect_http_force_secure: false
+
+## HTTP Redirect Configuration
+# @var connect_http_redirect_listen:type: string
+# @var connect_http_redirect_listen:description: HTTP redirect listen address (for HTTP to HTTPS redirect)
+connect_http_redirect_listen: ""
+# @var connect_http_redirect_target:type: string
+# @var connect_http_redirect_target:description: HTTP redirect target URL
+connect_http_redirect_target: ""

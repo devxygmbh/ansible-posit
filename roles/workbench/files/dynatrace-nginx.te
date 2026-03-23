@@ -1,0 +1,10 @@
+module dynatrace-nginx 1.0;
+
+require {
+  type httpd_t;
+  type NetworkManager_var_lib_t;
+  class dir { getattr read };
+}
+
+# Silence Dynatrace OneAgent cloud detection probing NetworkManager from nginx
+dontaudit httpd_t NetworkManager_var_lib_t:dir { getattr read };

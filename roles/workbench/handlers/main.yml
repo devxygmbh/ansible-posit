@@ -21,3 +21,7 @@
     state: restarted
     enabled: true
   ignore_errors: true
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd_service:
+    daemon_reload: true

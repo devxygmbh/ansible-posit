@@ -1,0 +1,36 @@
+role_name_check: 1
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+driver:
+  name: docker
+platforms:
+  - name: almalinux-9-dbdrivers
+    image: "devxygmbh/almalinux9-ansible"
+    pre_build_image: true
+  - name: ubuntu-2404-dbdrivers
+    image: "devxygmbh/ubuntu2404-ansible"
+    pre_build_image: true
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../roles
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
+    prepare: prepare.yml
+
+scenario:
+  test_sequence:
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    # - idempotence
+    - side_effect
+    - verify
+    - cleanup
+    - destroy

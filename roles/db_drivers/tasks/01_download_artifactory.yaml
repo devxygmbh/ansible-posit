@@ -1,0 +1,30 @@
+# Download Posit Professional Database Drivers from JFrog Artifactory
+# This task file is used when db_drivers_artifactory_enabled is true
+
+- name: Check if directory is empty
+  ansible.builtin.find:
+    paths: "{{ db_drivers_install_dir }}/rstudio-drivers-{{ db_drivers_version }}"
+  register: dir_content
+
+- name: Download Posit DB Drivers from Artifactory
+  when: dir_content.files | length == 0
+  ansible.builtin.get_url:
+    url: "{{ db_drivers_artifactory_base_url }}/{{ db_drivers_artifactory_repo }}/rstudio-drivers-{{ db_drivers_version }}.tar"
+    dest: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
+    mode: "0755"
+    url_username: "{{ db_drivers_artifactory_username if db_drivers_artifactory_username else omit }}"
+    url_password: "{{ db_drivers_artifactory_password if db_drivers_artifactory_password else omit }}"
+    force_basic_auth: "{{ true if db_drivers_artifactory_username else false }}"
+
+- name: Extract Posit DB Drivers
+  when: dir_content.files | length == 0 and not ansible_check_mode
+  ansible.builtin.unarchive:
+    src: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
+    dest: "{{ db_drivers_install_dir }}"
+    remote_src: true
+
+- name: Cleanup Posit DB Drivers tarball
+  when: dir_content.files | length == 0
+  ansible.builtin.file:
+    path: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
+    state: absent

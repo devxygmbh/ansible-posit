@@ -1,0 +1,21 @@
+## SMTP Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#SMTP
+
+# @var connect_smtp_host:type: string
+# @var connect_smtp_host:description: SMTP server host
+connect_smtp_host: ""
+# @var connect_smtp_port:type: integer
+# @var connect_smtp_port:description: SMTP server port
+connect_smtp_port: 25
+# @var connect_smtp_ssl:type: boolean
+# @var connect_smtp_ssl:description: Use SSL for SMTP connection
+connect_smtp_ssl: false
+# @var connect_smtp_starttls:type: string
+# @var connect_smtp_starttls:description: StartTLS mode (detect, always, never)
+connect_smtp_starttls: detect
+# @var connect_smtp_user:type: string
+# @var connect_smtp_user:description: SMTP authentication username
+connect_smtp_user: ""
+# @var connect_smtp_password:type: string
+# @var connect_smtp_password:description: SMTP authentication password
+connect_smtp_password: ""

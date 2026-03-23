@@ -1,0 +1,11 @@
+[SMTP]
+Host = {{ connect_smtp_host }}
+Port = {{ connect_smtp_port }}
+SSL = {{ connect_smtp_ssl | lower }}
+StartTLS = {{ connect_smtp_starttls }}
+{% if connect_smtp_user %}
+User = {{ connect_smtp_user }}
+{% endif %}
+{% if connect_smtp_password %}
+Password = {{ connect_smtp_password }}
+{% endif %}

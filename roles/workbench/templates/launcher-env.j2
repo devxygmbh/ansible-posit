@@ -6,3 +6,8 @@ Environment: REQUESTS_CA_BUNDLE=/etc/pki/ca-trust/extracted/tls-ca-bundle.pem
 {% elif ansible_facts['os_family'] == 'Debian' %}
 Environment: REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 {% endif %}
+{% if workbench_launcher_env is mapping and workbench_launcher_env | length > 0 %}
+{% for key, value in workbench_launcher_env.items() %}
+  {{ key }}={{ value }}
+{% endfor %}
+{% endif %}

@@ -1,6 +1,6 @@
 - name: Gather package facts
   ansible.builtin.package_facts:
-    manager: dnf
+    manager: auto
 
 - name: Ensure essential packages are installed
   when: "item not in ansible_facts.packages"

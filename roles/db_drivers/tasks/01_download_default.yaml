@@ -1,0 +1,27 @@
+# Download Posit Professional Database Drivers from default source (Posit CDN)
+# This task file is used when db_drivers_artifactory_enabled is false (default)
+
+- name: Check if directory is empty
+  ansible.builtin.find:
+    paths: "{{ db_drivers_install_dir }}/rstudio-drivers-{{ db_drivers_version }}"
+  register: dir_content
+
+- name: Download Posit DB Drivers from Posit CDN
+  when: dir_content.files | length == 0
+  ansible.builtin.get_url:
+    url: "https://cdn.rstudio.com/drivers/7C152C12/installer/rstudio-drivers-{{ db_drivers_version }}.tar"
+    dest: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
+    mode: "0755"
+
+- name: Extract Posit DB Drivers
+  when: dir_content.files | length == 0 and not ansible_check_mode
+  ansible.builtin.unarchive:
+    src: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
+    dest: "{{ db_drivers_install_dir }}"
+    remote_src: true
+
+- name: Cleanup Posit DB Drivers tarball
+  when: dir_content.files | length == 0
+  ansible.builtin.file:
+    path: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
+    state: absent

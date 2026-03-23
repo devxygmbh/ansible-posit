@@ -1,0 +1,21 @@
+## Packages Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#Packages
+
+# @var connect_packages_http_proxy:type: string
+# @var connect_packages_http_proxy:description: HTTP proxy URL for package downloads
+connect_packages_http_proxy: ""
+# @var connect_packages_https_proxy:type: string
+# @var connect_packages_https_proxy:description: HTTPS proxy URL for package downloads
+connect_packages_https_proxy: ""
+
+## R Package Repositories
+# @var connect_r_package_repositories:type: list
+# @var connect_r_package_repositories:description: >
+#   List of R package repositories. Each entry must have: name, url
+# @var connect_r_package_repositories:example: >
+#   connect_r_package_repositories:
+#     - name: CRAN
+#       url: https://packagemanager.posit.co/cran/latest
+#     - name: BioConductor
+#       url: https://packagemanager.posit.co/bioconductor/latest
+connect_r_package_repositories: []

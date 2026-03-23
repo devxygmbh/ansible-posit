@@ -1,0 +1,77 @@
+- name: Verify DB Drivers Installation from Artifactory
+  hosts: all
+  become: false
+  gather_facts: true
+
+  tasks:
+    - name: Check if DB drivers directory exists
+      ansible.builtin.stat:
+        path: "/opt/rstudio-drivers-2025.03.0"
+      register: db_drivers_dir
+
+    - name: Verify DB drivers directory exists and is not empty
+      ansible.builtin.assert:
+        that:
+          - db_drivers_dir.stat.exists
+          - db_drivers_dir.stat.isdir
+        fail_msg: "DB drivers directory does not exist or is not a directory"
+        success_msg: "DB drivers directory exists"
+
+    - name: Find files in DB drivers directory
+      ansible.builtin.find:
+        paths: "/opt/rstudio-drivers-2025.03.0"
+        file_type: any
+        recurse: true
+      register: db_drivers_files
+
+    - name: Verify DB drivers directory is not empty
+      ansible.builtin.assert:
+        that:
+          - db_drivers_files.matched > 0
+        fail_msg: "DB drivers directory is empty"
+        success_msg: "DB drivers directory contains {{ db_drivers_files.matched }} items"
+
+    - name: Check if odbcinst.ini exists
+      ansible.builtin.stat:
+        path: "/etc/odbcinst.ini"
+      register: odbcinst_ini
+
+    - name: Verify odbcinst.ini was created
+      ansible.builtin.assert:
+        that:
+          - odbcinst_ini.stat.exists
+        fail_msg: "odbcinst.ini does not exist"
+        success_msg: "odbcinst.ini exists"
+
+    - name: Read odbcinst.ini content
+      ansible.builtin.slurp:
+        path: "/etc/odbcinst.ini"
+      register: odbcinst_content
+
+    - name: Decode and check odbcinst.ini content
+      ansible.builtin.set_fact:
+        odbcinst_decoded: "{{ odbcinst_content.content | b64decode }}"
+
+    - name: Verify odbcinst.ini contains correct driver paths
+      ansible.builtin.assert:
+        that:
+          - "'rstudio-drivers-2025.03.0' in odbcinst_decoded"
+        fail_msg: "odbcinst.ini does not contain correct driver version paths"
+        success_msg: "odbcinst.ini contains correct driver version paths"
+
+    - name: Check if odbcinst.ini.sample exists in drivers directory
+      ansible.builtin.stat:
+        path: "/opt/rstudio-drivers-2025.03.0/odbcinst.ini.sample"
+      register: odbcinst_sample
+
+    - name: Verify sample odbcinst.ini exists
+      ansible.builtin.assert:
+        that:
+          - odbcinst_sample.stat.exists
+        fail_msg: "odbcinst.ini.sample does not exist in drivers directory"
+        success_msg: "odbcinst.ini.sample exists"
+
+    # Note: With network_mode=host, both containers share the network stack.
+    # Only one container's HTTP server can bind port 8080, so the other container's
+    # download goes through the first container's server. We cannot reliably assert
+    # which container's log file has the GET requests.

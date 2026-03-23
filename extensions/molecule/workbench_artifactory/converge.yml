@@ -1,0 +1,28 @@
+- name: Converge - Test Workbench with Artifactory
+  hosts: all
+  gather_facts: true
+
+  vars:
+    # Enable Artifactory mode
+    workbench_artifactory_enabled: true
+    workbench_artifactory_base_url: "http://localhost:8080"
+    workbench_artifactory_posit_repo: "posit-software"
+    workbench_general_version: "2025.09.0-387.pro2"
+
+    # Test with minimal R/Python setup (skip to speed up tests)
+    r_interpreter_versions: []
+    python_interpreter_versions: []
+
+    # Skip optional downloads to speed up tests
+    workbench_fonts_install_custom_fonts: false
+    workbench_jupyter_install_packages: false
+
+    # DB Drivers Artifactory configuration
+    db_drivers_artifactory_enabled: true
+    db_drivers_artifactory_base_url: "http://localhost:8080"
+    db_drivers_artifactory_repo: "posit-drivers"
+    db_drivers_version: "2025.03.0"
+
+  roles:
+    - role: workbench
+    - role: db_drivers

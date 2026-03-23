@@ -1,0 +1,17 @@
+[HTTP]
+{% if connect_http_listen %}
+Listen = {{ connect_http_listen }}
+{% endif %}
+{% if connect_http_unix_domain_socket %}
+UnixDomainSocket = {{ connect_http_unix_domain_socket }}
+{% endif %}
+NoWarning = {{ connect_http_no_warning | lower }}
+ForceSecure = {{ connect_http_force_secure | lower }}
+
+{% if connect_http_redirect_listen %}
+[HTTPRedirect]
+Listen = {{ connect_http_redirect_listen }}
+{% if connect_http_redirect_target %}
+Target = {{ connect_http_redirect_target }}
+{% endif %}
+{% endif %}

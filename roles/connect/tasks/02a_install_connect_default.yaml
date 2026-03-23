@@ -1,0 +1,76 @@
+# Install Posit Connect from default sources (cdn.posit.co)
+# This task file is used when connect_artifactory_enabled is false (default)
+
+- name: Gather service facts
+  ansible.builtin.service_facts:
+
+- name: Warn if rstudio-connect service is in a failed state
+  when:
+    - "'services' in ansible_facts and 'rstudio-connect.service' in ansible_facts.services"
+    - ansible_facts.services['rstudio-connect.service'].status == 'failed'
+  ansible.builtin.debug:
+    msg: "WARNING: rstudio-connect service is in a failed state."
+
+- name: Initialize installed version variable
+  ansible.builtin.set_fact:
+    installed_connect_version:
+      stdout: "0.0.0"
+
+- name: Check rstudio-connect version when service exists
+  when: "'services' in ansible_facts and 'rstudio-connect.service' in ansible_facts.services"
+  ansible.builtin.command: "/opt/rstudio-connect/bin/connect --version"
+  register: installed_connect_version
+  changed_when: false
+  ignore_errors: true
+
+- name: Set safe variables for check mode
+  ansible.builtin.set_fact:
+    installed_connect_version:
+      stdout: "0.0.0"
+  when: ansible_check_mode
+
+- name: Install Connect
+  when:
+    - not ansible_check_mode
+    - "'services' not in ansible_facts or 'rstudio-connect.service' not in ansible_facts.services or (installed_connect_version.stdout | default('0.0.0')).split()[0] != connect_general_version"
+  block:
+    - name: Define environment facts for Connect download
+      ansible.builtin.set_fact:
+        binary_type: "{{ 'rpm' if ansible_facts['os_family'] == 'RedHat' else 'deb' }}"
+        # Extract major.minor from version (e.g., "2025.01.0" -> "2025.01")
+        version_major_minor: "{{ connect_general_version.split('.')[0] }}.{{ connect_general_version.split('.')[1] }}"
+        os_major: "{{ ansible_distribution_major_version }}"
+        arch: "{{ 'arm64' if ansible_architecture == 'aarch64' and ansible_facts['os_family'] == 'Debian' else 'aarch64' if ansible_architecture == 'aarch64' and ansible_facts['os_family'] == 'RedHat' else 'x86_64' if ansible_architecture == 'x86_64' and ansible_facts['os_family'] == 'RedHat' else 'amd64' }}"
+
+    - name: Download Posit Connect (RedHat)
+      when: ansible_facts['os_family'] == 'RedHat'
+      ansible.builtin.get_url:
+        url: "https://cdn.posit.co/connect/{{ version_major_minor }}/rstudio-connect-{{ connect_general_version }}.el{{ os_major }}.{{ arch }}.rpm"
+        dest: "/tmp/connect-{{ connect_general_version }}.{{ binary_type }}"
+        mode: "0775"
+        timeout: 120
+
+    - name: Download Posit Connect (Ubuntu)
+      when: ansible_distribution == 'Ubuntu'
+      ansible.builtin.get_url:
+        url: "https://cdn.posit.co/connect/{{ version_major_minor }}/rstudio-connect_{{ connect_general_version }}~ubuntu{{ os_major }}_{{ arch }}.deb"
+        dest: "/tmp/connect-{{ connect_general_version }}.{{ binary_type }}"
+        mode: "0775"
+        timeout: 120
+
+    - name: Install Posit Connect (RedHat)
+      when: ansible_facts['os_family'] == 'RedHat'
+      ansible.builtin.dnf:
+        name: "/tmp/connect-{{ connect_general_version }}.{{ binary_type }}"
+        disable_gpg_check: true
+        state: present
+
+    - name: Install Posit Connect (Ubuntu)
+      when: ansible_distribution == 'Ubuntu'
+      ansible.builtin.apt:
+        deb: "/tmp/connect-{{ connect_general_version }}.{{ binary_type }}"
+
+    - name: Cleanup downloaded assets
+      ansible.builtin.file:
+        path: "/tmp/connect-{{ connect_general_version }}.{{ binary_type }}"
+        state: absent
