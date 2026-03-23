@@ -84,11 +84,8 @@ require {
   type init_var_run_t;
   type default_context_t;
   type unconfined_service_t;
-  type oneagent_t;
-  type oneagent_log_t;
   type selinux_login_config_t;
   type sysctl_fs_t;
-  type NetworkManager_var_lib_t;
   type default_t;
   type kernel_t;
   attribute can_change_process_identity;
@@ -397,11 +394,17 @@ optional_policy(`
   workbench_server_domtrans_from(rpm_script_t)
 ')
 
-# Allow Dynatrace OneAgent auto-instrumentation, config, and logging
-allow workbench_domain oneagent_t:file { manage_file_perms execute map };
-allow workbench_domain oneagent_t:dir manage_dir_perms;
-allow workbench_domain oneagent_log_t:dir manage_dir_perms;
-allow workbench_domain oneagent_log_t:file manage_file_perms;
+# Allow Dynatrace OneAgent auto-instrumentation, config, and logging (optional: only when Dynatrace is installed)
+optional_policy(`
+  gen_require(`
+    type oneagent_t;
+    type oneagent_log_t;
+  ')
+  allow workbench_domain oneagent_t:file { manage_file_perms execute map };
+  allow workbench_domain oneagent_t:dir manage_dir_perms;
+  allow workbench_domain oneagent_log_t:dir manage_dir_perms;
+  allow workbench_domain oneagent_log_t:file manage_file_perms;
+')
 
 # Allow reading SELinux context/login files and setting security contexts for user sessions
 allow workbench_server_t default_context_t:file read_file_perms;
@@ -423,8 +426,13 @@ allow system_r unconfined_r;
 allow workbench_worker_t sysctl_fs_t:dir search_dir_perms;
 allow workbench_worker_t sysctl_fs_t:file read_file_perms;
 
-# Silence Dynatrace cloud detection probing NetworkManager
-dontaudit workbench_domain NetworkManager_var_lib_t:dir getattr;
+# Silence Dynatrace cloud detection probing NetworkManager (optional: only when NetworkManager is present)
+optional_policy(`
+  gen_require(`
+    type NetworkManager_var_lib_t;
+  ')
+  dontaudit workbench_domain NetworkManager_var_lib_t:dir getattr;
+')
 
 # Allow managing runtime dirs/sockets created before policy was applied (init_var_run_t)
 allow workbench_server_t init_var_run_t:dir manage_dir_perms;
