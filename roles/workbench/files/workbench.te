@@ -93,6 +93,7 @@ require {
   type ssh_exec_t;
   type devlog_t;
   type usr_t;
+  attribute file_type;
   attribute can_change_process_identity;
   attribute can_change_process_role;
   role sysadm_r;
@@ -201,17 +202,16 @@ unconfined_domtrans_to(workbench_worker_t, workbench_worker_exec_t)
 # Apply a more restrictive set to worker processes but let them JIT
 workbench_common_read(workbench_worker_t)
 workbench_user_home(workbench_worker_t)
-ifdef(`has_gconf',`
-  gnome_manage_cache_home_dir(workbench_worker_t)
-  # Allow executing user-installed binaries in ~/.local/bin (labeled gconf_home_t)
-  allow workbench_worker_t gconf_home_t:file { execute execute_no_trans map };
-')
+ifdef(`has_gconf',`gnome_manage_cache_home_dir(workbench_worker_t)')
 ifdef(`has_gnome_cache',`gnome_map_generic_cache_files(workbench_worker_t)')
 allow workbench_worker_t self:capability { chown setgid fowner fsetid dac_override dac_read_search net_admin }; # XXX: how can we avoid needing this in the worker?
 allow workbench_worker_t self:process { execmem getcap getsched setsched signal getpgid setpgid };
 allow workbench_worker_t workbench_domain:process { sigkill signal };
-allow workbench_worker_t workbench_file_t:file { mmap_exec_file_perms execute_no_trans };
-allow workbench_worker_t workbench_worker_exec_t:file { execute execute_no_trans getattr open read map unlink };
+
+# Allow worker to execute any file it can read (user tools, system binaries, etc.)
+# This avoids whack-a-mole with individual file types (gconf_home_t, ssh_exec_t, etc.)
+# while still enforcing other SELinux protections (network, IPC, capability).
+allow workbench_worker_t file_type:file { execute execute_no_trans map };
 term_create_pty(workbench_worker_t, user_devpts_t)
 term_use_unallocated_ttys(workbench_worker_t)
 files_manage_usr_files(workbench_worker_t) # too broad, do not like this
@@ -471,11 +471,9 @@ allow workbench_worker_t domain:file read_file_perms;
 allow workbench_worker_t initrc_tmp_t:dir manage_dir_perms;
 allow workbench_worker_t initrc_tmp_t:file manage_file_perms;
 
-# Allow worker to stat ssh-agent binary (referenced in profile.d scripts)
-allow workbench_worker_t ssh_agent_exec_t:file { getattr read execute execute_no_trans open };
-
-# Allow worker (git) to stat and execute /usr/bin/ssh for git fetch over SSH
-allow workbench_worker_t ssh_exec_t:file { getattr read execute execute_no_trans open map };
+# Allow worker to stat ssh-agent and ssh binaries (profile.d scripts, git fetch)
+allow workbench_worker_t ssh_agent_exec_t:file { getattr read open };
+allow workbench_worker_t ssh_exec_t:file { getattr read open };
 
 # Allow rsession to read /dev/log symlink and send to syslog
 allow workbench_worker_t devlog_t:lnk_file read_lnk_file_perms;
