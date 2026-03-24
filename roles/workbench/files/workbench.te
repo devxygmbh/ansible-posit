@@ -85,6 +85,7 @@ require {
   type default_context_t;
   type unconfined_service_t;
   type selinux_login_config_t;
+  type sysctl_t;
   type sysctl_fs_t;
   type default_t;
   type kernel_t;
@@ -93,6 +94,10 @@ require {
   type ssh_exec_t;
   type devlog_t;
   type usr_t;
+  type proc_kcore_t;
+  type proc_kmsg_t;
+  type proc_mdstat_t;
+  type mtrr_device_t;
   attribute file_type;
   attribute can_change_process_identity;
   attribute can_change_process_role;
@@ -482,3 +487,10 @@ allow workbench_worker_t kernel_t:unix_dgram_socket sendto;
 
 # Silence non-essential audit noise
 dontaudit workbench_server_t workbench_domain:process { noatsecure };
+
+# Silence libuv-worker (VS Code/Positron) scanning sensitive /proc entries
+dontaudit workbench_worker_t proc_kcore_t:file getattr;
+dontaudit workbench_worker_t proc_kmsg_t:file getattr;
+dontaudit workbench_worker_t proc_mdstat_t:file getattr;
+dontaudit workbench_worker_t mtrr_device_t:file getattr;
+dontaudit workbench_worker_t sysctl_t:file getattr;
