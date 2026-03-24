@@ -90,6 +90,7 @@ require {
   type kernel_t;
   type initrc_tmp_t;
   type ssh_agent_exec_t;
+  type ssh_exec_t;
   type devlog_t;
   type usr_t;
   attribute can_change_process_identity;
@@ -469,9 +470,13 @@ allow workbench_worker_t initrc_tmp_t:file manage_file_perms;
 # Allow worker to stat ssh-agent binary (referenced in profile.d scripts)
 allow workbench_worker_t ssh_agent_exec_t:file { getattr read execute execute_no_trans open };
 
-# Allow rsession to read /dev/log symlink for syslog
+# Allow worker (git) to stat and execute /usr/bin/ssh for git fetch over SSH
+allow workbench_worker_t ssh_exec_t:file { getattr read execute execute_no_trans open map };
+
+# Allow rsession to read /dev/log symlink and send to syslog
 allow workbench_worker_t devlog_t:lnk_file read_lnk_file_perms;
 allow workbench_worker_t devlog_t:sock_file write;
+allow workbench_worker_t kernel_t:unix_dgram_socket sendto;
 
 # Silence non-essential audit noise
 dontaudit workbench_server_t workbench_domain:process { noatsecure };
