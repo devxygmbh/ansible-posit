@@ -91,10 +91,7 @@ require {
   type default_t;
   type kernel_t;
   type initrc_tmp_t;
-  type ssh_agent_exec_t;
-  type ssh_exec_t;
   type devlog_t;
-  type usr_t;
   type proc_kcore_t;
   type proc_kmsg_t;
   type proc_mdstat_t;
@@ -214,17 +211,16 @@ allow workbench_worker_t self:capability { chown setgid fowner fsetid dac_overri
 allow workbench_worker_t self:process { execmem getcap getsched setsched signal getpgid setpgid };
 allow workbench_worker_t workbench_domain:process { sigkill signal };
 
-# Allow worker to stat and execute any file (user tools, system binaries, etc.)
-# Tools like pet, libuv-worker, and user-installed CLIs scan PATH and need getattr
-# on all binary types. This avoids whack-a-mole with individual file types while
-# still enforcing other SELinux protections (network, IPC, capability).
-allow workbench_worker_t file_type:file { getattr execute execute_no_trans map };
+# Allow worker broad file access for user tools, PATH scanning, and filesystem watching.
+# Tools like pet, libuv-worker, and user-installed CLIs scan PATH dirs and stat/read/execute
+# binaries of many types. Node watches PATH dirs for changes. This avoids whack-a-mole with
+# individual file types while still enforcing other SELinux protections (network, IPC, capability).
+allow workbench_worker_t file_type:file { getattr read open execute execute_no_trans map };
+allow workbench_worker_t file_type:lnk_file { getattr read };
+allow workbench_worker_t file_type:dir { getattr read open search watch };
 term_create_pty(workbench_worker_t, user_devpts_t)
 term_use_unallocated_ttys(workbench_worker_t)
 files_manage_usr_files(workbench_worker_t) # too broad, do not like this
-
-# Allow worker (node/positron) to watch directories under /opt (labeled usr_t)
-allow workbench_worker_t usr_t:dir watch;
 
 # sessions can fork and manage signals
 allow workbench_t self:process { fork signal_perms };
@@ -479,9 +475,6 @@ allow workbench_worker_t domain:lnk_file read_lnk_file_perms;
 allow workbench_worker_t initrc_tmp_t:dir manage_dir_perms;
 allow workbench_worker_t initrc_tmp_t:file manage_file_perms;
 
-# Allow worker to stat ssh-agent and ssh binaries (profile.d scripts, git fetch)
-allow workbench_worker_t ssh_agent_exec_t:file { getattr read open };
-allow workbench_worker_t ssh_exec_t:file { getattr read open };
 
 # Allow rsession to read /dev/log symlink and send to syslog
 allow workbench_worker_t devlog_t:lnk_file read_lnk_file_perms;
