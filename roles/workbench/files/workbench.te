@@ -91,6 +91,7 @@ require {
   type initrc_tmp_t;
   type ssh_agent_exec_t;
   type devlog_t;
+  type usr_t;
   attribute can_change_process_identity;
   attribute can_change_process_role;
   role sysadm_r;
@@ -209,6 +210,9 @@ allow workbench_worker_t workbench_worker_exec_t:file { execute execute_no_trans
 term_create_pty(workbench_worker_t, user_devpts_t)
 term_use_unallocated_ttys(workbench_worker_t)
 files_manage_usr_files(workbench_worker_t) # too broad, do not like this
+
+# Allow worker (node/positron) to watch directories under /opt (labeled usr_t)
+allow workbench_worker_t usr_t:dir watch;
 
 # sessions can fork and manage signals
 allow workbench_t self:process { fork signal_perms };
@@ -452,13 +456,11 @@ allow workbench_domain { default_t unlabeled_t }:sock_file manage_sock_file_perm
 
 # Allow server and worker to scan /proc entries for any process
 # Server reads /proc/<pid>/stat for monitoring; worker (rsession) scans /proc for session management
+# Worker (kallichore/kcserver) also reads /proc/<pid>/task for all domains
 allow workbench_server_t domain:dir search_dir_perms;
 allow workbench_server_t domain:file read_file_perms;
-allow workbench_worker_t domain:dir search_dir_perms;
+allow workbench_worker_t domain:dir list_dir_perms;
 allow workbench_worker_t domain:file read_file_perms;
-
-# Allow worker (kallichore/kcserver) to read /proc/<pid>/task for kernel threads
-allow workbench_worker_t kernel_t:dir list_dir_perms;
 
 # Allow worker to access /tmp/pwb-* dirs labeled initrc_tmp_t (created before policy was applied)
 allow workbench_worker_t initrc_tmp_t:dir manage_dir_perms;
