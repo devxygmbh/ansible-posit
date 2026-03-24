@@ -201,7 +201,11 @@ unconfined_domtrans_to(workbench_worker_t, workbench_worker_exec_t)
 # Apply a more restrictive set to worker processes but let them JIT
 workbench_common_read(workbench_worker_t)
 workbench_user_home(workbench_worker_t)
-ifdef(`has_gconf',`gnome_manage_cache_home_dir(workbench_worker_t)')
+ifdef(`has_gconf',`
+  gnome_manage_cache_home_dir(workbench_worker_t)
+  # Allow executing user-installed binaries in ~/.local/bin (labeled gconf_home_t)
+  allow workbench_worker_t gconf_home_t:file { execute execute_no_trans map };
+')
 ifdef(`has_gnome_cache',`gnome_map_generic_cache_files(workbench_worker_t)')
 allow workbench_worker_t self:capability { chown setgid fowner fsetid dac_override dac_read_search net_admin }; # XXX: how can we avoid needing this in the worker?
 allow workbench_worker_t self:process { execmem getcap getsched setsched signal getpgid setpgid };
