@@ -103,6 +103,7 @@ require {
   role unconfined_r;
   role system_r;
   class passwd rootok;
+  class cap_userns sys_ptrace;
 }
 
 ## workbench_domain
@@ -483,6 +484,7 @@ allow workbench_worker_t kernel_t:unix_dgram_socket sendto;
 
 # Silence non-essential audit noise
 dontaudit workbench_server_t workbench_domain:process { noatsecure };
+dontaudit workbench_server_t self:cap_userns { sys_ptrace };
 
 # Silence libuv-worker (VS Code/Positron) scanning sensitive /proc entries
 dontaudit workbench_worker_t proc_kcore_t:file getattr;
