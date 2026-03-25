@@ -49,6 +49,7 @@
   ansible.builtin.copy:
     content: |
       allow-insecure-host = ["{{ connect_python_pypi_url | urlsplit('hostname') }}"]
+      system-packages = false
 
       [[index]]
       url = "{{ connect_python_pypi_url }}"
