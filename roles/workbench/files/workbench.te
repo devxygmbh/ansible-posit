@@ -215,7 +215,7 @@ allow workbench_worker_t workbench_domain:process { sigkill signal };
 # Tools like pet, libuv-worker, and user-installed CLIs scan PATH dirs and stat/read/execute
 # binaries of many types. Node watches PATH dirs for changes. This avoids whack-a-mole with
 # individual file types while still enforcing other SELinux protections (network, IPC, capability).
-allow workbench_worker_t file_type:file { getattr read open execute execute_no_trans map };
+allow workbench_worker_t file_type:file { getattr read open lock execute execute_no_trans map };
 allow workbench_worker_t file_type:lnk_file { getattr read };
 allow workbench_worker_t file_type:dir { getattr read open search watch };
 term_create_pty(workbench_worker_t, user_devpts_t)
