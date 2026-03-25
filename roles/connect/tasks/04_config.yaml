@@ -35,6 +35,58 @@
     mode: "0644"
   no_log: true
 
+- name: "[Config] Create /etc/uv"
+  when: connect_python_pypi_url | length > 0
+  ansible.builtin.file:
+    path: /etc/uv
+    state: directory
+    mode: "0755"
+    owner: root
+    group: root
+
+- name: "[Config] Deploy /etc/uv/uv.toml with custom PyPI index"
+  when: connect_python_pypi_url | length > 0
+  ansible.builtin.copy:
+    content: |
+      allow-insecure-host = ["{{ connect_python_pypi_url | urlsplit('hostname') }}"]
+
+      [[index]]
+      url = "{{ connect_python_pypi_url }}"
+      default = true
+    dest: /etc/uv/uv.toml
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart rstudio-connect service
+
+- name: "[Config] Deploy /etc/pip.conf with custom PyPI index"
+  when: connect_python_pypi_url | length > 0
+  ansible.builtin.copy:
+    content: |
+      [global]
+      index-url = {{ connect_python_pypi_url }}
+      trusted-host = {{ connect_python_pypi_url | urlsplit('hostname') }}
+    dest: /etc/pip.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart rstudio-connect service
+
+- name: "[Config] Find Python site-packages parent directories"
+  when: connect_python_enabled
+  ansible.builtin.command:
+    cmd: find /usr/local/lib64 /usr/local/lib -maxdepth 1 -type d -name "python*"
+  register: _connect_python_local_dirs
+  changed_when: false
+  failed_when: false
+
+- name: "[Config] Ensure Python local lib directories are world-readable"
+  when: connect_python_enabled and _connect_python_local_dirs.stdout_lines | default([]) | length > 0
+  ansible.builtin.command:
+    cmd: "chmod -R o+rX {{ item }}"
+  changed_when: false
+  loop: "{{ _connect_python_local_dirs.stdout_lines }}"
+
 - name: "[Config] Create /etc/rstudio-connect"
   ansible.builtin.file:
     path: /etc/rstudio-connect

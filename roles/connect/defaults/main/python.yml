@@ -34,5 +34,7 @@ connect_python_bin_path: bin/python3
 #   /opt/python/3.13/bin/python3
 
 # @var connect_python_pypi_url:type: string
-# @var connect_python_pypi_url:description: Custom PyPI index URL (e.g., Artifactory PyPI proxy, leave empty for default PyPI)
+# @var connect_python_pypi_url:description: >
+#   Custom PyPI index URL (e.g., Artifactory PyPI proxy, leave empty for default PyPI).
+#   Deployed to /etc/uv/uv.toml and /etc/pip.conf so Connect's build process uses it.
 connect_python_pypi_url: ""
