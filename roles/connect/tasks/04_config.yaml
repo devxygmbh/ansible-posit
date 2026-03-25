@@ -72,20 +72,43 @@
     mode: "0644"
   notify: Restart rstudio-connect service
 
-- name: "[Config] Find Python site-packages parent directories"
+- name: "[Config] Gather Python site-packages paths"
   when: connect_python_enabled
   ansible.builtin.command:
-    cmd: find /usr/local/lib64 /usr/local/lib -maxdepth 1 -type d -name "python*"
-  register: _connect_python_local_dirs
+    cmd: >-
+      {{ item }} -c "import site; print('\n'.join(site.getsitepackages()))"
+  register: _connect_python_site_packages
   changed_when: false
   failed_when: false
+  loop: >-
+    {{
+      ([connect_python_executable] if connect_python_executable else [])
+      + connect_python_executables
+      + (
+          python_interpreter_versions | default([]) | map('regex_replace', '^(.*)$',
+            (python_installation_dir | default(connect_python_base_path)) + '/\1/' + connect_python_bin_path
+          ) | list
+          if not connect_python_executable and connect_python_executables | length == 0
+          else []
+        )
+    }}
 
-- name: "[Config] Ensure Python local lib directories are world-readable"
-  when: connect_python_enabled and _connect_python_local_dirs.stdout_lines | default([]) | length > 0
-  ansible.builtin.command:
-    cmd: "chmod -R o+rX {{ item }}"
-  changed_when: false
-  loop: "{{ _connect_python_local_dirs.stdout_lines }}"
+- name: "[Config] Ensure Python site-packages directories exist"
+  when: connect_python_enabled
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+    owner: root
+    group: root
+  loop: >-
+    {{
+      _connect_python_site_packages.results
+      | selectattr('stdout', 'defined')
+      | map(attribute='stdout_lines')
+      | flatten
+      | unique
+    }}
 
 - name: "[Config] Create /etc/rstudio-connect"
   ansible.builtin.file:
