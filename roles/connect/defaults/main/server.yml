@@ -77,6 +77,10 @@ connect_server_system_check_frequency: "0"
 # @var connect_server_custom_headers:description: List of custom HTTP headers
 connect_server_custom_headers: []
 
+# @var connect_server_deprecated_settings_ui_warning:type: boolean
+# @var connect_server_deprecated_settings_ui_warning:description: Show warnings to admins when deprecated settings are in use
+connect_server_deprecated_settings_ui_warning: false
+
 ## Licensing
 # @var connect_server_license_type:type: string
 # @var connect_server_license_type:description: License type (local or remote)

@@ -1,4 +1,5 @@
 [Metrics]
+{% if connect_metrics_legacy_enabled %}
 Enabled = {{ connect_metrics_enabled | lower }}
 {% if connect_metrics_data_path %}
 DataPath = {{ connect_metrics_data_path }}
@@ -15,7 +16,36 @@ GraphitePort = {{ connect_metrics_graphite_port }}
 GraphiteClientId = {{ connect_metrics_graphite_client_id }}
 {% endif %}
 {% endif %}
+{% endif %}
 Instrumentation = {{ connect_metrics_instrumentation | lower }}
+{% if connect_metrics_instrumentation_data_retention %}
+InstrumentationDataRetention = {{ connect_metrics_instrumentation_data_retention }}
+{% endif %}
 {% if connect_metrics_prometheus_listen %}
 PrometheusListen = {{ connect_metrics_prometheus_listen }}
+{% endif %}
+
+{% if connect_otel_enabled %}
+[OpenTelemetry]
+Enabled = true
+{% if connect_otel_api_instrumentation %}
+APIInstrumentation = true
+{% endif %}
+{% if connect_otel_database_instrumentation %}
+DatabaseInstrumentation = true
+{% endif %}
+
+{% if connect_otel_endpoint %}
+[OTLPEndpoint]
+Endpoint = {{ connect_otel_endpoint }}
+{% if connect_otel_endpoint_logs %}
+Logs = true
+{% endif %}
+{% if connect_otel_endpoint_traces %}
+Traces = true
+{% endif %}
+{% if connect_otel_endpoint_metrics %}
+Metrics = true
+{% endif %}
+{% endif %}
 {% endif %}

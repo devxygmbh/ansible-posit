@@ -46,6 +46,7 @@ SystemCheckFrequency = {{ connect_server_system_check_frequency }}
 {% for header in connect_server_custom_headers %}
 CustomHeader = {{ header }}
 {% endfor %}
+DeprecatedSettingsUIWarning = {{ connect_server_deprecated_settings_ui_warning | lower }}
 
 [Licensing]
 LicenseType = {{ connect_server_license_type }}

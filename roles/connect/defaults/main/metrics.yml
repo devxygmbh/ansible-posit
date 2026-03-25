@@ -1,33 +1,75 @@
 ## Metrics Configuration
 # https://docs.posit.co/connect/admin/appendix/configuration/#Metrics
 
+## Legacy metrics (deprecated in Connect 2026.03.0, use OpenTelemetry instead)
+# These settings control the legacy rserver-monitor process and Graphite/RRD metrics export.
+# They are still emitted when connect_metrics_legacy_enabled is true, for compatibility
+# with Connect versions prior to 2026.03.0.
+
+# @var connect_metrics_legacy_enabled:type: boolean
+# @var connect_metrics_legacy_enabled:description: Emit legacy Metrics settings (Enabled, RRDEnabled, Graphite*, etc.) for Connect versions < 2026.03.0
+connect_metrics_legacy_enabled: false
+
 # @var connect_metrics_enabled:type: boolean
-# @var connect_metrics_enabled:description: Enable metrics collection
+# @var connect_metrics_enabled:description: (Legacy) Enable metrics collection
 connect_metrics_enabled: true
 # @var connect_metrics_data_path:type: string
-# @var connect_metrics_data_path:description: Metrics data directory
+# @var connect_metrics_data_path:description: (Legacy) Metrics data directory
 connect_metrics_data_path: ""
 # @var connect_metrics_interval:type: string
-# @var connect_metrics_interval:description: Collection interval
+# @var connect_metrics_interval:description: (Legacy) Collection interval
 connect_metrics_interval: "10s"
 # @var connect_metrics_rrd_enabled:type: boolean
-# @var connect_metrics_rrd_enabled:description: Enable RRD storage
+# @var connect_metrics_rrd_enabled:description: (Legacy) Enable RRD storage
 connect_metrics_rrd_enabled: true
 # @var connect_metrics_graphite_enabled:type: boolean
-# @var connect_metrics_graphite_enabled:description: Enable Graphite export
+# @var connect_metrics_graphite_enabled:description: (Legacy) Enable Graphite export
 connect_metrics_graphite_enabled: false
 # @var connect_metrics_graphite_host:type: string
-# @var connect_metrics_graphite_host:description: Graphite server hostname
+# @var connect_metrics_graphite_host:description: (Legacy) Graphite server hostname
 connect_metrics_graphite_host: ""
 # @var connect_metrics_graphite_port:type: integer
-# @var connect_metrics_graphite_port:description: Graphite server port
+# @var connect_metrics_graphite_port:description: (Legacy) Graphite server port
 connect_metrics_graphite_port: 2003
 # @var connect_metrics_graphite_client_id:type: string
-# @var connect_metrics_graphite_client_id:description: Graphite client identifier
+# @var connect_metrics_graphite_client_id:description: (Legacy) Graphite client identifier
 connect_metrics_graphite_client_id: ""
+
+## Current metrics settings (not deprecated)
+
 # @var connect_metrics_instrumentation:type: boolean
 # @var connect_metrics_instrumentation:description: Enable detailed instrumentation
 connect_metrics_instrumentation: false
+# @var connect_metrics_instrumentation_data_retention:type: string
+# @var connect_metrics_instrumentation_data_retention:description: How long to retain instrumentation data (e.g., 730d)
+connect_metrics_instrumentation_data_retention: ""
 # @var connect_metrics_prometheus_listen:type: string
 # @var connect_metrics_prometheus_listen:description: Prometheus listen address (e.g., :9108)
 connect_metrics_prometheus_listen: ""
+
+## OpenTelemetry Configuration
+# https://docs.posit.co/connect/admin/appendix/configuration/#OpenTelemetry
+
+# @var connect_otel_enabled:type: boolean
+# @var connect_otel_enabled:description: Enable OpenTelemetry signal collection
+connect_otel_enabled: false
+# @var connect_otel_api_instrumentation:type: boolean
+# @var connect_otel_api_instrumentation:description: Instrument API request/response cycles
+connect_otel_api_instrumentation: false
+# @var connect_otel_database_instrumentation:type: boolean
+# @var connect_otel_database_instrumentation:description: Instrument database operations
+connect_otel_database_instrumentation: false
+
+## OTLP Endpoint
+# @var connect_otel_endpoint:type: string
+# @var connect_otel_endpoint:description: OTLP receiver endpoint URL for telemetry export
+connect_otel_endpoint: ""
+# @var connect_otel_endpoint_logs:type: boolean
+# @var connect_otel_endpoint_logs:description: Export log signals to OTLP endpoint
+connect_otel_endpoint_logs: false
+# @var connect_otel_endpoint_traces:type: boolean
+# @var connect_otel_endpoint_traces:description: Export trace signals to OTLP endpoint
+connect_otel_endpoint_traces: false
+# @var connect_otel_endpoint_metrics:type: boolean
+# @var connect_otel_endpoint_metrics:description: Export metric signals to OTLP endpoint
+connect_otel_endpoint_metrics: false
