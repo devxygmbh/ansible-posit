@@ -72,10 +72,10 @@
     mode: "0644"
   notify: Restart rstudio-connect service
 
-- name: "[Config] Find Python site-packages directories"
+- name: "[Config] Find existing Python site-packages directories"
   when: connect_python_enabled
   ansible.builtin.shell:
-    cmd: python3 -c "import site; print('\n'.join(site.getsitepackages()))"
+    cmd: python3 -c "import os, site; print('\n'.join(p for p in site.getsitepackages() if os.path.isdir(p)))"
     executable: /bin/bash
   register: _connect_python_site_packages
   changed_when: false
