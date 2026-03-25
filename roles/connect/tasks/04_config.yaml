@@ -72,20 +72,34 @@
     mode: "0644"
   notify: Restart rstudio-connect service
 
-- name: "[Config] Find existing Python site-packages directories"
-  when: connect_python_enabled
-  ansible.builtin.shell:
-    cmd: python3 -c "import os, site; print('\n'.join(p for p in site.getsitepackages() if os.path.isdir(p)))"
-    executable: /bin/bash
-  register: _connect_python_site_packages
-  changed_when: false
+- name: "[Config] Create Connect systemd override directory"
+  ansible.builtin.file:
+    path: /etc/systemd/system/rstudio-connect.service.d
+    state: directory
+    mode: "0755"
+    owner: root
+    group: root
 
-- name: "[Config] Ensure Python site-packages directories are world-readable"
-  when: connect_python_enabled and _connect_python_site_packages.stdout_lines | length > 0
-  ansible.builtin.command:
-    cmd: "chmod -R o+rX {{ item }}"
-  changed_when: false
-  loop: "{{ _connect_python_site_packages.stdout_lines }}"
+- name: "[Config] Set PYTHONUSERBASE for Connect service"
+  ansible.builtin.copy:
+    content: |
+      [Service]
+      Environment="PYTHONUSERBASE=/opt/rstudio-connect/.local"
+    dest: /etc/systemd/system/rstudio-connect.service.d/python-userbase.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+    - Restart rstudio-connect service
+
+- name: "[Config] Create PYTHONUSERBASE directory"
+  ansible.builtin.file:
+    path: /opt/rstudio-connect/.local
+    state: directory
+    mode: "0755"
+    owner: rstudio-connect
+    group: rstudio-connect
 
 - name: "[Config] Create /etc/rstudio-connect"
   ansible.builtin.file:
