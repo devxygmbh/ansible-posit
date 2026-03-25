@@ -13,3 +13,8 @@ Executable = {{ python_installation_dir | default(connect_python_base_path) }}/{
 {% endfor %}
 {% endif %}
 {% endif %}
+
+{% if connect_python_pypi_url %}
+[PyPI]
+URL = {{ connect_python_pypi_url }}
+{% endif %}
