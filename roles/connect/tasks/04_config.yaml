@@ -80,14 +80,11 @@
   register: _connect_python_site_packages
   changed_when: false
 
-- name: "[Config] Ensure Python site-packages directories exist"
+- name: "[Config] Ensure Python site-packages directories are world-readable"
   when: connect_python_enabled and _connect_python_site_packages.stdout_lines | length > 0
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: "0755"
-    owner: root
-    group: root
+  ansible.builtin.command:
+    cmd: "chmod -R o+rX {{ item }}"
+  changed_when: false
   loop: "{{ _connect_python_site_packages.stdout_lines }}"
 
 - name: "[Config] Create /etc/rstudio-connect"
