@@ -1,9 +1,5 @@
 # handlers file for connect
 
-- name: Reload systemd
-  ansible.builtin.systemd:
-    daemon_reload: true
-
 - name: Restart rstudio-connect service # noqa: ignore-errors
   ansible.builtin.service:
     name: rstudio-connect

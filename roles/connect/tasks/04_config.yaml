@@ -72,34 +72,20 @@
     mode: "0644"
   notify: Restart rstudio-connect service
 
-- name: "[Config] Create Connect systemd override directory"
-  ansible.builtin.file:
-    path: /etc/systemd/system/rstudio-connect.service.d
-    state: directory
-    mode: "0755"
-    owner: root
-    group: root
+- name: "[Config] Find Python site-packages parent directories"
+  when: connect_python_enabled
+  ansible.builtin.command:
+    cmd: find /usr/local/lib64 /usr/local/lib -maxdepth 1 -type d -name "python*"
+  register: _connect_python_local_dirs
+  changed_when: false
+  failed_when: false
 
-- name: "[Config] Set PYTHONUSERBASE for Connect service"
-  ansible.builtin.copy:
-    content: |
-      [Service]
-      Environment="PYTHONUSERBASE=/opt/rstudio-connect/.local"
-    dest: /etc/systemd/system/rstudio-connect.service.d/python-userbase.conf
-    owner: root
-    group: root
-    mode: "0644"
-  notify:
-    - Reload systemd
-    - Restart rstudio-connect service
-
-- name: "[Config] Create PYTHONUSERBASE directory"
-  ansible.builtin.file:
-    path: /opt/rstudio-connect/.local
-    state: directory
-    mode: "0755"
-    owner: rstudio-connect
-    group: rstudio-connect
+- name: "[Config] Ensure Python local lib directories are world-readable"
+  when: connect_python_enabled and _connect_python_local_dirs.stdout_lines | default([]) | length > 0
+  ansible.builtin.command:
+    cmd: "chmod -R o+rX {{ item }}"
+  changed_when: false
+  loop: "{{ _connect_python_local_dirs.stdout_lines }}"
 
 - name: "[Config] Create /etc/rstudio-connect"
   ansible.builtin.file:
