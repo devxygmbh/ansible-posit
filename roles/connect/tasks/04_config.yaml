@@ -53,8 +53,6 @@
       [[index]]
       url = "{{ connect_python_pypi_url }}"
       default = true
-
-      allow-insecure-host = ["{{ connect_python_pypi_url | urlsplit('hostname') }}"]
     dest: /etc/uv/uv.toml
     owner: root
     group: root
