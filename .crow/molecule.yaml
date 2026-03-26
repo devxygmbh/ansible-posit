@@ -16,7 +16,7 @@ matrix:
 
 steps:
   - name: "Test ${SCENARIO}"
-    image: reg.devxy.io/docker.io/library/docker:28-dind
+    image: reg.devxy.io/docker.io/library/docker:29-dind
     privileged: true
     environment:
       # force output of ANSI colors
@@ -41,7 +41,7 @@ services:
   docker:
     environment:
       DOCKER_TLS_CERTDIR: ""
-    image: reg.devxy.io/docker.io/library/docker:28-dind
+    image: reg.devxy.io/docker.io/library/docker:29-dind
     commands: dockerd --tls=false --host=tcp://0.0.0.0:2375
     privileged: true
     ports:
