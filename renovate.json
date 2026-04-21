@@ -1,10 +1,14 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["local>devxy/renovate-config"],
+  "extends": [
+    "local>devxy/renovate-config"
+  ],
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["roles/db_drivers/defaults/main\\.yml$"],
+      "managerFilePatterns": [
+        "/roles/db_drivers/defaults/main\\.yml$/"
+      ],
       "matchStrings": [
         "# renovate: depName=(?<depName>\\S+) datasource=(?<datasource>\\S+)\\n\\w+: \"?(?<currentValue>[^\"\\n]+?)\"?\\s*$"
       ],
