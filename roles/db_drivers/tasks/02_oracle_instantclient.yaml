@@ -39,7 +39,7 @@
     - db_drivers_artifactory_enabled | bool
     - _oracle_format == 'zip'
   ansible.builtin.get_url:
-    url: "{{ db_drivers_artifactory_base_url }}/{{ db_drivers_oracle_artifactory_repo }}/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
+    url: "{{ db_drivers_oracle_artifactory_repo }}/{{ _oracle_url_version_dir }}/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
     dest: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
     mode: "0644"
     url_username: "{{ db_drivers_artifactory_username if db_drivers_artifactory_username else omit }}"
@@ -53,7 +53,7 @@
     - db_drivers_artifactory_enabled | bool
     - _oracle_format == 'rpm'
   ansible.builtin.get_url:
-    url: "{{ db_drivers_artifactory_base_url }}/{{ db_drivers_oracle_artifactory_repo }}/oracle-instantclient{{ _oracle_major_minor }}-{{ item }}-{{ db_drivers_oracle_version }}-1.el{{ ansible_distribution_major_version }}.{{ _oracle_rpm_arch }}.rpm"
+    url: "{{ db_drivers_oracle_artifactory_repo }}/{{ _oracle_url_version_dir }}/oracle-instantclient{{ _oracle_major_minor }}-{{ item }}-{{ db_drivers_oracle_version }}-1.el{{ ansible_distribution_major_version }}.{{ _oracle_rpm_arch }}.rpm"
     dest: "/tmp/oracle-instantclient{{ _oracle_major_minor }}-{{ item }}-{{ db_drivers_oracle_version }}.rpm"
     mode: "0644"
     url_username: "{{ db_drivers_artifactory_username if db_drivers_artifactory_username else omit }}"
