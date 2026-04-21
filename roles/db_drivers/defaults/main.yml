@@ -46,7 +46,7 @@ db_drivers_oracle_packages:
   - odbc
 # @var db_drivers_oracle_artifactory_repo:type: string
 # @var db_drivers_oracle_artifactory_repo:description: Artifactory repository path for Oracle Instant Client (used when db_drivers_artifactory_enabled is true)
-db_drivers_oracle_artifactory_repo: "oracle-instantclient"
+db_drivers_oracle_artifactory_repo: "otn_software/linux/instantclient"
 # @var db_drivers_oracle_artifactory_format:type: string
 # @var db_drivers_oracle_artifactory_format:description: Package format to download from Artifactory ("zip" or "rpm")
 db_drivers_oracle_artifactory_format: "zip"
