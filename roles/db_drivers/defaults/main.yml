@@ -1,7 +1,7 @@
 # defaults file for db-drivers
 
 # renovate: depName=posit-pro-drivers datasource=custom.posit-pro-drivers
-db_drivers_version: 2025.03.0
+db_drivers_version: 2026.01.0
 
 # @var db_drivers_install_dir:type: string
 # @var db_drivers_install_dir:description: Base directory for DB drivers installation (version is appended)
@@ -35,7 +35,10 @@ db_drivers_oracle_enabled: false
 # @var db_drivers_oracle_version:type: string
 # @var db_drivers_oracle_version:description: Full Oracle Instant Client version string (used in download filenames)
 # renovate: depName=oracle-instantclient datasource=custom.oracle-instantclient
-db_drivers_oracle_version: "23.7.0.25.01"
+db_drivers_oracle_version: "19.30.0.0.0"
+# @var db_drivers_oracle_version_suffix:type: string
+# @var db_drivers_oracle_version_suffix:description: Suffix appended to zip filenames in Oracle CDN downloads (e.g. "dbru" for 19.x versions, empty for 23.x)
+db_drivers_oracle_version_suffix: "dbru"
 # @var db_drivers_oracle_install_dir:type: string
 # @var db_drivers_oracle_install_dir:description: Base directory for Oracle Instant Client installation
 db_drivers_oracle_install_dir: /opt/oracle
@@ -43,7 +46,6 @@ db_drivers_oracle_install_dir: /opt/oracle
 # @var db_drivers_oracle_packages:description: Oracle Instant Client packages to install (e.g. basic, odbc, sqlplus, sdk)
 db_drivers_oracle_packages:
   - basic
-  - odbc
 # @var db_drivers_oracle_artifactory_repo:type: string
 # @var db_drivers_oracle_artifactory_repo:description: Artifactory repository path for Oracle Instant Client (used when db_drivers_artifactory_enabled is true)
 db_drivers_oracle_artifactory_repo: "otn_software/linux/instantclient"

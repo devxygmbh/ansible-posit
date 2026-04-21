@@ -24,10 +24,10 @@
       ]
     },
     "oracle-instantclient": {
-      "defaultRegistryUrlTemplate": "https://yum.oracle.com/repo/OracleLinux/OL9/oracle/instantclient23/x86_64/",
+      "defaultRegistryUrlTemplate": "https://yum.oracle.com/repo/OracleLinux/OL9/oracle/instantclient/x86_64/",
       "format": "html",
       "transformTemplates": [
-        "{\"releases\": $distinct($map($match($, /oracle-instantclient-basic-(\\d+\\.\\d+\\.\\d+\\.\\d+\\.\\d+)-/), function($v) { {\"version\": $v.groups[0]} }))}"
+        "{\"releases\": $distinct($map($match($, /oracle-instantclient\\d+\\.\\d+-basic-(\\d+\\.\\d+\\.\\d+\\.\\d+\\.\\d+)-/), function($v) { {\"version\": $v.groups[0]} }))}"
       ]
     }
   }

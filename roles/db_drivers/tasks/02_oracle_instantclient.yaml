@@ -27,8 +27,8 @@
     - not oracle_dir.stat.exists
     - not db_drivers_artifactory_enabled | bool
   ansible.builtin.get_url:
-    url: "https://download.oracle.com/otn_software/linux/instantclient/{{ _oracle_url_version_dir }}/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}.zip"
-    dest: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}.zip"
+    url: "https://download.oracle.com/otn_software/linux/instantclient/{{ _oracle_url_version_dir }}/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
+    dest: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
     mode: "0644"
   loop: "{{ db_drivers_oracle_packages }}"
 
@@ -38,8 +38,8 @@
     - db_drivers_artifactory_enabled | bool
     - _oracle_format == 'zip'
   ansible.builtin.get_url:
-    url: "{{ db_drivers_artifactory_base_url }}/{{ db_drivers_oracle_artifactory_repo }}/{{ _oracle_url_version_dir }}/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}.zip"
-    dest: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}.zip"
+    url: "{{ db_drivers_artifactory_base_url }}/{{ db_drivers_oracle_artifactory_repo }}/{{ _oracle_url_version_dir }}/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
+    dest: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
     mode: "0644"
     url_username: "{{ db_drivers_artifactory_username if db_drivers_artifactory_username else omit }}"
     url_password: "{{ db_drivers_artifactory_password if db_drivers_artifactory_password else omit }}"
@@ -66,7 +66,7 @@
     - not ansible_check_mode
     - _oracle_format == 'zip'
   ansible.builtin.unarchive:
-    src: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}.zip"
+    src: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
     dest: "{{ db_drivers_oracle_install_dir }}"
     remote_src: true
   loop: "{{ db_drivers_oracle_packages }}"
@@ -86,7 +86,7 @@
     - not oracle_dir.stat.exists
     - _oracle_format == 'zip'
   ansible.builtin.file:
-    path: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}.zip"
+    path: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
     state: absent
   loop: "{{ db_drivers_oracle_packages }}"
 
@@ -109,15 +109,3 @@
 - name: Run ldconfig for Oracle Instant Client
   ansible.builtin.command: ldconfig
   changed_when: false
-
-- name: Add Oracle ODBC driver to odbcinst.ini
-  when: "'odbc' in db_drivers_oracle_packages"
-  ansible.builtin.blockinfile:
-    path: /etc/odbcinst.ini
-    marker: "# {mark} ANSIBLE MANAGED - Oracle Instant Client"
-    block: |
-      [Oracle {{ _oracle_major_version }}]
-      Description = Oracle ODBC driver for Oracle {{ _oracle_major_version }}
-      Driver = {{ _oracle_install_path }}/libsqora.so.{{ _oracle_major_version }}.1
-    create: true
-    mode: "0644"
