@@ -1,1 +1,5 @@
 # handlers file for db-drivers
+
+- name: Run ldconfig
+  ansible.builtin.command: ldconfig
+  changed_when: false

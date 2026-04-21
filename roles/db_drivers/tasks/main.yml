@@ -67,3 +67,8 @@
     path: /etc/odbc.ini
     block: |
       {{ odbc_ini }}
+
+# Oracle Instant Client
+- name: Import Oracle Instant Client tasks
+  when: db_drivers_oracle_enabled | bool
+  ansible.builtin.import_tasks: 02_oracle_instantclient.yaml
