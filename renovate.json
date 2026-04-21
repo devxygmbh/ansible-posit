@@ -6,12 +6,19 @@
       "customType": "regex",
       "fileMatch": ["roles/db_drivers/defaults/main\\.yml$"],
       "matchStrings": [
-        "# renovate: depName=(?<depName>\\S+) datasource=(?<datasource>\\S+)\\n\\w+: \"(?<currentValue>[^\"]+)\""
+        "# renovate: depName=(?<depName>\\S+) datasource=(?<datasource>\\S+)\\n\\w+: \"?(?<currentValue>[^\"\\n]+?)\"?\\s*$"
       ],
       "versioningTemplate": "loose"
     }
   ],
   "customDatasources": {
+    "posit-pro-drivers": {
+      "defaultRegistryUrlTemplate": "https://live-rstudio.pantheonsite.io/wp-content/uploads/downloads.json",
+      "format": "json",
+      "transformTemplates": [
+        "{\"releases\": [{\"version\": pro_drivers.installer.rhel8.version}]}"
+      ]
+    },
     "oracle-instantclient": {
       "defaultRegistryUrlTemplate": "https://yum.oracle.com/repo/OracleLinux/OL9/oracle/instantclient23/x86_64/",
       "format": "html",

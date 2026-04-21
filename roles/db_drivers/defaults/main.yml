@@ -1,5 +1,6 @@
 # defaults file for db-drivers
 
+# renovate: depName=posit-pro-drivers datasource=custom.posit-pro-drivers
 db_drivers_version: 2025.03.0
 
 # @var db_drivers_install_dir:type: string
