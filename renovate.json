@@ -1,4 +1,23 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["local>devxy/renovate-config"]
+  "extends": ["local>devxy/renovate-config"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["roles/db_drivers/defaults/main\\.yml$"],
+      "matchStrings": [
+        "# renovate: depName=(?<depName>\\S+) datasource=(?<datasource>\\S+)\\n\\w+: \"(?<currentValue>[^\"]+)\""
+      ],
+      "versioningTemplate": "loose"
+    }
+  ],
+  "customDatasources": {
+    "oracle-instantclient": {
+      "defaultRegistryUrlTemplate": "https://yum.oracle.com/repo/OracleLinux/OL9/oracle/instantclient23/x86_64/",
+      "format": "html",
+      "transformTemplates": [
+        "{\"releases\": $distinct($map($match($, /oracle-instantclient-basic-(\\d+\\.\\d+\\.\\d+\\.\\d+\\.\\d+)-/), function($v) { {\"version\": $v.groups[0]} }))}"
+      ]
+    }
+  }
 }

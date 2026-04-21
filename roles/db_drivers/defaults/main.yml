@@ -26,3 +26,26 @@ db_drivers_artifactory_username: ""
 # @var db_drivers_artifactory_password:type: string
 # @var db_drivers_artifactory_password:description: Artifactory password/token (if auth required)
 db_drivers_artifactory_password: ""
+
+## Oracle Instant Client Configuration
+# @var db_drivers_oracle_enabled:type: boolean
+# @var db_drivers_oracle_enabled:description: Enable Oracle Instant Client installation
+db_drivers_oracle_enabled: false
+# @var db_drivers_oracle_version:type: string
+# @var db_drivers_oracle_version:description: Full Oracle Instant Client version string (used in download filenames)
+# renovate: depName=oracle-instantclient datasource=custom.oracle-instantclient
+db_drivers_oracle_version: "23.7.0.25.01"
+# @var db_drivers_oracle_install_dir:type: string
+# @var db_drivers_oracle_install_dir:description: Base directory for Oracle Instant Client installation
+db_drivers_oracle_install_dir: /opt/oracle
+# @var db_drivers_oracle_packages:type: list
+# @var db_drivers_oracle_packages:description: Oracle Instant Client packages to install (e.g. basic, odbc, sqlplus, sdk)
+db_drivers_oracle_packages:
+  - basic
+  - odbc
+# @var db_drivers_oracle_artifactory_repo:type: string
+# @var db_drivers_oracle_artifactory_repo:description: Artifactory repository path for Oracle Instant Client (used when db_drivers_artifactory_enabled is true)
+db_drivers_oracle_artifactory_repo: "oracle-instantclient"
+# @var db_drivers_oracle_artifactory_format:type: string
+# @var db_drivers_oracle_artifactory_format:description: Package format to download from Artifactory ("zip" or "rpm")
+db_drivers_oracle_artifactory_format: "zip"
