@@ -3,10 +3,10 @@
 
 # @var connect_packages_http_proxy:type: string
 # @var connect_packages_http_proxy:description: HTTP proxy URL for package downloads
-connect_packages_http_proxy: ""
+connect_packages_http_proxy: ''
 # @var connect_packages_https_proxy:type: string
 # @var connect_packages_https_proxy:description: HTTPS proxy URL for package downloads
-connect_packages_https_proxy: ""
+connect_packages_https_proxy: ''
 
 ## R Package Repositories
 # @var connect_r_package_repositories:type: list

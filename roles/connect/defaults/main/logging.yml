@@ -18,7 +18,7 @@ connect_logging_access_log: /var/log/rstudio/rstudio-connect/rstudio-connect.acc
 connect_logging_access_log_format: COMMON
 # @var connect_logging_audit_log:type: string
 # @var connect_logging_audit_log:description: Path to audit log file
-connect_logging_audit_log: ""
+connect_logging_audit_log: ''
 # @var connect_logging_audit_log_format:type: string
 # @var connect_logging_audit_log_format:description: Audit log format (JSON)
 connect_logging_audit_log_format: JSON

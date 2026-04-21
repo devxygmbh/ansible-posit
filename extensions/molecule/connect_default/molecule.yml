@@ -7,7 +7,7 @@ driver:
   name: docker
 platforms:
   - name: almalinux-9
-    image: "devxygmbh/almalinux9-ansible"
+    image: 'devxygmbh/almalinux9-ansible'
     platform: linux/amd64
     command: /sbin/init
     volumes:
@@ -20,7 +20,7 @@ platforms:
     privileged: true
     pre_build_image: true
   - name: ubuntu-2404
-    image: "devxygmbh/ubuntu2404-ansible"
+    image: 'devxygmbh/ubuntu2404-ansible'
     platform: linux/amd64
     command: /sbin/init
     volumes:

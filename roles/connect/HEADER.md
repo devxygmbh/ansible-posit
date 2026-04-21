@@ -30,7 +30,7 @@ Highlights
   roles:
     - role: devxy.posit.connect
       vars:
-        connect_general_version: "2025.12.1"
+        connect_general_version: '2025.12.1'
         connect_auth_provider: password
 ```
 
@@ -41,11 +41,11 @@ Highlights
   roles:
     - role: devxy.posit.connect
       vars:
-        connect_general_version: "2025.12.1"
+        connect_general_version: '2025.12.1'
         connect_auth_provider: oauth2
-        connect_auth_oauth2_client_id: "your-client-id"
-        connect_auth_oauth2_client_secret: "{{ vault_oauth2_secret }}"
-        connect_auth_oauth2_openid_issuer: "https://login.microsoftonline.com/your-tenant-id/v2.0"
+        connect_auth_oauth2_client_id: 'your-client-id'
+        connect_auth_oauth2_client_secret: '{{ vault_oauth2_secret }}'
+        connect_auth_oauth2_openid_issuer: 'https://login.microsoftonline.com/your-tenant-id/v2.0'
         connect_auth_oauth2_register_on_first_login: true
 ```
 
@@ -56,10 +56,10 @@ Highlights
   roles:
     - role: devxy.posit.connect
       vars:
-        connect_general_version: "2025.12.1"
+        connect_general_version: '2025.12.1'
         connect_auth_provider: saml
-        connect_auth_saml_idp_metadata_url: "https://idp.example.com/metadata"
-        connect_auth_saml_sp_entity_id: "https://connect.example.com"
+        connect_auth_saml_idp_metadata_url: 'https://idp.example.com/metadata'
+        connect_auth_saml_sp_entity_id: 'https://connect.example.com'
 ```
 
 ### LDAP Authentication
@@ -69,12 +69,12 @@ Highlights
   roles:
     - role: devxy.posit.connect
       vars:
-        connect_general_version: "2025.12.1"
+        connect_general_version: '2025.12.1'
         connect_auth_provider: ldap
-        connect_auth_ldap_server_address: "ldaps://ldap.example.com:636"
-        connect_auth_ldap_bind_dn: "cn=service-account,ou=services,dc=example,dc=com"
-        connect_auth_ldap_bind_password: "{{ vault_ldap_password }}"
-        connect_auth_ldap_user_search_base_dn: "ou=users,dc=example,dc=com"
+        connect_auth_ldap_server_address: 'ldaps://ldap.example.com:636'
+        connect_auth_ldap_bind_dn: 'cn=service-account,ou=services,dc=example,dc=com'
+        connect_auth_ldap_bind_password: '{{ vault_ldap_password }}'
+        connect_auth_ldap_user_search_base_dn: 'ou=users,dc=example,dc=com'
 ```
 
 ### Full Stack with R, Python, and PostgreSQL
@@ -84,22 +84,22 @@ Highlights
   roles:
     - role: devxy.data_science_core.r
       vars:
-        r_version: "4.4.2"
+        r_version: '4.4.2'
     - role: devxy.data_science_core.python
       vars:
-        python_version: "3.12"
+        python_version: '3.12'
     - role: devxy.posit.connect
       vars:
-        connect_general_version: "2025.12.1"
+        connect_general_version: '2025.12.1'
         connect_r_executables:
           - /opt/R/4.4.2/bin/R
         connect_python_executables:
           - /opt/python/3.12/bin/python3
         connect_database_provider: postgres
-        connect_database_host: "postgres.example.com"
-        connect_database_name: "rsconnect"
-        connect_database_username: "rsconnect"
-        connect_database_password: "{{ vault_db_password }}"
+        connect_database_host: 'postgres.example.com'
+        connect_database_name: 'rsconnect'
+        connect_database_username: 'rsconnect'
+        connect_database_password: '{{ vault_db_password }}'
 ```
 
 ### Artifactory Download (Air-Gapped Environments)
@@ -109,13 +109,13 @@ Highlights
   roles:
     - role: devxy.posit.connect
       vars:
-        connect_general_version: "2025.12.1"
+        connect_general_version: '2025.12.1'
         connect_artifactory_enabled: true
-        connect_artifactory_base_url: "https://artifactory.example.com/artifactory"
-        connect_artifactory_repository: "posit-local"
-        connect_artifactory_connect_path: "connect"
-        connect_artifactory_username: "{{ vault_artifactory_user }}"
-        connect_artifactory_password: "{{ vault_artifactory_password }}"
+        connect_artifactory_base_url: 'https://artifactory.example.com/artifactory'
+        connect_artifactory_repository: 'posit-local'
+        connect_artifactory_connect_path: 'connect'
+        connect_artifactory_username: '{{ vault_artifactory_user }}'
+        connect_artifactory_password: '{{ vault_artifactory_password }}'
 ```
 
 ### Behind a Reverse Proxy (SSL Termination)
@@ -125,9 +125,9 @@ Highlights
   roles:
     - role: devxy.posit.connect
       vars:
-        connect_general_version: "2025.12.1"
-        connect_server_address: "https://connect.example.com"
-        connect_http_listen: ":3939"
+        connect_general_version: '2025.12.1'
+        connect_server_address: 'https://connect.example.com'
+        connect_http_listen: ':3939'
         connect_http_force_secure: true
         connect_http_no_warning: true
 ```

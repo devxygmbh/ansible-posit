@@ -1,4 +1,4 @@
 ## General
 # @var connect_general_version:type: string
 # @var connect_general_version:description: Posit Connect version
-connect_general_version: "2025.12.1"
+connect_general_version: '2025.12.1'

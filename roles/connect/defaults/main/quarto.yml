@@ -7,7 +7,7 @@ connect_quarto_enabled: true
 
 # @var connect_quarto_executable:type: string
 # @var connect_quarto_executable:description: Path to single Quarto executable
-connect_quarto_executable: ""
+connect_quarto_executable: ''
 
 # @var connect_quarto_executables:type: list
 # @var connect_quarto_executables:description: List of Quarto executable paths (explicit)
@@ -23,7 +23,7 @@ connect_quarto_bin_path: bin/quarto
 
 # @var connect_quarto_version_matching:type: string
 # @var connect_quarto_version_matching:description: Version matching mode (exact, major, minor, nearest)
-connect_quarto_version_matching: "nearest"
+connect_quarto_version_matching: 'nearest'
 # Dynamic executable generation:
 # If quarto_versions is defined, executables are automatically generated using:
 #   - quarto_installation_dir (from data_science_core) if set

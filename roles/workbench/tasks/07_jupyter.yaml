@@ -1,28 +1,28 @@
-- name: "[Jupyter] Gather package facts"
+- name: '[Jupyter] Gather package facts'
   when: workbench_jupyter_install_packages | bool
   ansible.builtin.package_facts:
     manager: auto
 
-- name: "[Jupyter] Install python3 development package"
+- name: '[Jupyter] Install python3 development package'
   ansible.builtin.package:
-    name: "{{ item }}"
+    name: '{{ item }}'
     state: present
   loop:
     - "{{ 'python3-dev' if ansible_facts['os_family'] == 'Debian' else 'python3-devel' }}"
     - python3-pip
-  when: "workbench_jupyter_install_packages | bool and item not in ansible_facts.packages"
+  when: 'workbench_jupyter_install_packages | bool and item not in ansible_facts.packages'
 
-- name: "[Jupyter] Get installed pip packages with versions"
+- name: '[Jupyter] Get installed pip packages with versions'
   when: workbench_jupyter_install_packages | bool
-  ansible.builtin.command: "/usr/bin/pip3 list --format=json"
+  ansible.builtin.command: '/usr/bin/pip3 list --format=json'
   register: installed_packages
   changed_when: false
 
-- name: "Create requirements file for Jupyter packages"
+- name: 'Create requirements file for Jupyter packages'
   when: workbench_jupyter_install_packages | bool
   ansible.builtin.copy:
-    dest: "/tmp/jupyter_requirements.txt"
-    mode: "0644"
+    dest: '/tmp/jupyter_requirements.txt'
+    mode: '0644'
     content: |
       jupyterlab{{ workbench_jupyter_jupyterlab_version }}
       notebook{{ workbench_jupyter_jupyternotebook_version }}
@@ -34,13 +34,13 @@
       jupyter-resource-usage{{ workbench_jupyter_jupyter_resource_usage_version }}
       jupyter_scheduler{{ workbench_jupyter_jupyter_scheduler_version }}
 
-- name: "Get pip version"
+- name: 'Get pip version'
   when: workbench_jupyter_install_packages | bool
-  ansible.builtin.command: "/usr/bin/pip3 --version"
+  ansible.builtin.command: '/usr/bin/pip3 --version'
   register: pip_version_output
   changed_when: false
 
-- name: "Build pip extra args"
+- name: 'Build pip extra args'
   when:
     - workbench_jupyter_install_packages | bool
     - not ansible_check_mode
@@ -53,18 +53,18 @@
       {{ '--index-url ' + workbench_jupyter_pip_index_url if workbench_jupyter_pip_index_url | length > 0 else '' }}
       {{ '--trusted-host ' + workbench_jupyter_pip_trusted_host if workbench_jupyter_pip_trusted_host | length > 0 else '' }}
 
-- name: "Install Jupyter packages from requirements file"
+- name: 'Install Jupyter packages from requirements file'
   when:
     - workbench_jupyter_install_packages | bool
     - not ansible_check_mode
   ansible.builtin.pip:
-    requirements: "/tmp/jupyter_requirements.txt"
+    requirements: '/tmp/jupyter_requirements.txt'
     executable: /usr/bin/pip3
     state: present
-    extra_args: "{{ jupyter_pip_extra_args }}"
+    extra_args: '{{ jupyter_pip_extra_args }}'
   notify: Restart rstudio-server service
 
-- name: "Skip Jupyter package installation"
+- name: 'Skip Jupyter package installation'
   when: not workbench_jupyter_install_packages | bool
   ansible.builtin.debug:
-    msg: "Skipping Jupyter package installation - workbench_jupyter_install_packages is false"
+    msg: 'Skipping Jupyter package installation - workbench_jupyter_install_packages is false'

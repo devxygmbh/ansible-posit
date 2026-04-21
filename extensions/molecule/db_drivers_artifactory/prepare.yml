@@ -13,18 +13,18 @@
 
     - name: Create mock Artifactory directory structure
       ansible.builtin.file:
-        path: "{{ item }}"
+        path: '{{ item }}'
         state: directory
-        mode: "0755"
+        mode: '0755'
       loop:
         - /opt/mock-artifactory
         - /opt/mock-artifactory/posit-drivers
 
     - name: Download DB Drivers to mock Artifactory
       ansible.builtin.get_url:
-        url: "https://cdn.rstudio.com/drivers/7C152C12/installer/rstudio-drivers-2025.03.0.tar"
-        dest: "/opt/mock-artifactory/posit-drivers/rstudio-drivers-2025.03.0.tar"
-        mode: "0644"
+        url: 'https://cdn.rstudio.com/drivers/7C152C12/installer/rstudio-drivers-2025.03.0.tar'
+        dest: '/opt/mock-artifactory/posit-drivers/rstudio-drivers-2025.03.0.tar'
+        mode: '0644'
       failed_when: false
       register: download_db_drivers
 
@@ -43,7 +43,7 @@
 
     - name: Test HTTP server accessibility
       ansible.builtin.uri:
-        url: "http://localhost:8080/posit-drivers/rstudio-drivers-2025.03.0.tar"
+        url: 'http://localhost:8080/posit-drivers/rstudio-drivers-2025.03.0.tar'
         return_content: false
       register: http_test
       retries: 3

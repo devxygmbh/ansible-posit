@@ -6,13 +6,13 @@
 connect_auth_provider: password
 # @var connect_auth_name:type: string
 # @var connect_auth_name:description: Display name for authentication provider
-connect_auth_name: "Posit Connect"
+connect_auth_name: 'Posit Connect'
 # @var connect_auth_lifetime:type: string
 # @var connect_auth_lifetime:description: Session lifetime duration
-connect_auth_lifetime: "24h"
+connect_auth_lifetime: '24h'
 # @var connect_auth_inactivity:type: string
 # @var connect_auth_inactivity:description: Session inactivity timeout
-connect_auth_inactivity: "8h"
+connect_auth_inactivity: '8h'
 # @var connect_auth_api_key_auth:type: boolean
 # @var connect_auth_api_key_auth:description: Enable API key authentication
 connect_auth_api_key_auth: true
@@ -31,16 +31,16 @@ connect_auth_pam_use_session: true
 ## OAuth2/OIDC Configuration
 # @var connect_auth_oauth2_client_id:type: string
 # @var connect_auth_oauth2_client_id:description: OAuth2 client ID
-connect_auth_oauth2_client_id: ""
+connect_auth_oauth2_client_id: ''
 # @var connect_auth_oauth2_client_secret:type: string
 # @var connect_auth_oauth2_client_secret:description: OAuth2 client secret
-connect_auth_oauth2_client_secret: ""
+connect_auth_oauth2_client_secret: ''
 # @var connect_auth_oauth2_openid_issuer:type: string
 # @var connect_auth_oauth2_openid_issuer:description: OpenID Connect issuer URL
-connect_auth_oauth2_openid_issuer: ""
+connect_auth_oauth2_openid_issuer: ''
 # @var connect_auth_oauth2_scopes:type: string
 # @var connect_auth_oauth2_scopes:description: OAuth2 scopes (space-separated)
-connect_auth_oauth2_scopes: "openid profile email"
+connect_auth_oauth2_scopes: 'openid profile email'
 # @var connect_auth_oauth2_unique_id_claim:type: string
 # @var connect_auth_oauth2_unique_id_claim:description: Claim to use as unique user identifier
 connect_auth_oauth2_unique_id_claim: sub
@@ -57,36 +57,36 @@ connect_auth_oauth2_register_on_first_login: true
 ## SAML Configuration
 # @var connect_auth_saml_idp_metadata_url:type: string
 # @var connect_auth_saml_idp_metadata_url:description: SAML IdP metadata URL
-connect_auth_saml_idp_metadata_url: ""
+connect_auth_saml_idp_metadata_url: ''
 # @var connect_auth_saml_idp_metadata_path:type: string
 # @var connect_auth_saml_idp_metadata_path:description: Path to SAML IdP metadata file
-connect_auth_saml_idp_metadata_path: ""
+connect_auth_saml_idp_metadata_path: ''
 # @var connect_auth_saml_sp_entity_id:type: string
 # @var connect_auth_saml_sp_entity_id:description: SAML Service Provider Entity ID
-connect_auth_saml_sp_entity_id: ""
+connect_auth_saml_sp_entity_id: ''
 # @var connect_auth_saml_unique_id_attribute:type: string
 # @var connect_auth_saml_unique_id_attribute:description: SAML attribute for unique user ID
 connect_auth_saml_unique_id_attribute: NameID
 # @var connect_auth_saml_username_attribute:type: string
 # @var connect_auth_saml_username_attribute:description: SAML attribute for username
-connect_auth_saml_username_attribute: ""
+connect_auth_saml_username_attribute: ''
 # @var connect_auth_saml_email_attribute:type: string
 # @var connect_auth_saml_email_attribute:description: SAML attribute for email
-connect_auth_saml_email_attribute: ""
+connect_auth_saml_email_attribute: ''
 
 ## LDAP Configuration
 # @var connect_auth_ldap_server_address:type: string
 # @var connect_auth_ldap_server_address:description: LDAP server address (ldap:// or ldaps://)
-connect_auth_ldap_server_address: ""
+connect_auth_ldap_server_address: ''
 # @var connect_auth_ldap_bind_dn:type: string
 # @var connect_auth_ldap_bind_dn:description: LDAP bind DN
-connect_auth_ldap_bind_dn: ""
+connect_auth_ldap_bind_dn: ''
 # @var connect_auth_ldap_bind_password:type: string
 # @var connect_auth_ldap_bind_password:description: LDAP bind password
-connect_auth_ldap_bind_password: ""
+connect_auth_ldap_bind_password: ''
 # @var connect_auth_ldap_user_search_base_dn:type: string
 # @var connect_auth_ldap_user_search_base_dn:description: LDAP user search base DN
-connect_auth_ldap_user_search_base_dn: ""
+connect_auth_ldap_user_search_base_dn: ''
 # @var connect_auth_ldap_user_object_class:type: string
 # @var connect_auth_ldap_user_object_class:description: LDAP user object class
 connect_auth_ldap_user_object_class: posixAccount
@@ -104,7 +104,7 @@ connect_auth_ldap_user_first_name_attribute: givenName
 connect_auth_ldap_user_last_name_attribute: sn
 # @var connect_auth_ldap_group_search_base_dn:type: string
 # @var connect_auth_ldap_group_search_base_dn:description: LDAP group search base DN
-connect_auth_ldap_group_search_base_dn: ""
+connect_auth_ldap_group_search_base_dn: ''
 # @var connect_auth_ldap_group_object_class:type: string
 # @var connect_auth_ldap_group_object_class:description: LDAP group object class
 connect_auth_ldap_group_object_class: posixGroup

@@ -4,16 +4,16 @@
 connect_artifactory_enabled: false
 # @var connect_artifactory_base_url:type: string
 # @var connect_artifactory_base_url:description: Base URL for JFrog Artifactory
-connect_artifactory_base_url: ""
+connect_artifactory_base_url: ''
 # @var connect_artifactory_posit_repo:type: string
 # @var connect_artifactory_posit_repo:description: Artifactory repository path for Posit software
-connect_artifactory_posit_repo: "posit-software"
+connect_artifactory_posit_repo: 'posit-software'
 # @var connect_artifactory_username:type: string
 # @var connect_artifactory_username:description: Artifactory username (if auth required)
-connect_artifactory_username: ""
+connect_artifactory_username: ''
 # @var connect_artifactory_password:type: string
 # @var connect_artifactory_password:description: Artifactory password/token (if auth required)
-connect_artifactory_password: ""
+connect_artifactory_password: ''
 # @var connect_artifactory_cran_repo:type: string
 # @var connect_artifactory_cran_repo:description: Artifactory repository path for CRAN packages
-connect_artifactory_cran_repo: "cran-remote"
+connect_artifactory_cran_repo: 'cran-remote'

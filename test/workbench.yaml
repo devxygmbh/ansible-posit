@@ -34,10 +34,10 @@
     certbot_create_if_missing: true
     certbot_create_standalone_stop_services: [nginx]
     certbot_admin_email: mail@devxy.io
-    certbot_create_extra_args: ""
+    certbot_create_extra_args: ''
     certbot_certs:
       - domains:
-          - "wb-test.devxy.io"
+          - 'wb-test.devxy.io'
 
     nginx_config_debug_output: true
 
@@ -50,8 +50,8 @@
           servers:
             - core:
                 listen:
-                  - port: "[::]:80"
-                  - port: "[::]:443"
+                  - port: '[::]:80'
+                  - port: '[::]:443'
                     ssl: true
                 server_name:
                   - wb-test.devxy.io
@@ -63,7 +63,7 @@
                       - field: Upgrade
                         value: $http_upgrade
                       - field: Connection
-                        value: "upgrade"
+                        value: 'upgrade'
                       - field: Host
                         value: $host
                       - field: proxy_read_timeout

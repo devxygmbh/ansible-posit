@@ -6,10 +6,10 @@
 connect_git_enabled: true
 # @var connect_git_executable:type: string
 # @var connect_git_executable:description: Path to Git executable
-connect_git_executable: ""
+connect_git_executable: ''
 # @var connect_git_polling_frequency:type: string
 # @var connect_git_polling_frequency:description: Repository polling interval
-connect_git_polling_frequency: "5m"
+connect_git_polling_frequency: '5m'
 # @var connect_git_concurrency:type: integer
 # @var connect_git_concurrency:description: Concurrent git operations
 connect_git_concurrency: 1

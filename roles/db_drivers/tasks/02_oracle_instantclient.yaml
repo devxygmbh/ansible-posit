@@ -7,7 +7,7 @@
 - name: Set Oracle Instant Client facts
   ansible.builtin.set_fact:
     _oracle_arch: "{{ 'x64' if ansible_architecture == 'x86_64' else 'arm64' }}"
-    _oracle_rpm_arch: "{{ ansible_architecture }}"
+    _oracle_rpm_arch: '{{ ansible_architecture }}'
     _oracle_install_path: "{{ db_drivers_oracle_install_dir }}/instantclient_{{ db_drivers_oracle_version.split('.')[:2] | join('_') }}"
     _oracle_url_version_dir: "{{ (db_drivers_oracle_version.split('.')[:3] | join('')) + '0' * (7 - (db_drivers_oracle_version.split('.')[:3] | join('') | length)) }}"
     _oracle_major_version: "{{ db_drivers_oracle_version.split('.')[0] }}"
@@ -18,7 +18,7 @@
 - name: Check if Oracle Instant Client zip is already installed
   when: _oracle_format == 'zip'
   ansible.builtin.stat:
-    path: "{{ _oracle_install_path }}"
+    path: '{{ _oracle_install_path }}'
   register: _oracle_zip_dir
 
 # RPM package check
@@ -41,19 +41,19 @@
     - not _oracle_already_installed | bool
     - _oracle_format == 'zip'
   ansible.builtin.file:
-    path: "{{ db_drivers_oracle_install_dir }}"
+    path: '{{ db_drivers_oracle_install_dir }}'
     state: directory
-    mode: "0775"
+    mode: '0775'
 
 - name: Download Oracle Instant Client packages from Oracle CDN
   when:
     - not _oracle_already_installed | bool
     - not db_drivers_artifactory_enabled | bool
   ansible.builtin.get_url:
-    url: "https://download.oracle.com/otn_software/linux/instantclient/{{ _oracle_url_version_dir }}/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
-    dest: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
-    mode: "0644"
-  loop: "{{ db_drivers_oracle_packages }}"
+    url: 'https://download.oracle.com/otn_software/linux/instantclient/{{ _oracle_url_version_dir }}/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip'
+    dest: '/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip'
+    mode: '0644'
+  loop: '{{ db_drivers_oracle_packages }}'
 
 - name: Download Oracle Instant Client zip packages from Artifactory
   when:
@@ -61,13 +61,13 @@
     - db_drivers_artifactory_enabled | bool
     - _oracle_format == 'zip'
   ansible.builtin.get_url:
-    url: "{{ db_drivers_artifactory_base_url }}/{{ db_drivers_oracle_artifactory_repo }}/{{ _oracle_url_version_dir }}/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
-    dest: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
-    mode: "0644"
-    url_username: "{{ db_drivers_artifactory_username if db_drivers_artifactory_username else omit }}"
-    url_password: "{{ db_drivers_artifactory_password if db_drivers_artifactory_password else omit }}"
-    force_basic_auth: "{{ true if db_drivers_artifactory_username else false }}"
-  loop: "{{ db_drivers_oracle_packages }}"
+    url: '{{ db_drivers_artifactory_base_url }}/{{ db_drivers_oracle_artifactory_repo }}/{{ _oracle_url_version_dir }}/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip'
+    dest: '/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip'
+    mode: '0644'
+    url_username: '{{ db_drivers_artifactory_username if db_drivers_artifactory_username else omit }}'
+    url_password: '{{ db_drivers_artifactory_password if db_drivers_artifactory_password else omit }}'
+    force_basic_auth: '{{ true if db_drivers_artifactory_username else false }}'
+  loop: '{{ db_drivers_oracle_packages }}'
 
 - name: Download Oracle Instant Client RPM packages from Artifactory
   when:
@@ -75,13 +75,13 @@
     - db_drivers_artifactory_enabled | bool
     - _oracle_format == 'rpm'
   ansible.builtin.get_url:
-    url: "{{ db_drivers_artifactory_base_url }}/{{ db_drivers_oracle_artifactory_repo }}/{{ _oracle_url_version_dir }}/oracle-instantclient{{ _oracle_major_minor }}-{{ item }}-{{ db_drivers_oracle_version }}-1.el{{ ansible_distribution_major_version }}.{{ _oracle_rpm_arch }}.rpm"
-    dest: "/tmp/oracle-instantclient{{ _oracle_major_minor }}-{{ item }}-{{ db_drivers_oracle_version }}.rpm"
-    mode: "0644"
-    url_username: "{{ db_drivers_artifactory_username if db_drivers_artifactory_username else omit }}"
-    url_password: "{{ db_drivers_artifactory_password if db_drivers_artifactory_password else omit }}"
-    force_basic_auth: "{{ true if db_drivers_artifactory_username else false }}"
-  loop: "{{ db_drivers_oracle_packages }}"
+    url: '{{ db_drivers_artifactory_base_url }}/{{ db_drivers_oracle_artifactory_repo }}/{{ _oracle_url_version_dir }}/oracle-instantclient{{ _oracle_major_minor }}-{{ item }}-{{ db_drivers_oracle_version }}-1.el{{ ansible_distribution_major_version }}.{{ _oracle_rpm_arch }}.rpm'
+    dest: '/tmp/oracle-instantclient{{ _oracle_major_minor }}-{{ item }}-{{ db_drivers_oracle_version }}.rpm'
+    mode: '0644'
+    url_username: '{{ db_drivers_artifactory_username if db_drivers_artifactory_username else omit }}'
+    url_password: '{{ db_drivers_artifactory_password if db_drivers_artifactory_password else omit }}'
+    force_basic_auth: '{{ true if db_drivers_artifactory_username else false }}'
+  loop: '{{ db_drivers_oracle_packages }}'
 
 - name: Extract Oracle Instant Client zip packages
   when:
@@ -89,38 +89,38 @@
     - not ansible_check_mode
     - _oracle_format == 'zip'
   ansible.builtin.unarchive:
-    src: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
-    dest: "{{ db_drivers_oracle_install_dir }}"
+    src: '/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip'
+    dest: '{{ db_drivers_oracle_install_dir }}'
     remote_src: true
-  loop: "{{ db_drivers_oracle_packages }}"
+  loop: '{{ db_drivers_oracle_packages }}'
 
 - name: Install Oracle Instant Client RPM packages
   when:
     - not _oracle_already_installed | bool
     - _oracle_format == 'rpm'
   ansible.builtin.dnf:
-    name: "/tmp/oracle-instantclient{{ _oracle_major_minor }}-{{ item }}-{{ db_drivers_oracle_version }}.rpm"
+    name: '/tmp/oracle-instantclient{{ _oracle_major_minor }}-{{ item }}-{{ db_drivers_oracle_version }}.rpm'
     state: present
     disable_gpg_check: true
-  loop: "{{ db_drivers_oracle_packages }}"
+  loop: '{{ db_drivers_oracle_packages }}'
 
 - name: Cleanup Oracle Instant Client zip files
   when:
     - not _oracle_already_installed | bool
     - _oracle_format == 'zip'
   ansible.builtin.file:
-    path: "/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip"
+    path: '/tmp/instantclient-{{ item }}-linux.{{ _oracle_arch }}-{{ db_drivers_oracle_version }}{{ db_drivers_oracle_version_suffix }}.zip'
     state: absent
-  loop: "{{ db_drivers_oracle_packages }}"
+  loop: '{{ db_drivers_oracle_packages }}'
 
 - name: Cleanup Oracle Instant Client RPM files
   when:
     - not _oracle_already_installed | bool
     - _oracle_format == 'rpm'
   ansible.builtin.file:
-    path: "/tmp/oracle-instantclient{{ _oracle_major_minor }}-{{ item }}-{{ db_drivers_oracle_version }}.rpm"
+    path: '/tmp/oracle-instantclient{{ _oracle_major_minor }}-{{ item }}-{{ db_drivers_oracle_version }}.rpm'
     state: absent
-  loop: "{{ db_drivers_oracle_packages }}"
+  loop: '{{ db_drivers_oracle_packages }}'
 
 # Both formats need ldconfig setup:
 # - ZIP installs to {{ db_drivers_oracle_install_dir }}/instantclient_{major}_{minor}/
@@ -129,7 +129,7 @@
   ansible.builtin.copy:
     content: "{{ _oracle_install_path if _oracle_format == 'zip' else '/usr/lib/oracle/' ~ _oracle_major_minor ~ '/client64/lib' }}\n"
     dest: /etc/ld.so.conf.d/oracle-instantclient.conf
-    mode: "0644"
+    mode: '0644'
   notify: Run ldconfig
 
 - name: Run ldconfig for Oracle Instant Client

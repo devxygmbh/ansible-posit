@@ -6,28 +6,28 @@
 connect_server_data_dir: /var/lib/rstudio-connect
 # @var connect_server_temp_dir:type: string
 # @var connect_server_temp_dir:description: Temporary directory for content processes
-connect_server_temp_dir: ""
+connect_server_temp_dir: ''
 # @var connect_server_address:type: string
 # @var connect_server_address:description: Public-facing address of the Connect server (used for links in emails)
-connect_server_address: ""
+connect_server_address: ''
 # @var connect_server_email_provider:type: string
 # @var connect_server_email_provider:description: Email provider (none, SMTP, or Sendmail)
 connect_server_email_provider: none
 # @var connect_server_sender_email:type: string
 # @var connect_server_sender_email:description: Email address used as the sender for system emails
-connect_server_sender_email: ""
+connect_server_sender_email: ''
 # @var connect_server_sender_email_display_name:type: string
 # @var connect_server_sender_email_display_name:description: Display name for outbound emails
-connect_server_sender_email_display_name: "Posit Connect"
+connect_server_sender_email_display_name: 'Posit Connect'
 # @var connect_server_email_subject_prefix:type: string
 # @var connect_server_email_subject_prefix:description: Subject line prefix for emails
-connect_server_email_subject_prefix: "[Posit Connect]"
+connect_server_email_subject_prefix: '[Posit Connect]'
 # @var connect_server_dashboard_path:type: string
 # @var connect_server_dashboard_path:description: Path prefix for the Connect dashboard
 connect_server_dashboard_path: /connect
 # @var connect_server_root_redirect:type: string
 # @var connect_server_root_redirect:description: Redirect path after login
-connect_server_root_redirect: ""
+connect_server_root_redirect: ''
 # @var connect_server_hide_version:type: boolean
 # @var connect_server_hide_version:description: Hide the Connect version in the UI
 connect_server_hide_version: false
@@ -36,10 +36,10 @@ connect_server_hide_version: false
 connect_server_compilation_concurrency: 1
 # @var connect_server_public_warning:type: string
 # @var connect_server_public_warning:description: HTML message displayed on dashboard
-connect_server_public_warning: ""
+connect_server_public_warning: ''
 # @var connect_server_logged_in_warning:type: string
 # @var connect_server_logged_in_warning:description: HTML message for logged-in users
-connect_server_logged_in_warning: ""
+connect_server_logged_in_warning: ''
 # @var connect_server_hide_email_addresses:type: boolean
 # @var connect_server_hide_email_addresses:description: Hide email addresses from non-admins
 connect_server_hide_email_addresses: false
@@ -48,13 +48,13 @@ connect_server_hide_email_addresses: false
 connect_server_mail_all: false
 # @var connect_server_same_site:type: string
 # @var connect_server_same_site:description: SameSite cookie attribute (None, Lax, Strict)
-connect_server_same_site: "None"
+connect_server_same_site: 'None'
 # @var connect_server_frame_options_content:type: string
 # @var connect_server_frame_options_content:description: X-Frame-Options for content (DENY, SAMEORIGIN, NONE)
-connect_server_frame_options_content: "NONE"
+connect_server_frame_options_content: 'NONE'
 # @var connect_server_frame_options_dashboard:type: string
 # @var connect_server_frame_options_dashboard:description: X-Frame-Options for dashboard
-connect_server_frame_options_dashboard: "DENY"
+connect_server_frame_options_dashboard: 'DENY'
 # @var connect_server_use_fips_encryption:type: boolean
 # @var connect_server_use_fips_encryption:description: Use FIPS-approved encryption
 connect_server_use_fips_encryption: false
@@ -72,7 +72,7 @@ connect_server_product_check: true
 connect_server_system_check_on_startup: false
 # @var connect_server_system_check_frequency:type: string
 # @var connect_server_system_check_frequency:description: Periodic system check interval (0 to disable)
-connect_server_system_check_frequency: "0"
+connect_server_system_check_frequency: '0'
 # @var connect_server_custom_headers:type: list
 # @var connect_server_custom_headers:description: List of custom HTTP headers
 connect_server_custom_headers: []

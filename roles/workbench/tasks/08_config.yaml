@@ -1,28 +1,28 @@
-- name: "[Config] Create /etc/R"
+- name: '[Config] Create /etc/R'
   ansible.builtin.file:
     path: /etc/R
     state: directory
-    mode: "0755"
+    mode: '0755'
     owner: root
     group: root
 
-- name: "[Config] Deploy Renviron.site"
+- name: '[Config] Deploy Renviron.site'
   ansible.builtin.template:
     src: Renviron.site.j2
     dest: /etc/Renviron.site
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
 
-- name: "[Config] Deploy Rprofile.site"
+- name: '[Config] Deploy Rprofile.site'
   ansible.builtin.template:
     src: Rprofile.site.j2
     dest: /etc/Rprofile.site
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
 
-- name: "[Config] Deploy netrc for Artifactory CRAN auth"
+- name: '[Config] Deploy netrc for Artifactory CRAN auth'
   when: workbench_artifactory_enabled | bool and workbench_artifactory_username | length > 0
   ansible.builtin.copy:
     content: |
@@ -32,24 +32,24 @@
     dest: /etc/R/netrc
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
   no_log: true
 
-- name: "[Config] Create /etc/rstudio"
+- name: '[Config] Create /etc/rstudio'
   ansible.builtin.file:
     path: /etc/rstudio
     state: directory
-    mode: "0755"
+    mode: '0755'
     owner: root
-    group: "{{ workbench_server_server_user }}"
+    group: '{{ workbench_server_server_user }}'
 
-- name: "[Config] Apply Posit Workbench configuration (/etc/rstudio)"
+- name: '[Config] Apply Posit Workbench configuration (/etc/rstudio)'
   ansible.builtin.template:
-    src: "{{ item.file }}.j2"
-    dest: "/etc/rstudio/{{ item.file }}"
+    src: '{{ item.file }}.j2'
+    dest: '/etc/rstudio/{{ item.file }}'
     owner: root
     group: root
-    mode: "{{ item.mode }}"
+    mode: '{{ item.mode }}'
   no_log: "{{ workbench_database_provider == 'postgresql' and workbench_database_password | length > 0 }}"
   notify: >
     {{
@@ -57,150 +57,150 @@
       (workbench_database_provider == 'postgresql' and workbench_database_password | length > 0) | ternary(['Encrypt Postgresql Password'], [])
     }}
   loop:
-    - file: "database.conf"
-      mode: "0600"
-      restart: "Restart rstudio-server service"
-    - file: "jupyter.conf"
-      mode: "0644"
-      restart: "Restart rstudio-server service"
-    - file: "launcher.conf"
-      mode: "0644"
-      restart: "Restart rstudio-launcher service"
-    - file: "launcher.local.conf"
-      mode: "0644"
-      restart: "Restart rstudio-launcher service"
-    - file: "launcher-env"
-      mode: "0644"
-      restart: "Restart rstudio-launcher service"
-    - file: "logging.conf"
-      mode: "0644"
-      restart: "Restart rstudio-server service"
-    - file: "notifications.conf"
-      mode: "0644"
-      restart: "Restart rstudio-server service"
-    - file: "positron.conf"
-      mode: "0644"
-      restart: "Restart rstudio-server service"
-    - file: "repos.conf"
-      mode: "0644"
-      restart: "Restart rstudio-server service"
-    - file: "rstudio-prefs.json"
-      mode: "0644"
-      restart: "Restart rstudio-server service"
-    - file: "rserver.conf"
-      mode: "0644"
-      restart: "Restart rstudio-server service"
-    - file: "r-versions"
-      mode: "0644"
-      restart: "Restart rstudio-server service"
-    - file: "rsession.conf"
-      mode: "0644"
-      restart: "Restart rstudio-server service"
-    - file: "vscode.conf"
-      mode: "0644"
-      restart: "Restart rstudio-server service"
-    - file: "vscode.extensions.conf"
-      mode: "0644"
-      restart: "Restart rstudio-server service"
+    - file: 'database.conf'
+      mode: '0600'
+      restart: 'Restart rstudio-server service'
+    - file: 'jupyter.conf'
+      mode: '0644'
+      restart: 'Restart rstudio-server service'
+    - file: 'launcher.conf'
+      mode: '0644'
+      restart: 'Restart rstudio-launcher service'
+    - file: 'launcher.local.conf'
+      mode: '0644'
+      restart: 'Restart rstudio-launcher service'
+    - file: 'launcher-env'
+      mode: '0644'
+      restart: 'Restart rstudio-launcher service'
+    - file: 'logging.conf'
+      mode: '0644'
+      restart: 'Restart rstudio-server service'
+    - file: 'notifications.conf'
+      mode: '0644'
+      restart: 'Restart rstudio-server service'
+    - file: 'positron.conf'
+      mode: '0644'
+      restart: 'Restart rstudio-server service'
+    - file: 'repos.conf'
+      mode: '0644'
+      restart: 'Restart rstudio-server service'
+    - file: 'rstudio-prefs.json'
+      mode: '0644'
+      restart: 'Restart rstudio-server service'
+    - file: 'rserver.conf'
+      mode: '0644'
+      restart: 'Restart rstudio-server service'
+    - file: 'r-versions'
+      mode: '0644'
+      restart: 'Restart rstudio-server service'
+    - file: 'rsession.conf'
+      mode: '0644'
+      restart: 'Restart rstudio-server service'
+    - file: 'vscode.conf'
+      mode: '0644'
+      restart: 'Restart rstudio-server service'
+    - file: 'vscode.extensions.conf'
+      mode: '0644'
+      restart: 'Restart rstudio-server service'
 
-- name: "[Config] Apply audit database configuration"
+- name: '[Config] Apply audit database configuration'
   when: workbench_audit_database_enabled | bool
   ansible.builtin.template:
     src: audit-database.conf.j2
     dest: /etc/rstudio/audit-database.conf
     owner: root
     group: root
-    mode: "0600"
-  no_log: "{{ workbench_audit_database_password is defined and workbench_audit_database_password | length > 0 }}"
+    mode: '0600'
+  no_log: '{{ workbench_audit_database_password is defined and workbench_audit_database_password | length > 0 }}'
   notify: Restart rstudio-server service
 
-- name: "[Config] Apply local launcher resource profiles"
+- name: '[Config] Apply local launcher resource profiles'
   when: workbench_launcher_local_resources | length > 0
   ansible.builtin.template:
     src: launcher.local.resources.conf.j2
     dest: /etc/rstudio/launcher.local.resources.conf
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
   notify:
     - Restart rstudio-launcher service
 
-- name: "[Config] Apply local launcher resource profiles"
+- name: '[Config] Apply local launcher resource profiles'
   when: workbench_launcher_local_resources | length > 0
   ansible.builtin.template:
     src: launcher.local.resources.conf.j2
     dest: /etc/rstudio/launcher.local.resources.conf
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
   notify:
     - Restart rstudio-launcher service
 
-- name: "[Config] Apply Slurm launcher configuration"
+- name: '[Config] Apply Slurm launcher configuration'
   when: workbench_launcher_slurm_enabled | bool
   ansible.builtin.template:
     src: launcher.slurm.conf.j2
     dest: /etc/rstudio/launcher.slurm.conf
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
   notify:
     - Restart rstudio-launcher service
 
-- name: "[Config] Apply Slurm launcher profiles configuration"
+- name: '[Config] Apply Slurm launcher profiles configuration'
   when:
     - workbench_launcher_slurm_enabled | bool
     - workbench_launcher_slurm_profiles | length > 0
   ansible.builtin.template:
     src: launcher.slurm.profiles.conf.j2
-    dest: "{{ workbench_launcher_slurm_profile_config }}"
+    dest: '{{ workbench_launcher_slurm_profile_config }}'
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
   notify:
     - Restart rstudio-launcher service
 
-- name: "[Config] Add static files"
+- name: '[Config] Add static files'
   ansible.builtin.copy:
-    src: "{{ item.name }}"
-    dest: "/etc/rstudio/{{ item.name }}"
+    src: '{{ item.name }}'
+    dest: '/etc/rstudio/{{ item.name }}'
     owner: root
     group: root
-    mode: "{{ item.mode }}"
+    mode: '{{ item.mode }}'
   loop:
-    - { name: "vscode-user-settings.json", mode: "0644" }
+    - { name: 'vscode-user-settings.json', mode: '0644' }
 
-- name: "[Config] Copy PAM profile"
+- name: '[Config] Copy PAM profile'
   ansible.builtin.template:
     src: rstudio-pam.j2
-    dest: "/etc/pam.d/{{ workbench_server_auth_pam_sessions_profile }}"
+    dest: '/etc/pam.d/{{ workbench_server_auth_pam_sessions_profile }}'
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
 
-- name: "[Config] Write openid-client-secret"
+- name: '[Config] Write openid-client-secret'
   when: workbench_server_oidc_client_id is defined and workbench_server_oidc_client_secret is defined
   ansible.builtin.template:
     src: openid-client-secret.j2
     dest: /etc/rstudio/openid-client-secret
     owner: root
     group: root
-    mode: "0600"
+    mode: '0600'
   no_log: true
   notify:
     - Encrypt OIDC client secret
     - Restart rstudio-server service
 
-- name: "[Config] Create systemd drop-in directory for cgroups v2 CPU delegation"
+- name: '[Config] Create systemd drop-in directory for cgroups v2 CPU delegation'
   when: workbench_launcher_enable_cgroups | int == 1
   ansible.builtin.file:
     path: /etc/systemd/system/user@.service.d
     state: directory
-    mode: "0755"
+    mode: '0755'
     owner: root
     group: root
 
-- name: "[Config] Deploy cgroups v2 CPU delegation drop-in"
+- name: '[Config] Deploy cgroups v2 CPU delegation drop-in'
   when: workbench_launcher_enable_cgroups | int == 1
   ansible.builtin.copy:
     content: |
@@ -209,28 +209,28 @@
     dest: /etc/systemd/system/user@.service.d/delegate.conf
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
   notify: Reload systemd daemon
 
-- name: "[Config] [RedHat] Create /etc/authselect/custom/pwb for SCIM user provisioning"
+- name: '[Config] [RedHat] Create /etc/authselect/custom/pwb for SCIM user provisioning'
   when: ansible_facts['os_family'] == 'RedHat' and workbench_server_user_provisioning_enabled == 1
   ansible.builtin.command:
     cmd: authselect create-profile pwb --base-on=minimal
     creates: /etc/authselect/custom/pwb
 
-- name: "[Config] [RedHat] Alter nsswitch.conf for SCIM user provisioning"
+- name: '[Config] [RedHat] Alter nsswitch.conf for SCIM user provisioning'
   when: ansible_facts['os_family'] == 'RedHat' and workbench_server_user_provisioning_enabled == 1
   ansible.builtin.lineinfile:
     path: /etc/authselect/custom/pwb/nsswitch.conf
-    regexp: "{{ item.search }}"
-    line: "{{ item.replace }}"
+    regexp: '{{ item.search }}'
+    line: '{{ item.replace }}'
   loop:
     - {
         search: 'passwd:     files \{if "with-altfiles":altfiles \}systemd',
         replace: 'passwd:     pwb files {if "with-altfiles":altfiles }systemd {exclude if "with-custom-passwd"}',
       }
     - {
-        search: "shadow:     files",
+        search: 'shadow:     files',
         replace: 'shadow:     pwb files                                       {exclude if "with-custom-shadow"}',
       }
     - {
@@ -238,11 +238,11 @@
         replace: 'group:      pwb files {if "with-altfiles":altfiles }systemd {exclude if "with-custom-group"}',
       }
 
-- name: "[Config] [RedHat] Enable custom nss profile"
+- name: '[Config] [RedHat] Enable custom nss profile'
   when: ansible_facts['os_family'] == 'RedHat' and workbench_server_user_provisioning_enabled == 1
   ansible.builtin.command: authselect select --force custom/pwb with-mkhomedir
 
-- name: "[Config] [RedHat] Ensure authselect and oddjob-mkhomedir are installed"
+- name: '[Config] [RedHat] Ensure authselect and oddjob-mkhomedir are installed'
   when: ansible_facts['os_family'] == 'RedHat'
   ansible.builtin.dnf:
     name:
@@ -250,35 +250,35 @@
       - oddjob-mkhomedir
     state: present
 
-- name: "[Config] [RedHat] Get current authselect profile"
+- name: '[Config] [RedHat] Get current authselect profile'
   when: ansible_facts['os_family'] == 'RedHat' and workbench_server_user_provisioning_enabled != 1
   ansible.builtin.command: authselect current -r
   register: authselect_current
   changed_when: false
   failed_when: false
 
-- name: "[Config] [RedHat] Select default sssd authselect profile when none is configured"
+- name: '[Config] [RedHat] Select default sssd authselect profile when none is configured'
   when:
     - ansible_facts['os_family'] == 'RedHat'
     - workbench_server_user_provisioning_enabled != 1
     - authselect_current.rc != 0
   ansible.builtin.command: authselect select --force sssd with-mkhomedir
 
-- name: "[Config] [RedHat] Enable with-mkhomedir on current authselect profile"
+- name: '[Config] [RedHat] Enable with-mkhomedir on current authselect profile'
   when:
     - ansible_facts['os_family'] == 'RedHat'
     - workbench_server_user_provisioning_enabled != 1
     - authselect_current.rc == 0
     - "'with-mkhomedir' not in authselect_current.stdout"
-  ansible.builtin.command: "authselect select --force {{ authselect_current.stdout | trim }} with-mkhomedir"
+  ansible.builtin.command: 'authselect select --force {{ authselect_current.stdout | trim }} with-mkhomedir'
 
-- name: "[Config] [RedHat] Check if systemd is running"
+- name: '[Config] [RedHat] Check if systemd is running'
   when: ansible_facts['os_family'] == 'RedHat'
   ansible.builtin.stat:
     path: /run/systemd/system
   register: systemd_running
 
-- name: "[Config] [RedHat] Enable and start oddjobd for pam_mkhomedir support"
+- name: '[Config] [RedHat] Enable and start oddjobd for pam_mkhomedir support'
   when:
     - ansible_facts['os_family'] == 'RedHat'
     - systemd_running.stat.exists | default(false)

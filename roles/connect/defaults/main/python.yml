@@ -7,7 +7,7 @@ connect_python_enabled: true
 
 # @var connect_python_executable:type: string
 # @var connect_python_executable:description: Path to single Python executable
-connect_python_executable: ""
+connect_python_executable: ''
 
 # @var connect_python_executables:type: list
 # @var connect_python_executables:description: List of Python executable paths (explicit)
@@ -37,4 +37,4 @@ connect_python_bin_path: bin/python3
 # @var connect_python_pypi_url:description: >
 #   Custom PyPI index URL (e.g., Artifactory PyPI proxy, leave empty for default PyPI).
 #   Deployed to /etc/uv/uv.toml and /etc/pip.conf so Connect's build process uses it.
-connect_python_pypi_url: ""
+connect_python_pypi_url: ''

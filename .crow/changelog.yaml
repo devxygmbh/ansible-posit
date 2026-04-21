@@ -9,7 +9,7 @@ when:
   branch: ${CI_REPO_DEFAULT_BRANCH}
 
 steps:
-  - name: "Upcoming Changelog"
+  - name: 'Upcoming Changelog'
     environment:
       ISSUE_TOKEN:
         from_secret: codefloe_issue_rw_token_devxy_bot

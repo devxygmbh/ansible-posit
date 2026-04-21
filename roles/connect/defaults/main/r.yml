@@ -7,7 +7,7 @@ connect_r_enabled: true
 
 # @var connect_r_executable:type: string
 # @var connect_r_executable:description: Path to single R executable
-connect_r_executable: ""
+connect_r_executable: ''
 
 # @var connect_r_executables:type: list
 # @var connect_r_executables:description: List of R executable paths (explicit)

@@ -17,41 +17,41 @@
 
     - name: Define architecture variables
       ansible.builtin.set_fact:
-        wb_version: "2025.09.0-387.pro2"
+        wb_version: '2025.09.0-387.pro2'
         wb_rhel_arch: "{{ 'aarch64' if ansible_architecture == 'aarch64' else 'x86_64' }}"
         wb_rhel_arch_download: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x86_64' }}"
         wb_deb_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }}"
 
     - name: Create mock Artifactory directory structure
       ansible.builtin.file:
-        path: "{{ item }}"
+        path: '{{ item }}'
         state: directory
-        mode: "0755"
+        mode: '0755'
       loop:
         - /opt/mock-artifactory
         - /opt/mock-artifactory/posit-software
-        - "/opt/mock-artifactory/posit-software/jammy/{{ wb_deb_arch }}"
+        - '/opt/mock-artifactory/posit-software/jammy/{{ wb_deb_arch }}'
         - /opt/mock-artifactory/posit-drivers
 
     - name: Download Posit Workbench (RedHat) to mock Artifactory
       ansible.builtin.get_url:
-        url: "https://s3.amazonaws.com/rstudio-ide-build/server/rhel9/{{ wb_rhel_arch_download }}/rstudio-workbench-rhel-{{ wb_version }}-{{ wb_rhel_arch }}.rpm"
-        dest: "/opt/mock-artifactory/posit-software/rstudio-workbench-rhel-{{ wb_version }}-{{ wb_rhel_arch }}.rpm"
-        mode: "0644"
+        url: 'https://s3.amazonaws.com/rstudio-ide-build/server/rhel9/{{ wb_rhel_arch_download }}/rstudio-workbench-rhel-{{ wb_version }}-{{ wb_rhel_arch }}.rpm'
+        dest: '/opt/mock-artifactory/posit-software/rstudio-workbench-rhel-{{ wb_version }}-{{ wb_rhel_arch }}.rpm'
+        mode: '0644'
       failed_when: false
 
     - name: Download Posit Workbench (Ubuntu) to mock Artifactory
       ansible.builtin.get_url:
-        url: "https://s3.amazonaws.com/rstudio-ide-build/server/jammy/{{ wb_deb_arch }}/rstudio-workbench-{{ wb_version }}-{{ wb_deb_arch }}.deb"
-        dest: "/opt/mock-artifactory/posit-software/jammy/{{ wb_deb_arch }}/rstudio-workbench-{{ wb_version }}-{{ wb_deb_arch }}.deb"
-        mode: "0644"
+        url: 'https://s3.amazonaws.com/rstudio-ide-build/server/jammy/{{ wb_deb_arch }}/rstudio-workbench-{{ wb_version }}-{{ wb_deb_arch }}.deb'
+        dest: '/opt/mock-artifactory/posit-software/jammy/{{ wb_deb_arch }}/rstudio-workbench-{{ wb_version }}-{{ wb_deb_arch }}.deb'
+        mode: '0644'
       failed_when: false
 
     - name: Download DB Drivers to mock Artifactory
       ansible.builtin.get_url:
-        url: "https://cdn.rstudio.com/drivers/7C152C12/installer/rstudio-drivers-2025.03.0.tar"
-        dest: "/opt/mock-artifactory/posit-drivers/rstudio-drivers-2025.03.0.tar"
-        mode: "0644"
+        url: 'https://cdn.rstudio.com/drivers/7C152C12/installer/rstudio-drivers-2025.03.0.tar'
+        dest: '/opt/mock-artifactory/posit-drivers/rstudio-drivers-2025.03.0.tar'
+        mode: '0644'
       failed_when: false
 
     - name: Start mock Artifactory HTTP server in background
@@ -69,7 +69,7 @@
 
     - name: Test HTTP server accessibility
       ansible.builtin.uri:
-        url: "http://localhost:8080/"
+        url: 'http://localhost:8080/'
         return_content: false
       register: http_test
       retries: 3

@@ -1,20 +1,20 @@
-- name: "[License] Deploy license file"
+- name: '[License] Deploy license file'
   when: connect_file_license is defined and connect_file_license | length > 0
   ansible.builtin.copy:
-    content: "{{ connect_file_license }}"
-    dest: "{{ connect_server_data_dir }}/license.lic"
+    content: '{{ connect_file_license }}'
+    dest: '{{ connect_server_data_dir }}/license.lic'
     owner: root
     group: root
-    mode: "0600"
+    mode: '0600'
   no_log: true
   notify: Restart rstudio-connect service
 
-- name: "[License] Symlink license file to default path"
+- name: '[License] Symlink license file to default path'
   when:
     - connect_file_license is defined and connect_file_license | length > 0
     - connect_server_data_dir != '/var/lib/rstudio-connect'
   ansible.builtin.file:
-    src: "{{ connect_server_data_dir }}/license.lic"
+    src: '{{ connect_server_data_dir }}/license.lic'
     dest: /var/lib/rstudio-connect/license.lic
     state: link
   notify: Restart rstudio-connect service

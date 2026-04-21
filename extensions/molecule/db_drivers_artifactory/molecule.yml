@@ -7,10 +7,10 @@ driver:
   name: docker
 platforms:
   - name: almalinux-9-dbdrivers
-    image: "devxygmbh/almalinux9-ansible"
+    image: 'devxygmbh/almalinux9-ansible'
     pre_build_image: true
   - name: ubuntu-2404-dbdrivers
-    image: "devxygmbh/ubuntu2404-ansible"
+    image: 'devxygmbh/ubuntu2404-ansible'
     pre_build_image: true
 provisioner:
   name: ansible

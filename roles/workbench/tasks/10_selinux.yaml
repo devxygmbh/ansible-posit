@@ -1,63 +1,63 @@
-- name: "[SELinux] Install selinux-policy-devel for policy compilation"
+- name: '[SELinux] Install selinux-policy-devel for policy compilation'
   ansible.builtin.package:
     name: selinux-policy-devel
     state: present
 
-- name: "[SELinux] Set httpd_can_network_connect boolean"
+- name: '[SELinux] Set httpd_can_network_connect boolean'
   ansible.posix.seboolean:
     name: httpd_can_network_connect
     state: true
     persistent: true
 
-- name: "[SELinux] Set domain_can_mmap_files boolean"
+- name: '[SELinux] Set domain_can_mmap_files boolean'
   ansible.posix.seboolean:
     name: domain_can_mmap_files
     state: true
     persistent: true
 
-- name: "[SELinux] Remove old custom rstudio policy module"
+- name: '[SELinux] Remove old custom rstudio policy module'
   ansible.builtin.command: semodule -r rstudio
   register: semodule_remove_old
   changed_when: semodule_remove_old.rc == 0
   failed_when: false
 
-- name: "[SELinux] Clean policy build directory"
+- name: '[SELinux] Clean policy build directory'
   ansible.builtin.file:
     path: /tmp/workbench-selinux
     state: absent
 
-- name: "[SELinux] Create policy build directory"
+- name: '[SELinux] Create policy build directory'
   ansible.builtin.file:
     path: /tmp/workbench-selinux
     state: directory
-    mode: "0755"
+    mode: '0755'
 
-- name: "[SELinux] Copy official Posit Workbench policy source files"
+- name: '[SELinux] Copy official Posit Workbench policy source files'
   ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: "/tmp/workbench-selinux/{{ item }}"
-    mode: "0644"
+    src: '{{ item }}'
+    dest: '/tmp/workbench-selinux/{{ item }}'
+    mode: '0644'
   loop:
     - workbench.te
     - workbench.fc
     - workbench.if
     - dynatrace-nginx.te
 
-- name: "[SELinux] Compile and install official Workbench policy module"
+- name: '[SELinux] Compile and install official Workbench policy module'
   ansible.builtin.shell: |
     make -f /usr/share/selinux/devel/Makefile -C /tmp/workbench-selinux workbench.pp && \
     semodule -i /tmp/workbench-selinux/workbench.pp
   register: selinux_module_install
   changed_when: selinux_module_install.rc == 0
 
-- name: "[SELinux] Compile and install Dynatrace/nginx dontaudit policy"
+- name: '[SELinux] Compile and install Dynatrace/nginx dontaudit policy'
   ansible.builtin.shell: |
     make -f /usr/share/selinux/devel/Makefile -C /tmp/workbench-selinux dynatrace-nginx.pp && \
     semodule -i /tmp/workbench-selinux/dynatrace-nginx.pp
   register: selinux_dynatrace_install
   changed_when: selinux_dynatrace_install.rc == 0
 
-- name: "[SELinux] Restore file contexts for Workbench paths"
+- name: '[SELinux] Restore file contexts for Workbench paths'
   ansible.builtin.command: restorecon -R {{ item }}
   loop:
     - /usr/lib/rstudio-server
@@ -67,7 +67,7 @@
     - /var/log/rstudio
   changed_when: false
 
-- name: "[SELinux] Clean up policy build directory"
+- name: '[SELinux] Clean up policy build directory'
   ansible.builtin.file:
     path: /tmp/workbench-selinux
     state: absent

@@ -1,28 +1,28 @@
-- name: "[Config] Create /etc/R"
+- name: '[Config] Create /etc/R'
   ansible.builtin.file:
     path: /etc/R
     state: directory
-    mode: "0755"
+    mode: '0755'
     owner: root
     group: root
 
-- name: "[Config] Deploy Renviron.site"
+- name: '[Config] Deploy Renviron.site'
   ansible.builtin.template:
     src: Renviron.site.j2
     dest: /etc/Renviron.site
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
 
-- name: "[Config] Deploy Rprofile.site"
+- name: '[Config] Deploy Rprofile.site'
   ansible.builtin.template:
     src: Rprofile.site.j2
     dest: /etc/Rprofile.site
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
 
-- name: "[Config] Deploy netrc for Artifactory CRAN auth"
+- name: '[Config] Deploy netrc for Artifactory CRAN auth'
   when: connect_artifactory_enabled | bool and connect_artifactory_username | length > 0
   ansible.builtin.copy:
     content: |
@@ -32,19 +32,19 @@
     dest: /etc/R/netrc
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
   no_log: true
 
-- name: "[Config] Create /etc/uv"
+- name: '[Config] Create /etc/uv'
   when: connect_python_pypi_url | length > 0
   ansible.builtin.file:
     path: /etc/uv
     state: directory
-    mode: "0755"
+    mode: '0755'
     owner: root
     group: root
 
-- name: "[Config] Deploy /etc/uv/uv.toml with custom PyPI index"
+- name: '[Config] Deploy /etc/uv/uv.toml with custom PyPI index'
   when: connect_python_pypi_url | length > 0
   ansible.builtin.copy:
     content: |
@@ -56,10 +56,10 @@
     dest: /etc/uv/uv.toml
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
   notify: Restart rstudio-connect service
 
-- name: "[Config] Deploy /etc/pip.conf with custom PyPI index"
+- name: '[Config] Deploy /etc/pip.conf with custom PyPI index'
   when: connect_python_pypi_url | length > 0
   ansible.builtin.copy:
     content: |
@@ -69,10 +69,10 @@
     dest: /etc/pip.conf
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
   notify: Restart rstudio-connect service
 
-- name: "[Config] Find Python site-packages parent directories"
+- name: '[Config] Find Python site-packages parent directories'
   when: connect_python_enabled
   ansible.builtin.command:
     cmd: find /usr/local/lib64 /usr/local/lib -maxdepth 1 -type d -name "python*"
@@ -80,67 +80,67 @@
   changed_when: false
   failed_when: false
 
-- name: "[Config] Ensure Python local lib directories are world-readable"
+- name: '[Config] Ensure Python local lib directories are world-readable'
   when: connect_python_enabled and _connect_python_local_dirs.stdout_lines | default([]) | length > 0
   ansible.builtin.command:
-    cmd: "chmod -R o+rX {{ item }}"
+    cmd: 'chmod -R o+rX {{ item }}'
   changed_when: false
-  loop: "{{ _connect_python_local_dirs.stdout_lines }}"
+  loop: '{{ _connect_python_local_dirs.stdout_lines }}'
 
-- name: "[Config] Create /etc/rstudio-connect"
+- name: '[Config] Create /etc/rstudio-connect'
   ansible.builtin.file:
     path: /etc/rstudio-connect
     state: directory
-    mode: "0755"
+    mode: '0755'
     owner: root
     group: root
 
-- name: "[Config] Create log directory"
+- name: '[Config] Create log directory'
   ansible.builtin.file:
     path: /var/log/rstudio/rstudio-connect
     state: directory
-    mode: "0755"
+    mode: '0755'
     owner: root
     group: root
 
-- name: "[Config] Apply Posit Connect configuration"
+- name: '[Config] Apply Posit Connect configuration'
   ansible.builtin.template:
     src: rstudio-connect.gcfg.j2
     dest: /etc/rstudio-connect/rstudio-connect.gcfg
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
   no_log: "{{ connect_database_postgres_password is defined and connect_database_postgres_password != '' }}"
   notify: Restart rstudio-connect service
 
-- name: "[Config] Copy PAM profile"
+- name: '[Config] Copy PAM profile'
   when: connect_auth_provider == 'pam'
   ansible.builtin.template:
     src: connect-pam.j2
-    dest: "/etc/pam.d/{{ connect_auth_pam_service }}"
+    dest: '/etc/pam.d/{{ connect_auth_pam_service }}'
     owner: root
     group: root
-    mode: "0644"
+    mode: '0644'
 
-- name: "[Config] Create supervisor script directory"
+- name: '[Config] Create supervisor script directory'
   when:
     - connect_applications_supervisor_script | length > 0
     - connect_applications_supervisor_path | length > 0
   ansible.builtin.file:
-    path: "{{ connect_applications_supervisor_path | dirname }}"
+    path: '{{ connect_applications_supervisor_path | dirname }}'
     state: directory
-    mode: "0755"
+    mode: '0755'
     owner: root
     group: root
 
-- name: "[Config] Deploy supervisor script"
+- name: '[Config] Deploy supervisor script'
   when:
     - connect_applications_supervisor_script | length > 0
     - connect_applications_supervisor_path | length > 0
   ansible.builtin.copy:
-    content: "{{ connect_applications_supervisor_script }}"
-    dest: "{{ connect_applications_supervisor_path }}"
+    content: '{{ connect_applications_supervisor_script }}'
+    dest: '{{ connect_applications_supervisor_path }}'
     owner: root
     group: root
-    mode: "0755"
+    mode: '0755'
   notify: Restart rstudio-connect service

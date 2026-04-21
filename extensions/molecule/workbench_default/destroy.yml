@@ -5,7 +5,7 @@
     - name: Stop and remove container
       delegate_to: localhost
       community.docker.docker_container:
-        name: "{{ inventory_hostname }}"
+        name: '{{ inventory_hostname }}'
         state: absent
         auto_remove: true
 
@@ -15,5 +15,5 @@
   tasks:
     - name: Remove dynamic inventory file
       ansible.builtin.file:
-        path: "{{ molecule_ephemeral_directory }}/inventory/molecule_inventory.yml"
+        path: '{{ molecule_ephemeral_directory }}/inventory/molecule_inventory.yml'
         state: absent

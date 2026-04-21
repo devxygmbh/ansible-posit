@@ -3,9 +3,9 @@
     manager: auto
 
 - name: Ensure essential packages are installed
-  when: "item not in ansible_facts.packages"
+  when: 'item not in ansible_facts.packages'
   ansible.builtin.dnf:
-    name: "{{ item }}"
+    name: '{{ item }}'
     state: present
   loop:
     - unixODBC

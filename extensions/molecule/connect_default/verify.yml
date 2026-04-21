@@ -14,7 +14,7 @@
         that:
           - config_dir.stat.exists
           - config_dir.stat.isdir
-        fail_msg: "Config directory /etc/rstudio-connect does not exist"
+        fail_msg: 'Config directory /etc/rstudio-connect does not exist'
 
     - name: Check if rstudio-connect.gcfg exists
       ansible.builtin.stat:
@@ -25,7 +25,7 @@
       ansible.builtin.assert:
         that:
           - config_file.stat.exists
-        fail_msg: "Config file /etc/rstudio-connect/rstudio-connect.gcfg does not exist"
+        fail_msg: 'Config file /etc/rstudio-connect/rstudio-connect.gcfg does not exist'
 
     - name: Check if connect binary exists
       ansible.builtin.stat:
@@ -36,4 +36,4 @@
       ansible.builtin.assert:
         that:
           - connect_binary.stat.exists
-        fail_msg: "Connect binary /opt/rstudio-connect/bin/connect does not exist"
+        fail_msg: 'Connect binary /opt/rstudio-connect/bin/connect does not exist'

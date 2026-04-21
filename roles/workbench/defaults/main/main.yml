@@ -1,7 +1,7 @@
 ## General
 # @var workbench_general_version:type: string
 # @var workbench_general_version:description: Workbench version
-workbench_general_version: "2025.09.0-387.pro2"
+workbench_general_version: '2025.09.0-387.pro2'
 # @var workbench_general_local_test_user_create:type: boolean
 # @var workbench_general_local_test_user_create:description: Whether to create a local (test) user
 workbench_general_local_test_user_create: false
@@ -18,19 +18,19 @@ workbench_general_local_test_user_password: posit
 workbench_artifactory_enabled: false
 # @var workbench_artifactory_base_url:type: string
 # @var workbench_artifactory_base_url:description: Base URL for JFrog Artifactory
-workbench_artifactory_base_url: ""
+workbench_artifactory_base_url: ''
 # @var workbench_artifactory_posit_repo:type: string
 # @var workbench_artifactory_posit_repo:description: Artifactory repository path for Posit software
-workbench_artifactory_posit_repo: "posit-software"
+workbench_artifactory_posit_repo: 'posit-software'
 # @var workbench_artifactory_username:type: string
 # @var workbench_artifactory_username:description: Artifactory username (if auth required)
-workbench_artifactory_username: ""
+workbench_artifactory_username: ''
 # @var workbench_artifactory_password:type: string
 # @var workbench_artifactory_password:description: Artifactory password/token (if auth required)
-workbench_artifactory_password: ""
+workbench_artifactory_password: ''
 # @var workbench_artifactory_cran_repo:type: string
 # @var workbench_artifactory_cran_repo:description: Artifactory repository path for CRAN packages
-workbench_artifactory_cran_repo: "cran-remote"
+workbench_artifactory_cran_repo: 'cran-remote'
 
 ## Server
 # @var workbench_server_user:type: string
@@ -62,7 +62,7 @@ workbench_server_server_project_sharing: 1
 workbench_server_server_admin_enabled: 1
 # @var workbench_server_server_admin_group:type: string
 # @var workbench_server_server_admin_group:description: Limits admin dashboard access to users belonging to the specified group
-workbench_server_server_admin_group: ""
+workbench_server_server_admin_group: ''
 # @var workbench_server_server_load_balancing_enabled:type: integer
 # @var workbench_server_server_load_balancing_enabled:description: Server load balancing enabled
 workbench_server_server_load_balancing_enabled: 0
@@ -126,8 +126,8 @@ workbench_launcher_local_unprivileged: 0
 #     - { id: "medium", name: "Medium (2 CPUs, 8G mem)", cpus: 2, mem_mb: 8192 }
 #     - { id: "large", name: "Large (4 CPUs, 16G mem)", cpus: 4, mem_mb: 16384 }
 workbench_launcher_local_resources:
-  - id: "default"
-    name: "Default (2 CPU, 4G mem)"
+  - id: 'default'
+    name: 'Default (2 CPU, 4G mem)'
     cpus: 2
     mem_mb: 4096
 
@@ -175,7 +175,7 @@ workbench_server_db_connection_timeout: 15
 workbench_server_auth_timeout_minutes: 5040
 # @var workbench_server_auth_required_user_group:type: string
 # @var workbench_server_auth_required_user_group:description: Specifies a group that users must be in to be able to use Workbench
-workbench_server_auth_required_user_group: ""
+workbench_server_auth_required_user_group: ''
 # @var workbench_server_auth_pam_require_password_prompt:type: integer
 # @var workbench_server_auth_pam_require_password_prompt:description: Auth PAM require password prompt
 workbench_server_auth_pam_require_password_prompt: 1
@@ -279,7 +279,7 @@ workbench_session_session_timeout_minutes: 300
 workbench_session_session_timeout_suspend: 1
 # @var workbench_session_session_save_action_default:type: string
 # @var workbench_session_session_save_action_default:description: Session save action default
-workbench_session_session_save_action_default: "no"
+workbench_session_session_save_action_default: 'no'
 # @var workbench_session_session_quit_child_processes_on_exit:type: integer
 # @var workbench_session_session_quit_child_processes_on_exit:description: Session quit child processes on exit
 workbench_session_session_quit_child_processes_on_exit: 1
@@ -326,7 +326,7 @@ workbench_database_database: workbenchdb
 workbench_database_username: workbench_db_user
 # @var workbench_database_password:type: string
 # @var workbench_database_password:description: Database password
-workbench_database_password: ""
+workbench_database_password: ''
 # @var workbench_database_port:type: integer
 # @var workbench_database_port:description: Database port
 workbench_database_port: 5432
@@ -335,7 +335,7 @@ workbench_database_port: 5432
 workbench_database_connection_timeout_seconds: 10
 # @var workbench_database_connection_uri:type: string
 # @var workbench_database_connection_uri:description: Database connection URI
-workbench_database_connection_uri: ""
+workbench_database_connection_uri: ''
 
 ## Audit Database
 # https://docs.posit.co/ide/server-pro/admin/database/audit/configuration.html
@@ -360,13 +360,13 @@ workbench_audit_database_port: 5432
 workbench_audit_database_database: audit_db
 # @var workbench_audit_database_username:type: string
 # @var workbench_audit_database_username:description: PostgreSQL username for audit database
-workbench_audit_database_username: ""
+workbench_audit_database_username: ''
 # @var workbench_audit_database_password:type: string
 # @var workbench_audit_database_password:description: PostgreSQL password for audit database
-workbench_audit_database_password: ""
+workbench_audit_database_password: ''
 # @var workbench_audit_database_connection_uri:type: string
 # @var workbench_audit_database_connection_uri:description: PostgreSQL connection URI (overrides host/port/database)
-workbench_audit_database_connection_uri: ""
+workbench_audit_database_connection_uri: ''
 # @var workbench_audit_database_pool_size:type: integer
 # @var workbench_audit_database_pool_size:description: Connection pool size (0 for automatic)
 workbench_audit_database_pool_size: 0
@@ -378,10 +378,10 @@ workbench_audit_database_pool_size: 0
 workbench_fonts_install_custom_fonts: true
 # @var workbench_fonts_jetbrains_mono_version:type: string
 # @var workbench_fonts_jetbrains_mono_version:description: JetBrains Mono version
-workbench_fonts_jetbrains_mono_version: "2.304"
+workbench_fonts_jetbrains_mono_version: '2.304'
 # @var workbench_fonts_jetbrains_mono_url:type: string
 # @var workbench_fonts_jetbrains_mono_url:description: Download URL for JetBrains Mono font archive (override for Artifactory)
-workbench_fonts_jetbrains_mono_url: "https://github.com/JetBrains/JetBrainsMono/releases/download/v{{ workbench_fonts_jetbrains_mono_version }}/JetBrainsMono-{{ workbench_fonts_jetbrains_mono_version }}.zip"
+workbench_fonts_jetbrains_mono_url: 'https://github.com/JetBrains/JetBrainsMono/releases/download/v{{ workbench_fonts_jetbrains_mono_version }}/JetBrainsMono-{{ workbench_fonts_jetbrains_mono_version }}.zip'
 
 ## Launcher
 # https://docs.posit.co/ide/server-pro/reference/launcher_conf.html
@@ -478,10 +478,10 @@ workbench_logging_warn_syslog: 1
 workbench_jupyter_install_packages: true
 # @var workbench_jupyter_pip_index_url:type: string
 # @var workbench_jupyter_pip_index_url:description: Custom pip index URL (e.g., Artifactory PyPI proxy, leave empty for default PyPI)
-workbench_jupyter_pip_index_url: ""
+workbench_jupyter_pip_index_url: ''
 # @var workbench_jupyter_pip_trusted_host:type: string
 # @var workbench_jupyter_pip_trusted_host:description: Trusted host for pip (hostname only, no protocol)
-workbench_jupyter_pip_trusted_host: ""
+workbench_jupyter_pip_trusted_host: ''
 # @var workbench_jupyter_notebooks_enabled:type: integer
 # @var workbench_jupyter_notebooks_enabled:description: Jupyter notebooks enabled
 workbench_jupyter_notebooks_enabled: 0

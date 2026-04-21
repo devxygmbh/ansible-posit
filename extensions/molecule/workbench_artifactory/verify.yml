@@ -5,7 +5,7 @@
 
   tasks:
     - name: Check rstudio-server version
-      ansible.builtin.command: "rstudio-server version"
+      ansible.builtin.command: 'rstudio-server version'
       register: workbench_version
       changed_when: false
 
@@ -13,12 +13,12 @@
       ansible.builtin.assert:
         that:
           - "'2025.09.0+387.pro2' in workbench_version.stdout"
-        fail_msg: "Workbench version does not match expected version"
-        success_msg: "Workbench version is correct"
+        fail_msg: 'Workbench version does not match expected version'
+        success_msg: 'Workbench version is correct'
 
     - name: Check if DB drivers directory exists
       ansible.builtin.stat:
-        path: "/opt/rstudio-drivers-2025.03.0"
+        path: '/opt/rstudio-drivers-2025.03.0'
       register: db_drivers_dir
 
     - name: Verify DB drivers directory exists and is not empty
@@ -26,20 +26,20 @@
         that:
           - db_drivers_dir.stat.exists
           - db_drivers_dir.stat.isdir
-        fail_msg: "DB drivers directory does not exist or is not a directory"
-        success_msg: "DB drivers directory exists"
+        fail_msg: 'DB drivers directory does not exist or is not a directory'
+        success_msg: 'DB drivers directory exists'
 
     - name: Check if odbcinst.ini exists
       ansible.builtin.stat:
-        path: "/etc/odbcinst.ini"
+        path: '/etc/odbcinst.ini'
       register: odbcinst_ini
 
     - name: Verify odbcinst.ini was created
       ansible.builtin.assert:
         that:
           - odbcinst_ini.stat.exists
-        fail_msg: "odbcinst.ini does not exist"
-        success_msg: "odbcinst.ini exists"
+        fail_msg: 'odbcinst.ini does not exist'
+        success_msg: 'odbcinst.ini exists'
 
     - name: Verify odbcinst.ini contains correct driver paths
       ansible.builtin.command: "grep -c 'rstudio-drivers-2025.03.0' /etc/odbcinst.ini"
@@ -51,5 +51,5 @@
       ansible.builtin.assert:
         that:
           - odbcinst_content.stdout | int > 0
-        fail_msg: "odbcinst.ini does not contain correct driver version paths"
-        success_msg: "odbcinst.ini contains correct driver version paths"
+        fail_msg: 'odbcinst.ini does not contain correct driver version paths'
+        success_msg: 'odbcinst.ini contains correct driver version paths'

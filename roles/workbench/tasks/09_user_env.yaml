@@ -22,8 +22,8 @@
     create: true
     owner: root
     group: root
-    mode: "0644"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK - workbench user env"
+    mode: '0644'
+    marker: '# {mark} ANSIBLE MANAGED BLOCK - workbench user env'
     block: |
       # Add user local bin to PATH
       if [ -d "$HOME/.local/bin" ]; then
@@ -56,7 +56,7 @@
     state: directory
     owner: root
     group: root
-    mode: "0755"
+    mode: '0755'
   when: workbench_user_env_enabled | default(true)
 
 - name: Configure user environment (fish)
@@ -65,8 +65,8 @@
     create: true
     owner: root
     group: root
-    mode: "0644"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK - workbench user env"
+    mode: '0644'
+    marker: '# {mark} ANSIBLE MANAGED BLOCK - workbench user env'
     block: |
       # Add user local bin to PATH
       if test -d $HOME/.local/bin

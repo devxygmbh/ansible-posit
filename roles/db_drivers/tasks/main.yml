@@ -1,8 +1,8 @@
 - name: Create directory for Posit DB Drivers
   ansible.builtin.file:
-    path: "{{ db_drivers_install_dir }}/rstudio-drivers-{{ db_drivers_version }}"
+    path: '{{ db_drivers_install_dir }}/rstudio-drivers-{{ db_drivers_version }}'
     state: directory
-    mode: "0775"
+    mode: '0775'
 
 - name: Execute RedHat tasks
   when: ansible_facts['os_family'] == 'RedHat'
@@ -31,21 +31,21 @@
   ansible.builtin.copy:
     src: /etc/odbcinst.ini
     dest: /tmp/odbcinst.ini.bak
-    mode: "0644"
+    mode: '0644'
     remote_src: true
   when: odbcinst_ini_stat.stat.exists
 
 - name: Create odbcinst.ini from template
   ansible.builtin.copy:
-    src: "{{ db_drivers_install_dir }}/rstudio-drivers-{{ db_drivers_version }}/odbcinst.ini.sample"
+    src: '{{ db_drivers_install_dir }}/rstudio-drivers-{{ db_drivers_version }}/odbcinst.ini.sample'
     dest: /etc/odbcinst.ini
     remote_src: true
-    mode: "0644"
+    mode: '0644'
   when: not ansible_check_mode
 
 - name: Print message about backup
   ansible.builtin.debug:
-    msg: "Backup of /etc/odbcinst.ini created at /tmp/odbcinst.ini.bak"
+    msg: 'Backup of /etc/odbcinst.ini created at /tmp/odbcinst.ini.bak'
   when: odbcinst_ini_stat.stat.exists
 
 - name: Append additional odbcinst.ini entries
@@ -58,8 +58,8 @@
 - name: Update driver paths in odbcinst.ini to match install directory and version
   ansible.builtin.replace:
     path: /etc/odbcinst.ini
-    regexp: "/opt/rstudio-drivers/"
-    replace: "{{ db_drivers_install_dir }}/rstudio-drivers-{{ db_drivers_version }}/"
+    regexp: '/opt/rstudio-drivers/'
+    replace: '{{ db_drivers_install_dir }}/rstudio-drivers-{{ db_drivers_version }}/'
 
 - name: Write odbc.ini
   when: odbc_ini != ""

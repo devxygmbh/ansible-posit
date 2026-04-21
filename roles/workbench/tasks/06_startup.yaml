@@ -25,9 +25,9 @@
   delegate_to: localhost
   become: false
   ansible.builtin.pip:
-    name: "passlib"
+    name: 'passlib'
     state: present
-    extra_args: "--user --break-system-packages" # break-system-packages for PEP 668
+    extra_args: '--user --break-system-packages' # break-system-packages for PEP 668
   check_mode: false
   changed_when: false
   failed_when: false # Don't fail if already installed
@@ -41,9 +41,9 @@
   delegate_to: localhost
   become: false
   ansible.builtin.pip:
-    name: "passlib"
+    name: 'passlib'
     state: present
-    extra_args: "--break-system-packages"
+    extra_args: '--break-system-packages'
   check_mode: false
   changed_when: false
   when:
@@ -54,8 +54,8 @@
 
 - name: Create local test user
   ansible.builtin.user:
-    name: "{{ workbench_general_local_test_user_name }}"
-    comment: "Posit Workbench Test User"
+    name: '{{ workbench_general_local_test_user_name }}'
+    comment: 'Posit Workbench Test User'
     shell: /bin/bash
     home: /home/posit
     createhome: true

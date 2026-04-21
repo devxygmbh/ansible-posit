@@ -9,13 +9,13 @@ connect_scheduler_max_processes: 4
 connect_scheduler_max_conns_per_process: 10
 # @var connect_scheduler_load_factor:type: string
 # @var connect_scheduler_load_factor:description: Process load factor (0.0-1.0)
-connect_scheduler_load_factor: "0.5"
+connect_scheduler_load_factor: '0.5'
 # @var connect_scheduler_init_timeout:type: string
 # @var connect_scheduler_init_timeout:description: Process initialization timeout
-connect_scheduler_init_timeout: "60s"
+connect_scheduler_init_timeout: '60s'
 # @var connect_scheduler_idle_timeout:type: string
 # @var connect_scheduler_idle_timeout:description: Process idle timeout
-connect_scheduler_idle_timeout: "900s"
+connect_scheduler_idle_timeout: '900s'
 # @var connect_scheduler_min_processes_limit:type: integer
 # @var connect_scheduler_min_processes_limit:description: Minimum process limit
 connect_scheduler_min_processes_limit: 1
@@ -24,22 +24,22 @@ connect_scheduler_min_processes_limit: 1
 connect_scheduler_max_processes_limit: 128
 # @var connect_scheduler_connection_timeout:type: string
 # @var connect_scheduler_connection_timeout:description: Connection timeout
-connect_scheduler_connection_timeout: "3600s"
+connect_scheduler_connection_timeout: '3600s'
 # @var connect_scheduler_read_timeout:type: string
 # @var connect_scheduler_read_timeout:description: Read timeout
-connect_scheduler_read_timeout: "3600s"
+connect_scheduler_read_timeout: '3600s'
 # @var connect_scheduler_memory_request:type: string
 # @var connect_scheduler_memory_request:description: Memory request (0 for unlimited)
-connect_scheduler_memory_request: "0"
+connect_scheduler_memory_request: '0'
 # @var connect_scheduler_memory_limit:type: string
 # @var connect_scheduler_memory_limit:description: Memory limit (0 for unlimited)
-connect_scheduler_memory_limit: "0"
+connect_scheduler_memory_limit: '0'
 # @var connect_scheduler_cpu_request:type: string
 # @var connect_scheduler_cpu_request:description: CPU request (0 for unlimited)
-connect_scheduler_cpu_request: "0"
+connect_scheduler_cpu_request: '0'
 # @var connect_scheduler_cpu_limit:type: string
 # @var connect_scheduler_cpu_limit:description: CPU limit (0 for unlimited)
-connect_scheduler_cpu_limit: "0"
+connect_scheduler_cpu_limit: '0'
 # @var connect_scheduler_nvidia_gpu_limit:type: integer
 # @var connect_scheduler_nvidia_gpu_limit:description: NVIDIA GPU limit
 connect_scheduler_nvidia_gpu_limit: 0

@@ -3,10 +3,10 @@
     manager: apt
 
 - name: Ensure syslib dependencies are installed
-  when: "item not in ansible_facts.packages"
+  when: 'item not in ansible_facts.packages'
   ansible.builtin.apt:
     update_cache: true
-    name: "{{ item }}"
+    name: '{{ item }}'
     state: present
   loop:
     - unixodbc

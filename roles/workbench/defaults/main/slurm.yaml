@@ -11,7 +11,7 @@ workbench_launcher_slurm_service_user: slurm
 
 # @var workbench_launcher_slurm_bin_path:type: string
 # @var workbench_launcher_slurm_bin_path:description: Installation location of Slurm command utilities (leave empty for default PATH)
-workbench_launcher_slurm_bin_path: ""
+workbench_launcher_slurm_bin_path: ''
 
 # @var workbench_launcher_slurm_job_expiry_hours:type: integer
 # @var workbench_launcher_slurm_job_expiry_hours:description: Number of hours before completed jobs are removed from the system
@@ -19,7 +19,7 @@ workbench_launcher_slurm_job_expiry_hours: 24
 
 # @var workbench_launcher_slurm_user_storage_path:type: string
 # @var workbench_launcher_slurm_user_storage_path:description: Default location to store Slurm job output (supports {HOME} and {USER} templates)
-workbench_launcher_slurm_user_storage_path: "~/.local/share/rstudio/launcher/"
+workbench_launcher_slurm_user_storage_path: '~/.local/share/rstudio/launcher/'
 
 # @var workbench_launcher_slurm_max_output_stream_seconds:type: integer
 # @var workbench_launcher_slurm_max_output_stream_seconds:description: Maximum seconds to keep job output stream open after completion
@@ -47,11 +47,11 @@ workbench_launcher_slurm_enable_gres: 0
 
 # @var workbench_launcher_slurm_gpu_types:type: string
 # @var workbench_launcher_slurm_gpu_types:description: Comma-separated list of GPU types available (e.g., tesla,v100)
-workbench_launcher_slurm_gpu_types: ""
+workbench_launcher_slurm_gpu_types: ''
 
 # @var workbench_launcher_slurm_default_gpu_brand:type: string
 # @var workbench_launcher_slurm_default_gpu_brand:description: Default GPU brand for Singularity (nvidia, amd, or intel)
-workbench_launcher_slurm_default_gpu_brand: ""
+workbench_launcher_slurm_default_gpu_brand: ''
 
 # @var workbench_launcher_slurm_allow_requeue:type: integer
 # @var workbench_launcher_slurm_allow_requeue:description: Allow jobs to be requeued by Slurm
@@ -87,7 +87,7 @@ workbench_launcher_slurm_thread_pool_size: 0
 
 # @var workbench_launcher_slurm_singularity_image_directory:type: string
 # @var workbench_launcher_slurm_singularity_image_directory:description: Directory for Singularity/Apptainer images (must be on shared storage)
-workbench_launcher_slurm_singularity_image_directory: ""
+workbench_launcher_slurm_singularity_image_directory: ''
 
 ## Slurm User/Group Profiles (launcher.slurm.profiles.conf)
 # https://docs.posit.co/ide/server-pro/admin/job_launcher/slurm_plugin.html

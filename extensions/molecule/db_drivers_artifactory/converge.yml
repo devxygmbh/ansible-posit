@@ -5,9 +5,9 @@
   vars:
     # DB Drivers Artifactory configuration
     db_drivers_artifactory_enabled: true
-    db_drivers_artifactory_base_url: "http://localhost:8080"
-    db_drivers_artifactory_repo: "posit-drivers"
-    db_drivers_version: "2025.03.0"
+    db_drivers_artifactory_base_url: 'http://localhost:8080'
+    db_drivers_artifactory_repo: 'posit-drivers'
+    db_drivers_version: '2025.03.0'
 
   roles:
     - role: db_drivers

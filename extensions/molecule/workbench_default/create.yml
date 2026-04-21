@@ -8,16 +8,16 @@
   tasks:
     - name: Create a container
       community.docker.docker_container:
-        name: "{{ item.name }}"
-        image: "{{ item.image }}"
+        name: '{{ item.name }}'
+        image: '{{ item.image }}'
         state: started
-        pull: "always"
+        pull: 'always'
         command: sleep 1d
         log_driver: json-file
         # important for curl downloads to work when running in CI!
-        network_mode: "host"
+        network_mode: 'host'
       register: result
-      loop: "{{ molecule_yml.platforms }}"
+      loop: '{{ molecule_yml.platforms }}'
 
     # - name: Print some info
     #   ansible.builtin.debug:
@@ -29,9 +29,9 @@
         not item.container.State.Running
       ansible.builtin.include_tasks:
         file: tasks/create-fail.yml
-      loop: "{{ result.results }}"
+      loop: '{{ result.results }}'
       loop_control:
-        label: "{{ item.container.Name }}"
+        label: '{{ item.container.Name }}'
 
     - name: Add container to molecule_inventory
       vars:
@@ -45,16 +45,16 @@
       ansible.builtin.set_fact:
         molecule_inventory: >
           {{ molecule_inventory | combine(inventory_partial_yaml | from_yaml, recursive=true) }}
-      loop: "{{ molecule_yml.platforms }}"
+      loop: '{{ molecule_yml.platforms }}'
       loop_control:
-        label: "{{ item.name }}"
+        label: '{{ item.name }}'
 
     - name: Dump molecule_inventory
       ansible.builtin.copy:
         content: |
           {{ molecule_inventory | to_yaml }}
-        dest: "{{ molecule_ephemeral_directory }}/inventory/molecule_inventory.yml"
-        mode: "0600"
+        dest: '{{ molecule_ephemeral_directory }}/inventory/molecule_inventory.yml'
+        mode: '0600'
 
     - name: Force inventory refresh
       ansible.builtin.meta: refresh_inventory
@@ -78,4 +78,4 @@
 
     - name: Display uname info
       ansible.builtin.debug:
-        msg: "{{ result.stdout }}"
+        msg: '{{ result.stdout }}'
