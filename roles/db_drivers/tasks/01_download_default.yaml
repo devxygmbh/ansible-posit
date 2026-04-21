@@ -12,6 +12,7 @@
     url: "https://cdn.rstudio.com/drivers/7C152C12/installer/rstudio-drivers-{{ db_drivers_version }}.tar"
     dest: "/tmp/rstudio-drivers-{{ db_drivers_version }}.tar"
     mode: "0755"
+    timeout: 300
 
 - name: Extract Posit DB Drivers
   when: dir_content.files | length == 0 and not ansible_check_mode

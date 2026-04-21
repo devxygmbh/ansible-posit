@@ -15,6 +15,7 @@
     url_username: "{{ db_drivers_artifactory_username if db_drivers_artifactory_username else omit }}"
     url_password: "{{ db_drivers_artifactory_password if db_drivers_artifactory_password else omit }}"
     force_basic_auth: "{{ true if db_drivers_artifactory_username else false }}"
+    timeout: 300
 
 - name: Extract Posit DB Drivers
   when: dir_content.files | length == 0 and not ansible_check_mode
