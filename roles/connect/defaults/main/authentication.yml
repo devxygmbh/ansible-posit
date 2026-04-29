@@ -27,6 +27,9 @@ connect_auth_pam_forward_password: false
 # @var connect_auth_pam_use_session:type: boolean
 # @var connect_auth_pam_use_session:description: Enable PAM session management
 connect_auth_pam_use_session: true
+# @var connect_auth_pam_required_group:type: string
+# @var connect_auth_pam_required_group:description: Local Linux group whose members are permitted to authenticate via PAM. Empty string disables the restriction. With Provider=pam this gates login. With Provider=oauth2/saml it gates PAM-managed sessions (RunAsCurrentUser content), not login - login restriction with OIDC/SAML must be enforced at the IdP. Setting this also forces the PAM service file to be deployed.
+connect_auth_pam_required_group: ''
 
 ## OAuth2/OIDC Configuration
 # @var connect_auth_oauth2_client_id:type: string
@@ -50,6 +53,21 @@ connect_auth_oauth2_email_claim: email
 # @var connect_auth_oauth2_username_claim:type: string
 # @var connect_auth_oauth2_username_claim:description: Claim to use for username
 connect_auth_oauth2_username_claim: preferred_username
+# @var connect_auth_oauth2_first_name_claim:type: string
+# @var connect_auth_oauth2_first_name_claim:description: Claim to use for first name
+connect_auth_oauth2_first_name_claim: given_name
+# @var connect_auth_oauth2_last_name_claim:type: string
+# @var connect_auth_oauth2_last_name_claim:description: Claim to use for last name
+connect_auth_oauth2_last_name_claim: family_name
+# @var connect_auth_oauth2_groups_claim:type: string
+# @var connect_auth_oauth2_groups_claim:description: Claim that contains the user's group memberships (e.g. 'groups'). Empty string disables group import. Requires the corresponding scope to be requested via connect_auth_oauth2_scopes.
+connect_auth_oauth2_groups_claim: ''
+# @var connect_auth_oauth2_groups_auto_provision:type: boolean
+# @var connect_auth_oauth2_groups_auto_provision:description: Automatically create Connect groups encountered in the groups claim on user login
+connect_auth_oauth2_groups_auto_provision: true
+# @var connect_auth_oauth2_registration_domain_allow_list:type: string
+# @var connect_auth_oauth2_registration_domain_allow_list:description: Comma-separated list of email domains permitted to register (e.g. 'example.com,example.org'). Empty string allows all domains.
+connect_auth_oauth2_registration_domain_allow_list: ''
 # @var connect_auth_oauth2_register_on_first_login:type: boolean
 # @var connect_auth_oauth2_register_on_first_login:description: Auto-register users on first login
 connect_auth_oauth2_register_on_first_login: true

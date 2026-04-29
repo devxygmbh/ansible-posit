@@ -6,7 +6,7 @@
 connect_authorization_default_user_role: viewer
 # @var connect_authorization_user_groups:type: boolean
 # @var connect_authorization_user_groups:description: Enable user groups
-connect_authorization_user_groups: false
+connect_authorization_user_groups: true
 # @var connect_authorization_viewers_can_request_privileges:type: boolean
 # @var connect_authorization_viewers_can_request_privileges:description: Allow viewers to request publisher privileges
 connect_authorization_viewers_can_request_privileges: true

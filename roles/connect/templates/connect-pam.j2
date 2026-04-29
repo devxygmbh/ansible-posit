@@ -6,6 +6,13 @@
 auth sufficient pam_rootok.so
 account sufficient pam_rootok.so
 {% endif %}
+{% if connect_auth_pam_required_group | length > 0 %}
+# Restrict authentication to members of the {{ connect_auth_pam_required_group }} group.
+# auth stack:    blocks login when Provider=pam.
+# account stack: blocks PAM session open (e.g. RunAsCurrentUser content) for any provider.
+auth     requisite   pam_succeed_if.so user ingroup {{ connect_auth_pam_required_group }} quiet
+account  requisite   pam_succeed_if.so user ingroup {{ connect_auth_pam_required_group }} quiet
+{% endif %}
 {% if ansible_facts['os_family'] == 'RedHat' %}
 auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
 auth substack system-auth

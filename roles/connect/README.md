@@ -11,6 +11,7 @@ Installs Posit Connect <https://posit.co/>
   - [connect_applications_supervisor_path](#connect_applications_supervisor_path)
   - [connect_applications_supervisor_script](#connect_applications_supervisor_script)
   - [connect_artifactory_base_url](#connect_artifactory_base_url)
+  - [connect_artifactory_cran_repo](#connect_artifactory_cran_repo)
   - [connect_artifactory_enabled](#connect_artifactory_enabled)
   - [connect_artifactory_password](#connect_artifactory_password)
   - [connect_artifactory_posit_repo](#connect_artifactory_posit_repo)
@@ -33,14 +34,20 @@ Installs Posit Connect <https://posit.co/>
   - [connect_auth_oauth2_client_id](#connect_auth_oauth2_client_id)
   - [connect_auth_oauth2_client_secret](#connect_auth_oauth2_client_secret)
   - [connect_auth_oauth2_email_claim](#connect_auth_oauth2_email_claim)
+  - [connect_auth_oauth2_first_name_claim](#connect_auth_oauth2_first_name_claim)
+  - [connect_auth_oauth2_groups_auto_provision](#connect_auth_oauth2_groups_auto_provision)
+  - [connect_auth_oauth2_groups_claim](#connect_auth_oauth2_groups_claim)
+  - [connect_auth_oauth2_last_name_claim](#connect_auth_oauth2_last_name_claim)
   - [connect_auth_oauth2_openid_issuer](#connect_auth_oauth2_openid_issuer)
   - [connect_auth_oauth2_register_on_first_login](#connect_auth_oauth2_register_on_first_login)
+  - [connect_auth_oauth2_registration_domain_allow_list](#connect_auth_oauth2_registration_domain_allow_list)
   - [connect_auth_oauth2_scopes](#connect_auth_oauth2_scopes)
   - [connect_auth_oauth2_unique_id_claim](#connect_auth_oauth2_unique_id_claim)
   - [connect_auth_oauth2_username_claim](#connect_auth_oauth2_username_claim)
   - [connect_auth_pam_forward_password](#connect_auth_pam_forward_password)
+  - [connect_auth_pam_required_group](#connect_auth_pam_required_group)
   - [connect_auth_pam_service](#connect_auth_pam_service)
-  - [connect_auth_pam_sessions_enabled](#connect_auth_pam_sessions_enabled)
+  - [connect_auth_pam_use_session](#connect_auth_pam_use_session)
   - [connect_auth_provider](#connect_auth_provider)
   - [connect_auth_saml_email_attribute](#connect_auth_saml_email_attribute)
   - [connect_auth_saml_idp_metadata_path](#connect_auth_saml_idp_metadata_path)
@@ -110,9 +117,18 @@ Installs Posit Connect <https://posit.co/>
   - [connect_metrics_graphite_host](#connect_metrics_graphite_host)
   - [connect_metrics_graphite_port](#connect_metrics_graphite_port)
   - [connect_metrics_instrumentation](#connect_metrics_instrumentation)
+  - [connect_metrics_instrumentation_data_retention](#connect_metrics_instrumentation_data_retention)
   - [connect_metrics_interval](#connect_metrics_interval)
+  - [connect_metrics_legacy_enabled](#connect_metrics_legacy_enabled)
   - [connect_metrics_prometheus_listen](#connect_metrics_prometheus_listen)
   - [connect_metrics_rrd_enabled](#connect_metrics_rrd_enabled)
+  - [connect_otel_api_instrumentation](#connect_otel_api_instrumentation)
+  - [connect_otel_database_instrumentation](#connect_otel_database_instrumentation)
+  - [connect_otel_enabled](#connect_otel_enabled)
+  - [connect_otel_endpoint](#connect_otel_endpoint)
+  - [connect_otel_endpoint_logs](#connect_otel_endpoint_logs)
+  - [connect_otel_endpoint_metrics](#connect_otel_endpoint_metrics)
+  - [connect_otel_endpoint_traces](#connect_otel_endpoint_traces)
   - [connect_packages_http_proxy](#connect_packages_http_proxy)
   - [connect_packages_https_proxy](#connect_packages_https_proxy)
   - [connect_python_base_path](#connect_python_base_path)
@@ -120,6 +136,7 @@ Installs Posit Connect <https://posit.co/>
   - [connect_python_enabled](#connect_python_enabled)
   - [connect_python_executable](#connect_python_executable)
   - [connect_python_executables](#connect_python_executables)
+  - [connect_python_pypi_url](#connect_python_pypi_url)
   - [connect_quarto_base_path](#connect_quarto_base_path)
   - [connect_quarto_bin_path](#connect_quarto_bin_path)
   - [connect_quarto_enabled](#connect_quarto_enabled)
@@ -132,6 +149,7 @@ Installs Posit Connect <https://posit.co/>
   - [connect_r_executable](#connect_r_executable)
   - [connect_r_executables](#connect_r_executables)
   - [connect_r_package_repositories](#connect_r_package_repositories)
+  - [connect_r_package_repository_resolution](#connect_r_package_repository_resolution)
   - [connect_scheduler_amd_gpu_limit](#connect_scheduler_amd_gpu_limit)
   - [connect_scheduler_connection_timeout](#connect_scheduler_connection_timeout)
   - [connect_scheduler_cpu_limit](#connect_scheduler_cpu_limit)
@@ -152,6 +170,7 @@ Installs Posit Connect <https://posit.co/>
   - [connect_server_custom_headers](#connect_server_custom_headers)
   - [connect_server_dashboard_path](#connect_server_dashboard_path)
   - [connect_server_data_dir](#connect_server_data_dir)
+  - [connect_server_deprecated_settings_ui_warning](#connect_server_deprecated_settings_ui_warning)
   - [connect_server_email_provider](#connect_server_email_provider)
   - [connect_server_email_subject_prefix](#connect_server_email_subject_prefix)
   - [connect_server_frame_options_content](#connect_server_frame_options_content)
@@ -218,6 +237,12 @@ Supervisor script content (verbatim)
 ### connect_artifactory_base_url
 
 Base URL for JFrog Artifactory
+
+**_Type:_** string<br />
+
+### connect_artifactory_cran_repo
+
+Artifactory repository path for CRAN packages
 
 **_Type:_** string<br />
 
@@ -353,6 +378,30 @@ Claim to use for email address
 
 **_Type:_** string<br />
 
+### connect_auth_oauth2_first_name_claim
+
+Claim to use for first name
+
+**_Type:_** string<br />
+
+### connect_auth_oauth2_groups_auto_provision
+
+Automatically create Connect groups encountered in the groups claim on user login
+
+**_Type:_** boolean<br />
+
+### connect_auth_oauth2_groups_claim
+
+Claim that contains the user's group memberships (e.g. 'groups'). Empty string disables group import. Requires the corresponding scope to be requested via connect_auth_oauth2_scopes.
+
+**_Type:_** string<br />
+
+### connect_auth_oauth2_last_name_claim
+
+Claim to use for last name
+
+**_Type:_** string<br />
+
 ### connect_auth_oauth2_openid_issuer
 
 OpenID Connect issuer URL
@@ -364,6 +413,12 @@ OpenID Connect issuer URL
 Auto-register users on first login
 
 **_Type:_** boolean<br />
+
+### connect_auth_oauth2_registration_domain_allow_list
+
+Comma-separated list of email domains permitted to register (e.g. 'example.com,example.org'). Empty string allows all domains.
+
+**_Type:_** string<br />
 
 ### connect_auth_oauth2_scopes
 
@@ -389,15 +444,21 @@ Forward user password to session
 
 **_Type:_** boolean<br />
 
+### connect_auth_pam_required_group
+
+Local Linux group whose members are permitted to authenticate via PAM. Empty string disables the restriction. With Provider=pam this gates login. With Provider=oauth2/saml it gates PAM-managed sessions (RunAsCurrentUser content), not login - login restriction with OIDC/SAML must be enforced at the IdP. Setting this also forces the PAM service file to be deployed.
+
+**_Type:_** string<br />
+
 ### connect_auth_pam_service
 
 PAM service name
 
 **_Type:_** string<br />
 
-### connect_auth_pam_sessions_enabled
+### connect_auth_pam_use_session
 
-Enable PAM sessions
+Enable PAM session management
 
 **_Type:_** boolean<br />
 
@@ -788,37 +849,37 @@ Service log level (DEBUG, INFO, WARNING, ERROR)
 
 ### connect_metrics_data_path
 
-Metrics data directory
+(Legacy) Metrics data directory
 
 **_Type:_** string<br />
 
 ### connect_metrics_enabled
 
-Enable metrics collection
+(Legacy) Enable metrics collection
 
 **_Type:_** boolean<br />
 
 ### connect_metrics_graphite_client_id
 
-Graphite client identifier
+(Legacy) Graphite client identifier
 
 **_Type:_** string<br />
 
 ### connect_metrics_graphite_enabled
 
-Enable Graphite export
+(Legacy) Enable Graphite export
 
 **_Type:_** boolean<br />
 
 ### connect_metrics_graphite_host
 
-Graphite server hostname
+(Legacy) Graphite server hostname
 
 **_Type:_** string<br />
 
 ### connect_metrics_graphite_port
 
-Graphite server port
+(Legacy) Graphite server port
 
 **_Type:_** integer<br />
 
@@ -828,11 +889,23 @@ Enable detailed instrumentation
 
 **_Type:_** boolean<br />
 
-### connect_metrics_interval
+### connect_metrics_instrumentation_data_retention
 
-Collection interval
+How long to retain instrumentation data (e.g., 730d)
 
 **_Type:_** string<br />
+
+### connect_metrics_interval
+
+(Legacy) Collection interval
+
+**_Type:_** string<br />
+
+### connect_metrics_legacy_enabled
+
+Emit legacy Metrics settings (Enabled, RRDEnabled, Graphite\*, etc.) for Connect versions < 2026.03.0
+
+**_Type:_** boolean<br />
 
 ### connect_metrics_prometheus_listen
 
@@ -842,7 +915,49 @@ Prometheus listen address (e.g., :9108)
 
 ### connect_metrics_rrd_enabled
 
-Enable RRD storage
+(Legacy) Enable RRD storage
+
+**_Type:_** boolean<br />
+
+### connect_otel_api_instrumentation
+
+Instrument API request/response cycles
+
+**_Type:_** boolean<br />
+
+### connect_otel_database_instrumentation
+
+Instrument database operations
+
+**_Type:_** boolean<br />
+
+### connect_otel_enabled
+
+Enable OpenTelemetry signal collection
+
+**_Type:_** boolean<br />
+
+### connect_otel_endpoint
+
+OTLP receiver endpoint URL for telemetry export
+
+**_Type:_** string<br />
+
+### connect_otel_endpoint_logs
+
+Export log signals to OTLP endpoint
+
+**_Type:_** boolean<br />
+
+### connect_otel_endpoint_metrics
+
+Export metric signals to OTLP endpoint
+
+**_Type:_** boolean<br />
+
+### connect_otel_endpoint_traces
+
+Export trace signals to OTLP endpoint
 
 **_Type:_** boolean<br />
 
@@ -887,6 +1002,13 @@ Path to single Python executable
 List of Python executable paths (explicit)
 
 **_Type:_** list<br />
+
+### connect_python_pypi_url
+
+Custom PyPI index URL (e.g., Artifactory PyPI proxy, leave empty for default PyPI).
+Deployed to /etc/uv/uv.toml and /etc/pip.conf so Connect's build process uses it.
+
+**_Type:_** string<br />
 
 ### connect_quarto_base_path
 
@@ -969,6 +1091,14 @@ List of R package repositories. Each entry must have: name, url
     - name: BioConductor
       url: https://packagemanager.posit.co/bioconductor/latest
 ```
+
+### connect_r_package_repository_resolution
+
+Controls how Connect combines configured RPackageRepository entries with
+repositories from published content. Values: lax (merge both), strict
+(configured only), legacy (content-first with overrides), lockfile (content only).
+
+**_Type:_** string<br />
 
 ### connect_scheduler_amd_gpu_limit
 
@@ -1089,6 +1219,12 @@ Path prefix for the Connect dashboard
 Data directory for Connect
 
 **_Type:_** string<br />
+
+### connect_server_deprecated_settings_ui_warning
+
+Show warnings to admins when deprecated settings are in use
+
+**_Type:_** boolean<br />
 
 ### connect_server_email_provider
 

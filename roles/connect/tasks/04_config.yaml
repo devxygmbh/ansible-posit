@@ -114,7 +114,7 @@
   notify: Restart rstudio-connect service
 
 - name: '[Config] Copy PAM profile'
-  when: connect_auth_provider == 'pam'
+  when: connect_auth_provider == 'pam' or (connect_auth_pam_required_group | length > 0)
   ansible.builtin.template:
     src: connect-pam.j2
     dest: '/etc/pam.d/{{ connect_auth_pam_service }}'

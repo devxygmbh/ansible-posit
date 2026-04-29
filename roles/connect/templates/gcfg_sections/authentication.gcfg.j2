@@ -33,6 +33,19 @@ EmailClaim = {{ connect_auth_oauth2_email_claim }}
 {% if connect_auth_oauth2_username_claim %}
 UsernameClaim = {{ connect_auth_oauth2_username_claim }}
 {% endif %}
+{% if connect_auth_oauth2_first_name_claim %}
+FirstNameClaim = {{ connect_auth_oauth2_first_name_claim }}
+{% endif %}
+{% if connect_auth_oauth2_last_name_claim %}
+LastNameClaim = {{ connect_auth_oauth2_last_name_claim }}
+{% endif %}
+{% if connect_auth_oauth2_groups_claim %}
+GroupsClaim = {{ connect_auth_oauth2_groups_claim }}
+GroupsAutoProvision = {{ connect_auth_oauth2_groups_auto_provision | lower }}
+{% endif %}
+{% if connect_auth_oauth2_registration_domain_allow_list %}
+RegistrationDomainAllowList = {{ connect_auth_oauth2_registration_domain_allow_list }}
+{% endif %}
 RegisterOnFirstLogin = {{ connect_auth_oauth2_register_on_first_login | lower }}
 {% endif %}
 
