@@ -1,0 +1,25 @@
+# Prepare phase - the default scenario installs from packages.microsoft.com
+# directly, so no mock infrastructure is needed. We do install python3-apt
+# explicitly because the role's ubuntu.yaml calls package_facts as its first
+# task, which needs the python-apt bindings; minimal Ubuntu images ship
+# without them.
+
+- name: Prepare for default msodbcsql install
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Ensure python3-apt is installed (Ubuntu)
+      when: ansible_facts['distribution'] == 'Ubuntu'
+      ansible.builtin.package:
+        name: python3-apt
+        state: present
+
+    - name: Confirm container has internet access
+      ansible.builtin.uri:
+        url: 'https://packages.microsoft.com/keys/microsoft.asc'
+        return_content: false
+      register: ms_reachable
+      retries: 3
+      delay: 5
+      until: ms_reachable.status == 200

@@ -1,9 +1,10 @@
-- name: Verify DB Drivers Installation from Artifactory
+- name: Verify DB Drivers and msodbcsql Installation from Artifactory
   hosts: all
   become: false
   gather_facts: true
 
   tasks:
+    # --- Posit DB Drivers (existing assertions) ---
     - name: Check if DB drivers directory exists
       ansible.builtin.stat:
         path: '/opt/rstudio-drivers-2025.03.0'
@@ -71,7 +72,88 @@
         fail_msg: 'odbcinst.ini.sample does not exist in drivers directory'
         success_msg: 'odbcinst.ini.sample exists'
 
-    # Note: With network_mode=host, both containers share the network stack.
-    # Only one container's HTTP server can bind port 8080, so the other container's
-    # download goes through the first container's server. We cannot reliably assert
-    # which container's log file has the GET requests.
+    # --- Microsoft ODBC Driver 18 ---
+    - name: Gather package facts for msodbcsql verification
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Verify msodbcsql18 is installed
+      ansible.builtin.assert:
+        that:
+          - "'msodbcsql18' in ansible_facts.packages"
+        fail_msg: 'msodbcsql18 is not installed'
+        success_msg: 'msodbcsql18 is installed'
+
+    - name: Verify mssql-tools18 is installed
+      ansible.builtin.assert:
+        that:
+          - "'mssql-tools18' in ansible_facts.packages"
+        fail_msg: 'mssql-tools18 is not installed'
+        success_msg: 'mssql-tools18 is installed'
+
+    - name: Check sqlcmd binary
+      ansible.builtin.stat:
+        path: /opt/mssql-tools18/bin/sqlcmd
+      register: sqlcmd_stat
+
+    - name: Verify sqlcmd is executable
+      ansible.builtin.assert:
+        that:
+          - sqlcmd_stat.stat.exists
+          - sqlcmd_stat.stat.executable
+        fail_msg: '/opt/mssql-tools18/bin/sqlcmd does not exist or is not executable'
+        success_msg: 'sqlcmd is installed and executable'
+
+    - name: Check profile.d PATH file
+      ansible.builtin.stat:
+        path: /etc/profile.d/mssql-tools.sh
+      register: profile_d_stat
+
+    - name: Verify profile.d PATH file exists
+      ansible.builtin.assert:
+        that:
+          - profile_d_stat.stat.exists
+        fail_msg: '/etc/profile.d/mssql-tools.sh does not exist'
+        success_msg: '/etc/profile.d/mssql-tools.sh exists'
+
+    - name: Read profile.d PATH file
+      ansible.builtin.slurp:
+        path: /etc/profile.d/mssql-tools.sh
+      register: profile_d_content
+
+    - name: Verify profile.d PATH file references mssql-tools18
+      ansible.builtin.assert:
+        that:
+          - "'/opt/mssql-tools18/bin' in (profile_d_content.content | b64decode)"
+        fail_msg: 'profile.d PATH file does not reference /opt/mssql-tools18/bin'
+        success_msg: 'profile.d PATH file is correct'
+
+    - name: Verify mssql-release repo file references mock Artifactory (RHEL)
+      when: ansible_facts['os_family'] == 'RedHat'
+      block:
+        - name: Read mssql-release.repo
+          ansible.builtin.slurp:
+            path: /etc/yum.repos.d/mssql-release.repo
+          register: rhel_repo
+
+        - name: Assert RHEL repo points at the mock Artifactory
+          ansible.builtin.assert:
+            that:
+              - "'http://localhost:8080/mssql-release/' in (rhel_repo.content | b64decode)"
+            fail_msg: 'mssql-release.repo does not reference the mock Artifactory baseurl'
+            success_msg: 'mssql-release.repo references mock Artifactory'
+
+    - name: Verify mssql-release apt source references mock Artifactory (Ubuntu)
+      when: ansible_facts['distribution'] == 'Ubuntu'
+      block:
+        - name: Read mssql-release.list
+          ansible.builtin.slurp:
+            path: /etc/apt/sources.list.d/mssql-release.list
+          register: deb_repo
+
+        - name: Assert apt source points at the mock Artifactory
+          ansible.builtin.assert:
+            that:
+              - "'http://localhost:8080/mssql-release/' in (deb_repo.content | b64decode)"
+            fail_msg: 'mssql-release.list does not reference the mock Artifactory baseurl'
+            success_msg: 'mssql-release.list references mock Artifactory'

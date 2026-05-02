@@ -1,0 +1,63 @@
+- name: Ensure msodbcsql apt prerequisites are installed
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+      - python3-apt
+    state: present
+    update_cache: true
+
+- name: Ensure /etc/apt/keyrings exists
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Download Microsoft GPG key
+  ansible.builtin.get_url:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    dest: /tmp/microsoft.asc
+    mode: '0644'
+
+- name: Dearmor Microsoft GPG key
+  ansible.builtin.command: gpg --dearmor -o /etc/apt/keyrings/microsoft.gpg /tmp/microsoft.asc
+  args:
+    creates: /etc/apt/keyrings/microsoft.gpg
+
+- name: Remove armored Microsoft GPG key from /tmp
+  ansible.builtin.file:
+    path: /tmp/microsoft.asc
+    state: absent
+
+- name: Configure mssql-release apt source
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [arch={{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}
+      signed-by=/etc/apt/keyrings/microsoft.gpg]
+      {{ _msodbcsql_baseurl }} {{ ansible_distribution_release }} main
+    filename: mssql-release
+    state: present
+    update_cache: false
+
+- name: Configure apt auth for Artifactory
+  ansible.builtin.copy:
+    content: |
+      machine {{ db_drivers_artifactory_base_url | urlsplit('hostname') }} login {{ db_drivers_artifactory_username }} password {{ db_drivers_artifactory_password }}
+    dest: /etc/apt/auth.conf.d/mssql-release.conf
+    mode: '0600'
+  when:
+    - db_drivers_artifactory_enabled | bool
+    - db_drivers_artifactory_username | length > 0
+    - db_drivers_artifactory_password | length > 0
+
+- name: Install Microsoft ODBC Driver 18 and tools
+  ansible.builtin.apt:
+    name:
+      - msodbcsql18
+      - mssql-tools18
+      - unixodbc-dev
+    state: present
+    update_cache: true
+  environment:
+    ACCEPT_EULA: 'Y'

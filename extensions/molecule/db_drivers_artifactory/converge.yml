@@ -9,5 +9,9 @@
     db_drivers_artifactory_repo: 'posit-drivers'
     db_drivers_version: '2025.03.0'
 
+    # Microsoft ODBC Driver 18 (Artifactory path)
+    db_drivers_msodbcsql_enabled: true
+    db_drivers_msodbcsql_artifactory_repo: 'mssql-release'
+
   roles:
     - role: db_drivers

@@ -72,3 +72,8 @@
 - name: Import Oracle Instant Client tasks
   when: db_drivers_oracle_enabled | bool
   ansible.builtin.import_tasks: 02_oracle_instantclient.yaml
+
+# Microsoft ODBC Driver 18 for SQL Server
+- name: Import Microsoft ODBC Driver tasks
+  when: db_drivers_msodbcsql_enabled | bool
+  ansible.builtin.import_tasks: 03_msodbcsql.yaml

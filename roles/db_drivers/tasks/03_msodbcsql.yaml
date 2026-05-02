@@ -1,0 +1,31 @@
+- name: Resolve msodbcsql OS segment
+  ansible.builtin.set_fact:
+    _msodbcsql_os_segment: >-
+      {{
+        ('rhel/' ~ ansible_distribution_major_version)
+        if ansible_facts['os_family'] == 'RedHat'
+        else ('ubuntu/' ~ ansible_distribution_version)
+      }}
+
+- name: Resolve msodbcsql baseurl
+  ansible.builtin.set_fact:
+    _msodbcsql_baseurl: >-
+      {{
+        (db_drivers_artifactory_base_url ~ '/' ~ db_drivers_msodbcsql_artifactory_repo)
+        if db_drivers_artifactory_enabled | bool
+        else 'https://packages.microsoft.com'
+      }}/{{ _msodbcsql_os_segment }}/prod
+
+- name: Run RHEL msodbcsql tasks
+  when: ansible_facts['os_family'] == 'RedHat'
+  ansible.builtin.import_tasks: 03_msodbcsql_redhat.yaml
+
+- name: Run Ubuntu msodbcsql tasks
+  when: ansible_facts['distribution'] == 'Ubuntu'
+  ansible.builtin.import_tasks: 03_msodbcsql_ubuntu.yaml
+
+- name: Configure PATH for mssql-tools
+  ansible.builtin.copy:
+    content: "export PATH=$PATH:/opt/mssql-tools18/bin\n"
+    dest: /etc/profile.d/mssql-tools.sh
+    mode: '0644'

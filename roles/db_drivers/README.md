@@ -12,6 +12,8 @@ Installs Posit Professional Drivers <https://posit.co/>
   - [db_drivers_artifactory_repo](#db_drivers_artifactory_repo)
   - [db_drivers_artifactory_username](#db_drivers_artifactory_username)
   - [db_drivers_install_dir](#db_drivers_install_dir)
+  - [db_drivers_msodbcsql_artifactory_repo](#db_drivers_msodbcsql_artifactory_repo)
+  - [db_drivers_msodbcsql_enabled](#db_drivers_msodbcsql_enabled)
   - [db_drivers_oracle_artifactory_format](#db_drivers_oracle_artifactory_format)
   - [db_drivers_oracle_artifactory_repo](#db_drivers_oracle_artifactory_repo)
   - [db_drivers_oracle_enabled](#db_drivers_oracle_enabled)
@@ -104,6 +106,30 @@ Base directory for DB drivers installation (version is appended)
 
 ```YAML
 db_drivers_install_dir: /opt
+```
+
+### db_drivers_msodbcsql_artifactory_repo
+
+Artifactory repository name that proxies packages.microsoft.com (used when db_drivers_artifactory_enabled is true)
+
+**_Type:_** string<br />
+
+#### Default value
+
+```YAML
+db_drivers_msodbcsql_artifactory_repo: mssql-release
+```
+
+### db_drivers_msodbcsql_enabled
+
+Enable Microsoft ODBC Driver 18 for SQL Server (also installs mssql-tools18 and unixODBC headers; enabling implies acceptance of the Microsoft EULA at https://aka.ms/odbc18eula)
+
+**_Type:_** boolean<br />
+
+#### Default value
+
+```YAML
+db_drivers_msodbcsql_enabled: false
 ```
 
 ### db_drivers_oracle_artifactory_format

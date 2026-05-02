@@ -1,0 +1,78 @@
+- name: Verify msodbcsql default install
+  hosts: all
+  become: false
+  gather_facts: true
+
+  tasks:
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Verify msodbcsql18 is installed
+      ansible.builtin.assert:
+        that:
+          - "'msodbcsql18' in ansible_facts.packages"
+        fail_msg: 'msodbcsql18 is not installed'
+        success_msg: 'msodbcsql18 is installed'
+
+    - name: Verify mssql-tools18 is installed
+      ansible.builtin.assert:
+        that:
+          - "'mssql-tools18' in ansible_facts.packages"
+        fail_msg: 'mssql-tools18 is not installed'
+        success_msg: 'mssql-tools18 is installed'
+
+    - name: Check sqlcmd binary
+      ansible.builtin.stat:
+        path: /opt/mssql-tools18/bin/sqlcmd
+      register: sqlcmd_stat
+
+    - name: Verify sqlcmd is executable
+      ansible.builtin.assert:
+        that:
+          - sqlcmd_stat.stat.exists
+          - sqlcmd_stat.stat.executable
+        fail_msg: '/opt/mssql-tools18/bin/sqlcmd does not exist or is not executable'
+        success_msg: 'sqlcmd is installed and executable'
+
+    - name: Verify profile.d PATH file exists
+      ansible.builtin.stat:
+        path: /etc/profile.d/mssql-tools.sh
+      register: profile_d_stat
+
+    - name: Assert profile.d file
+      ansible.builtin.assert:
+        that:
+          - profile_d_stat.stat.exists
+        fail_msg: '/etc/profile.d/mssql-tools.sh does not exist'
+        success_msg: 'profile.d file exists'
+
+    - name: Verify mssql-release repo file references packages.microsoft.com (RHEL)
+      when: ansible_facts['os_family'] == 'RedHat'
+      block:
+        - name: Read mssql-release.repo
+          ansible.builtin.slurp:
+            path: /etc/yum.repos.d/mssql-release.repo
+          register: rhel_repo
+
+        - name: Assert RHEL repo points at packages.microsoft.com
+          ansible.builtin.assert:
+            that:
+              - "'https://packages.microsoft.com/' in (rhel_repo.content | b64decode)"
+            fail_msg: 'mssql-release.repo does not reference packages.microsoft.com'
+            success_msg: 'mssql-release.repo references packages.microsoft.com'
+
+    - name: Verify mssql-release apt source references packages.microsoft.com (Ubuntu)
+      when: ansible_facts['distribution'] == 'Ubuntu'
+      block:
+        - name: Read mssql-release.list
+          ansible.builtin.slurp:
+            path: /etc/apt/sources.list.d/mssql-release.list
+          register: deb_repo
+
+        - name: Assert apt source points at packages.microsoft.com
+          ansible.builtin.assert:
+            that:
+              - "'https://packages.microsoft.com/' in (deb_repo.content | b64decode)"
+            fail_msg: 'mssql-release.list does not reference packages.microsoft.com'
+            success_msg: 'mssql-release.list references packages.microsoft.com'

@@ -1,6 +1,7 @@
-# Prepare phase - Set up a mock HTTP server for DB Drivers only
+# Prepare phase - Set up a mock Artifactory that serves the Posit
+# tarball from disk and forwards /mssql-release/* to packages.microsoft.com.
 
-- name: Prepare mock Artifactory for DB Drivers
+- name: Prepare mock Artifactory for DB Drivers and msodbcsql
   hosts: all
   gather_facts: true
 
@@ -28,9 +29,15 @@
       failed_when: false
       register: download_db_drivers
 
+    - name: Install mock Artifactory proxy script
+      ansible.builtin.copy:
+        src: files/proxy_server.py
+        dest: /opt/mock-artifactory/proxy_server.py
+        mode: '0755'
+
     - name: Start mock Artifactory HTTP server in background
       ansible.builtin.shell: |
-        nohup python3 -m http.server 8080 --directory /opt/mock-artifactory > /tmp/mock-artifactory.log 2>&1 &
+        nohup python3 /opt/mock-artifactory/proxy_server.py > /tmp/mock-artifactory.log 2>&1 &
         echo $!
       register: http_server_pid
       changed_when: true
@@ -41,11 +48,20 @@
         delay: 2
         timeout: 30
 
-    - name: Test HTTP server accessibility
+    - name: Test HTTP server static file accessibility
       ansible.builtin.uri:
         url: 'http://localhost:8080/posit-drivers/rstudio-drivers-2025.03.0.tar'
         return_content: false
-      register: http_test
+      register: http_test_static
       retries: 3
       delay: 5
-      until: http_test.status == 200
+      until: http_test_static.status == 200
+
+    - name: Test HTTP server proxy forwarding
+      ansible.builtin.uri:
+        url: 'http://localhost:8080/mssql-release/keys/microsoft.asc'
+        return_content: false
+      register: http_test_proxy
+      retries: 3
+      delay: 5
+      until: http_test_proxy.status == 200

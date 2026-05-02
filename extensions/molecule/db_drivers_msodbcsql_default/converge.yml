@@ -1,0 +1,10 @@
+- name: Converge - Test msodbcsql install from packages.microsoft.com
+  hosts: all
+  gather_facts: true
+
+  vars:
+    db_drivers_artifactory_enabled: false
+    db_drivers_msodbcsql_enabled: true
+
+  roles:
+    - role: db_drivers

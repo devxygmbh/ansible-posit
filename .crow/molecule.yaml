@@ -14,6 +14,9 @@ matrix:
     - SCENARIO: db_drivers_artifactory
       WHEN: 'roles/db_drivers/**'
 
+    - SCENARIO: db_drivers_msodbcsql_default
+      WHEN: 'roles/db_drivers/**'
+
 steps:
   - name: 'Test ${SCENARIO}'
     image: reg.devxy.io/docker.io/library/docker:29-dind

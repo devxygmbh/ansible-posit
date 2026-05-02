@@ -1,0 +1,21 @@
+- name: Configure mssql-release yum repository
+  ansible.builtin.yum_repository:
+    name: packages-microsoft-com-prod
+    description: Microsoft Packages
+    baseurl: '{{ _msodbcsql_baseurl }}'
+    gpgcheck: true
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    file: mssql-release
+    mode: '0600'
+    username: '{{ db_drivers_artifactory_username if (db_drivers_artifactory_enabled | bool and db_drivers_artifactory_username) else omit }}'
+    password: '{{ db_drivers_artifactory_password if (db_drivers_artifactory_enabled | bool and db_drivers_artifactory_password) else omit }}'
+
+- name: Install Microsoft ODBC Driver 18 and tools
+  ansible.builtin.dnf:
+    name:
+      - msodbcsql18
+      - mssql-tools18
+      - unixODBC-devel
+    state: present
+  environment:
+    ACCEPT_EULA: 'Y'
