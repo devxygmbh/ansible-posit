@@ -19,7 +19,8 @@ license:
 # requirements as 'namespace' and 'name'
 tags: ['tools']
 
-dependencies: {}
+dependencies:
+  community.general: '>=10.0.0'
 
 repository: https://codefloe.com/devxy/ansible-posit
 

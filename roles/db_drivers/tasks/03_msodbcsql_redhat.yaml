@@ -4,7 +4,7 @@
     description: Microsoft Packages
     baseurl: '{{ _msodbcsql_baseurl }}'
     gpgcheck: true
-    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    gpgkey: '{{ _msodbcsql_gpgkey_url }}'
     file: mssql-release
     mode: '0600'
     username: '{{ db_drivers_artifactory_username if (db_drivers_artifactory_enabled | bool and db_drivers_artifactory_username) else omit }}'

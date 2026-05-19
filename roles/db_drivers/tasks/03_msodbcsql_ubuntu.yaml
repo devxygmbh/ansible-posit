@@ -16,9 +16,11 @@
 
 - name: Download Microsoft GPG key
   ansible.builtin.get_url:
-    url: https://packages.microsoft.com/keys/microsoft.asc
+    url: '{{ _msodbcsql_gpgkey_url }}'
     dest: /tmp/microsoft.asc
     mode: '0644'
+    url_username: '{{ db_drivers_artifactory_username if (db_drivers_artifactory_enabled | bool and db_drivers_artifactory_username) else omit }}'
+    url_password: '{{ db_drivers_artifactory_password if (db_drivers_artifactory_enabled | bool and db_drivers_artifactory_password) else omit }}'
 
 - name: Dearmor Microsoft GPG key
   ansible.builtin.command: gpg --dearmor -o /etc/apt/keyrings/microsoft.gpg /tmp/microsoft.asc

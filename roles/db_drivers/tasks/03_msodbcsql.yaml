@@ -16,6 +16,15 @@
         else 'https://packages.microsoft.com'
       }}/{{ _msodbcsql_os_segment }}/prod
 
+- name: Resolve msodbcsql gpgkey URL
+  ansible.builtin.set_fact:
+    _msodbcsql_gpgkey_url: >-
+      {{
+        (db_drivers_artifactory_base_url ~ '/' ~ db_drivers_msodbcsql_artifactory_repo)
+        if db_drivers_artifactory_enabled | bool
+        else 'https://packages.microsoft.com'
+      }}/keys/microsoft.asc
+
 - name: Run RHEL msodbcsql tasks
   when: ansible_facts['os_family'] == 'RedHat'
   ansible.builtin.import_tasks: 03_msodbcsql_redhat.yaml
