@@ -25,3 +25,15 @@
 - name: Reload systemd daemon
   ansible.builtin.systemd_service:
     daemon_reload: true
+
+- name: Restore context on ensure-home-dir helper
+  ansible.builtin.command: restorecon -v /usr/local/sbin/ensure-home-dir.sh
+  changed_when: false
+
+- name: Compile and install posit_workbench_ensure_home module
+  ansible.builtin.shell: |
+    set -euo pipefail
+    cd /usr/local/share/selinux
+    checkmodule -M -m -o posit_workbench_ensure_home.mod posit_workbench_ensure_home.te
+    semodule_package -o posit_workbench_ensure_home.pp -m posit_workbench_ensure_home.mod
+    semodule -i posit_workbench_ensure_home.pp

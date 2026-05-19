@@ -1,6 +1,10 @@
-- name: '[SELinux] Install selinux-policy-devel for policy compilation'
+- name: '[SELinux] Install policy build/compilation tooling'
   ansible.builtin.package:
-    name: selinux-policy-devel
+    name:
+      - selinux-policy-devel
+      - checkpolicy
+      - policycoreutils
+      - policycoreutils-python-utils
     state: present
 
 - name: '[SELinux] Set httpd_can_network_connect boolean'
@@ -66,6 +70,32 @@
     - /var/lib/rstudio-launcher
     - /var/log/rstudio
   changed_when: false
+
+- name: '[SELinux] Ensure /usr/local/share/selinux exists for ensure-home-dir policy source'
+  ansible.builtin.file:
+    path: /usr/local/share/selinux
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: '[SELinux] Install ensure-home-dir PAM exec helper'
+  ansible.builtin.copy:
+    src: ensure-home-dir.sh
+    dest: /usr/local/sbin/ensure-home-dir.sh
+    owner: root
+    group: root
+    mode: '0755'
+  notify: Restore context on ensure-home-dir helper
+
+- name: '[SELinux] Install posit_workbench_ensure_home policy source'
+  ansible.builtin.copy:
+    src: posit_workbench_ensure_home.te
+    dest: /usr/local/share/selinux/posit_workbench_ensure_home.te
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Compile and install posit_workbench_ensure_home module
 
 - name: '[SELinux] Clean up policy build directory'
   ansible.builtin.file:

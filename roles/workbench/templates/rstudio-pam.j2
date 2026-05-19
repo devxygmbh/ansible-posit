@@ -1,13 +1,24 @@
-# Allow root to open PAM sessions on behalf of users (required for Job Launcher and external auth)
-auth sufficient pam_rootok.so
-account sufficient pam_rootok.so
 {% if ansible_facts['os_family'] == 'RedHat' %}
 # from https://support.posit.co/hc/en-us/articles/360016587973-Integrating-RStudio-Workbench-RStudio-Server-Pro-with-Active-Directory-using-CentOS-RHEL
 #%PAM-1.0
+{% if workbench_server_auth_openid | int == 1 %}
+# OIDC/SSO mode: allow the Workbench server (running as root) to satisfy the PAM
+# auth/account stacks without a password when it opens sessions on behalf of
+# SSO-authenticated users. Do NOT enable rootok in password-auth mode, or any
+# password is accepted because the auth helper itself runs as root.
+auth sufficient pam_rootok.so
+{% endif %}
 auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so
 auth substack system-auth
 auth include postlogin
 account required pam_nologin.so
+# Create the user's home directory before Workbench accesses /home/$USER (rworkspaces touches
+# the home before the PAM session stack runs, so pam_oddjob_mkhomedir in session is too late).
+# Must precede the rootok shortcut below, otherwise the account stack short-circuits.
+account required pam_exec.so seteuid /usr/local/sbin/ensure-home-dir.sh
+{% if workbench_server_auth_openid | int == 1 %}
+account sufficient pam_rootok.so
+{% endif %}
 account include system-auth
 password include system-auth
 # pam_selinux.so close should be the first session rule

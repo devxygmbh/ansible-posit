@@ -1,0 +1,48 @@
+module posit_workbench_ensure_home 1.0;
+
+# Lets the Workbench PAM exec helper (/usr/local/sbin/ensure-home-dir.sh) run
+# under workbench_worker_t and provision /home/$USER + /etc/skel contents on
+# behalf of newly-logging-in SSSD/AD users. The helper runs in the account
+# phase, before pam_oddjob_mkhomedir in session has a chance to fire.
+
+require {
+    type workbench_worker_t;
+    type var_run_t;
+    type home_root_t;
+    type user_home_dir_t;
+    type user_home_t;
+    type etc_t;
+
+    class dir { add_name create getattr ioctl lock open read remove_name rmdir search setattr write };
+    class file { append create getattr ioctl link lock open read rename setattr unlink write };
+    class lnk_file { create getattr read setattr unlink };
+}
+
+# Manage the per-user flock files under /run/ensure-home-dir/
+allow workbench_worker_t var_run_t:dir { add_name create getattr open read remove_name rmdir search setattr write };
+allow workbench_worker_t var_run_t:file { append create getattr ioctl lock open read setattr unlink write };
+
+# Read /etc/skel so we can seed the new home
+allow workbench_worker_t etc_t:dir { getattr open read search };
+allow workbench_worker_t etc_t:file { getattr ioctl open read };
+allow workbench_worker_t etc_t:lnk_file { getattr read };
+
+# Create user directories under /home (labelled home_root_t)
+allow workbench_worker_t home_root_t:dir { add_name create getattr open read search setattr write };
+
+# Label new dirs/files/symlinks created under /home with the standard user-home labels
+type_transition workbench_worker_t home_root_t:dir user_home_dir_t;
+type_transition workbench_worker_t user_home_dir_t:dir user_home_t;
+type_transition workbench_worker_t user_home_dir_t:file user_home_t;
+type_transition workbench_worker_t user_home_dir_t:lnk_file user_home_t;
+type_transition workbench_worker_t user_home_t:dir user_home_t;
+type_transition workbench_worker_t user_home_t:file user_home_t;
+type_transition workbench_worker_t user_home_t:lnk_file user_home_t;
+
+# Manage /home/$USER itself and everything we copy from /etc/skel into it
+allow workbench_worker_t user_home_dir_t:dir { add_name create getattr ioctl lock open read remove_name rmdir search setattr write };
+allow workbench_worker_t user_home_dir_t:file { append create getattr ioctl link lock open read rename setattr unlink write };
+allow workbench_worker_t user_home_dir_t:lnk_file { create getattr read setattr unlink };
+allow workbench_worker_t user_home_t:dir { add_name create getattr ioctl lock open read remove_name rmdir search setattr write };
+allow workbench_worker_t user_home_t:file { append create getattr ioctl link lock open read rename setattr unlink write };
+allow workbench_worker_t user_home_t:lnk_file { create getattr read setattr unlink };

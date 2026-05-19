@@ -16,6 +16,8 @@ mock_modules:
   - community.crypto.openssl_privatekey
   - community.crypto.openssl_publickey
   - community.crypto.x509_certificate
+  - community.general.dnf_config_manager
+  - community.general.apk
 
 mock_roles:
   - devxy.data_science_core.r
