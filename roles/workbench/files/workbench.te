@@ -1,4 +1,4 @@
-policy_module(workbench, 2026.01.1)
+policy_module(workbench, 2026.05.1)
 
 ########################################
 #
@@ -96,6 +96,8 @@ require {
   type proc_kmsg_t;
   type proc_mdstat_t;
   type mtrr_device_t;
+  type home_root_t;
+  type user_home_dir_t;
   attribute file_type;
   attribute can_change_process_identity;
   attribute can_change_process_role;
@@ -437,6 +439,12 @@ allow workbench_server_t unconfined_t:process { transition };
 allow workbench_server_t unconfined_t:unix_stream_socket connectto;
 allow unconfined_t workbench_exec_t:file { entrypoint execute };
 allow system_r unconfined_r;
+
+# Allow auto-provisioning of user home directories for AD/SSSD-backed users
+# whose home doesn't exist yet (rserver runs `install -d -m 700 -o <uid> -g <gid> /home/<user>`)
+allow workbench_server_t home_root_t:dir { search getattr add_name write };
+allow workbench_server_t user_home_dir_t:dir { create setattr getattr };
+files_home_filetrans(workbench_server_t, user_home_dir_t, dir)
 
 # Allow worker to read /proc/sys/fs (e.g. file-nr for Dynatrace)
 allow workbench_worker_t sysctl_fs_t:dir search_dir_perms;
