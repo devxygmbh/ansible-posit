@@ -79,9 +79,4 @@ connect_server_custom_headers: []
 
 # @var connect_server_deprecated_settings_ui_warning:type: boolean
 # @var connect_server_deprecated_settings_ui_warning:description: Show warnings to admins when deprecated settings are in use
-connect_server_deprecated_settings_ui_warning: false
-
-## Licensing
-# @var connect_server_license_type:type: string
-# @var connect_server_license_type:description: License type (local or remote)
-connect_server_license_type: local
+connect_server_deprecated_settings_ui_warning: true

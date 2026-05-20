@@ -1,6 +1,9 @@
 ## Applications Configuration
 # https://docs.posit.co/connect/admin/appendix/configuration/#Applications
 
+# @var connect_applications_metrics_collection_enabled:type: boolean
+# @var connect_applications_metrics_collection_enabled:description: Enables collection of metrics for applications
+connect_applications_metrics_collection_enabled: false
 # @var connect_applications_run_as_current_user:type: boolean
 # @var connect_applications_run_as_current_user:description: Run applications as the publishing user
 connect_applications_run_as_current_user: false
