@@ -128,6 +128,13 @@
         fail_msg: 'profile.d PATH file does not reference /opt/mssql-tools18/bin'
         success_msg: 'profile.d PATH file is correct'
 
+    - name: Verify msodbcsql18 driver is registered in /etc/odbcinst.ini
+      ansible.builtin.assert:
+        that:
+          - "'[ODBC Driver 18 for SQL Server]' in odbcinst_decoded"
+        fail_msg: '/etc/odbcinst.ini is missing the [ODBC Driver 18 for SQL Server] section'
+        success_msg: '/etc/odbcinst.ini contains the [ODBC Driver 18 for SQL Server] section'
+
     - name: Verify mssql-release repo file references mock Artifactory (RHEL)
       when: ansible_facts['os_family'] == 'RedHat'
       block:

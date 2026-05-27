@@ -33,6 +33,21 @@
   when: ansible_facts['distribution'] == 'Ubuntu'
   ansible.builtin.import_tasks: 03_msodbcsql_ubuntu.yaml
 
+# The Posit task in main.yml overwrites /etc/odbcinst.ini before this role runs,
+# and the msodbcsql package's postinst only registers the driver on first install,
+# so re-runs of this role lose the [ODBC Driver 18 for SQL Server] section unless
+# we re-register it here.
+- name: Query registered ODBC drivers
+  ansible.builtin.command:
+    cmd: odbcinst -q -d
+  register: _msodbcsql_odbcinst_query
+  changed_when: false
+
+- name: Register msodbcsql18 driver in /etc/odbcinst.ini
+  ansible.builtin.command:
+    cmd: odbcinst -i -d -f /opt/microsoft/msodbcsql18/etc/odbcinst.ini
+  when: "'[ODBC Driver 18 for SQL Server]' not in _msodbcsql_odbcinst_query.stdout"
+
 - name: Configure PATH for mssql-tools
   ansible.builtin.copy:
     content: "export PATH=$PATH:/opt/mssql-tools18/bin\n"

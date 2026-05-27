@@ -34,4 +34,8 @@ repos:
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
+        # --offline skips the force-install of the worktree as a collection,
+        # which trips ansible-core 2.20.5 over the partial collection mocks
+        # ansible-lint generates for `mock_modules` in .ansible-lint.
+        args: [--offline]
         additional_dependencies: [distlib]

@@ -47,6 +47,18 @@
         fail_msg: '/etc/profile.d/mssql-tools.sh does not exist'
         success_msg: 'profile.d file exists'
 
+    - name: Read /etc/odbcinst.ini
+      ansible.builtin.slurp:
+        path: /etc/odbcinst.ini
+      register: msodbcsql_odbcinst
+
+    - name: Verify msodbcsql18 driver is registered in /etc/odbcinst.ini
+      ansible.builtin.assert:
+        that:
+          - "'[ODBC Driver 18 for SQL Server]' in (msodbcsql_odbcinst.content | b64decode)"
+        fail_msg: '/etc/odbcinst.ini is missing the [ODBC Driver 18 for SQL Server] section'
+        success_msg: '/etc/odbcinst.ini contains the [ODBC Driver 18 for SQL Server] section'
+
     - name: Verify mssql-release repo file references packages.microsoft.com (RHEL)
       when: ansible_facts['os_family'] == 'RedHat'
       block:
