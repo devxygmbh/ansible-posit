@@ -55,7 +55,7 @@ db_drivers_oracle_artifactory_format: 'zip'
 
 ## Microsoft ODBC Driver 18 for SQL Server Configuration
 # @var db_drivers_msodbcsql_enabled:type: boolean
-# @var db_drivers_msodbcsql_enabled:description: Enable Microsoft ODBC Driver 18 for SQL Server (also installs mssql-tools18 and unixODBC headers; enabling implies acceptance of the Microsoft EULA at https://aka.ms/odbc18eula)
+# @var db_drivers_msodbcsql_enabled:description: Enable Microsoft ODBC Driver 18 for SQL Server (also installs mssql-tools18 and unixODBC headers; enabling implies acceptance of the Microsoft EULA at https://aka.ms/odbc18eula). Setting this to false removes the mssql-release repository created by a previous enablement (the installed packages are left in place).
 db_drivers_msodbcsql_enabled: false
 # @var db_drivers_msodbcsql_artifactory_repo:type: string
 # @var db_drivers_msodbcsql_artifactory_repo:description: Artifactory repository name that proxies packages.microsoft.com (used when db_drivers_artifactory_enabled is true)

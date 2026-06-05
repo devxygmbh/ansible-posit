@@ -77,3 +77,8 @@
 - name: Import Microsoft ODBC Driver tasks
   when: db_drivers_msodbcsql_enabled | bool
   ansible.builtin.import_tasks: 03_msodbcsql.yaml
+
+# Remove the mssql-release repository left behind by a previous enablement
+- name: Import Microsoft ODBC Driver cleanup tasks
+  when: not db_drivers_msodbcsql_enabled | bool
+  ansible.builtin.import_tasks: 03_msodbcsql_cleanup.yaml

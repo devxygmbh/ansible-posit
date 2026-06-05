@@ -122,7 +122,7 @@ db_drivers_msodbcsql_artifactory_repo: mssql-release
 
 ### db_drivers_msodbcsql_enabled
 
-Enable Microsoft ODBC Driver 18 for SQL Server (also installs mssql-tools18 and unixODBC headers; enabling implies acceptance of the Microsoft EULA at https://aka.ms/odbc18eula)
+Enable Microsoft ODBC Driver 18 for SQL Server (also installs mssql-tools18 and unixODBC headers; enabling implies acceptance of the Microsoft EULA at https://aka.ms/odbc18eula). Setting this to false removes the mssql-release repository created by a previous enablement (the installed packages are left in place).
 
 **_Type:_** boolean<br />
 
