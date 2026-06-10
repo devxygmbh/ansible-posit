@@ -110,7 +110,7 @@ db_drivers_install_dir: /opt
 
 ### db_drivers_msodbcsql_artifactory_repo
 
-Artifactory repository name that proxies packages.microsoft.com (used when db_drivers_artifactory_enabled is true)
+Name of the RPM-type JFrog Artifactory repository that proxies packages.microsoft.com. When db_drivers_artifactory_enabled is true, only the .repo entry is configured (baseurl + gpgkey with embedded credentials, repo_gpgcheck enabled); dnf fetches all packages, metadata and the keys/microsoft.asc signing key from it.
 
 **_Type:_** string<br />
 

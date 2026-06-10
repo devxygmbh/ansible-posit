@@ -1,14 +1,42 @@
+# Artifactory is configured as an RPM-type JFrog repository that proxies
+# packages.microsoft.com. We only write the .repo entry and let dnf fetch
+# everything (repodata, packages, signing key) from it; nothing is downloaded
+# directly here. Credentials are embedded in the baseurl/gpgkey URLs because
+# dnf cannot otherwise authenticate the gpgkey fetch.
+#
+# Microsoft signs both the packages and the repo metadata (repomd.xml.asc) with
+# the key at keys/microsoft.asc, so that single key serves gpgcheck (packages)
+# and repo_gpgcheck (metadata). There is no JFrog-style repomd.xml.key here
+# because this is a remote/proxy repository, not a JFrog-signed local one.
+- name: Resolve msodbcsql RHEL repo root
+  ansible.builtin.set_fact:
+    _msodbcsql_rh_repo_root: >-
+      {{
+        (
+          (db_drivers_artifactory_base_url | urlsplit('scheme')) ~ '://'
+          ~ (db_drivers_artifactory_username | urlencode | regex_replace('/', '%2F')) ~ ':'
+          ~ (db_drivers_artifactory_password | urlencode | regex_replace('/', '%2F')) ~ '@'
+          ~ (db_drivers_artifactory_base_url | regex_replace('^[a-z][a-z0-9+.-]*://', ''))
+          ~ '/' ~ db_drivers_msodbcsql_artifactory_repo
+        )
+        if (db_drivers_artifactory_enabled | bool and db_drivers_artifactory_username)
+        else (
+          (db_drivers_artifactory_base_url ~ '/' ~ db_drivers_msodbcsql_artifactory_repo)
+          if db_drivers_artifactory_enabled | bool
+          else 'https://packages.microsoft.com'
+        )
+      }}
+
 - name: Configure mssql-release yum repository
   ansible.builtin.yum_repository:
     name: packages-microsoft-com-prod
     description: Microsoft Packages
-    baseurl: '{{ _msodbcsql_baseurl }}'
+    baseurl: '{{ _msodbcsql_rh_repo_root }}/{{ _msodbcsql_os_segment }}/prod'
     gpgcheck: true
-    gpgkey: '{{ _msodbcsql_gpgkey_url }}'
+    gpgkey: '{{ _msodbcsql_rh_repo_root }}/keys/microsoft.asc'
+    repo_gpgcheck: '{{ db_drivers_artifactory_enabled | bool }}'
     file: mssql-release
     mode: '0600'
-    username: '{{ db_drivers_artifactory_username if (db_drivers_artifactory_enabled | bool and db_drivers_artifactory_username) else omit }}'
-    password: '{{ db_drivers_artifactory_password if (db_drivers_artifactory_enabled | bool and db_drivers_artifactory_password) else omit }}'
 
 - name: Install Microsoft ODBC Driver 18 and tools
   ansible.builtin.dnf:
