@@ -18,6 +18,14 @@ matrix:
       WHEN: 'roles/db_drivers/**'
 
 steps:
+  # Unfiltered step so crow always publishes the ci/crow/pr/molecule status,
+  # even on PRs that change no role files (where the test step below is
+  # path-skipped). Without it the required check is never reported.
+  - name: 'noop'
+    image: reg.devxy.io/docker.io/library/docker:29-dind
+    commands:
+      - 'true'
+
   - name: 'Test ${SCENARIO}'
     image: reg.devxy.io/docker.io/library/docker:29-dind
     privileged: true
@@ -27,12 +35,10 @@ steps:
       DOCKER_HOST: tcp://docker:2375
       ANSIBLE_ROLES_PATH: ./roles
     commands:
-      - apk add -q --no-cache python3 python3-dev py3-pip gcc git curl build-base autoconf automake py3-cryptography linux-headers musl-dev libffi-dev openssl-dev openssh yaml-dev ca-certificates
-      - python3 --version
-      - python3 -m venv ~/venv/ansible-molecule
+      - apk add -q --no-cache uv git curl build-base autoconf automake linux-headers musl-dev libffi-dev openssl-dev openssh yaml-dev ca-certificates
+      - uv venv ~/venv/ansible-molecule
       - source ~/venv/ansible-molecule/bin/activate
-      # ansible-core<2.17 for compat with rhel8
-      - python3 -m pip install -q ansible-doctor "ansible-core<2.17" molecule-plugins[docker] cryptography
+      - uv pip install -q ansible-doctor ansible-core molecule-plugins[docker] cryptography
       - ansible --version
       - molecule --version
       - cd extensions

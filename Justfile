@@ -10,7 +10,7 @@ workbench_apply:
 r_test:
     cd ansible_collections/devxy/core/extensions && \
     source ~/venv/ansible-molecule/bin/activate && \
-    pip3 install molecule docker molecule-plugins[docker] 'ansible-core<2.17' && \
+    pip3 install molecule docker molecule-plugins[docker] ansible-core && \
     molecule converge
 
 r_check:
