@@ -16,7 +16,7 @@
     state: enabled
   when:
     - workbench_syslibs_manage_repos | default(true)
-    - ansible_distribution_major_version | int in [8, 9]
+    - ansible_facts['distribution_major_version'] | int in [8, 9]
     - ansible_facts['os_family'] == 'RedHat'
 
 - name: Install EPEL

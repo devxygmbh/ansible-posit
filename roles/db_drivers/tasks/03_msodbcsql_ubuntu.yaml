@@ -35,9 +35,9 @@
 - name: Configure mssql-release apt source
   ansible.builtin.apt_repository:
     repo: >-
-      deb [arch={{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}
+      deb [arch={{ 'amd64' if ansible_facts['architecture'] == 'x86_64' else 'arm64' }}
       signed-by=/etc/apt/keyrings/microsoft.gpg]
-      {{ _msodbcsql_baseurl }} {{ ansible_distribution_release }} main
+      {{ _msodbcsql_baseurl }} {{ ansible_facts['distribution_release'] }} main
     filename: mssql-release
     state: present
     update_cache: false

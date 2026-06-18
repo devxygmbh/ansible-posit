@@ -39,8 +39,8 @@
         binary_type: "{{ 'rpm' if ansible_facts['os_family'] == 'RedHat' else 'deb' }}"
         # Extract major.minor from version (e.g., "2025.01.0" -> "2025.01")
         version_major_minor: "{{ connect_general_version.split('.')[0] }}.{{ connect_general_version.split('.')[1] }}"
-        os_major: '{{ ansible_distribution_major_version }}'
-        arch: "{{ 'arm64' if ansible_architecture == 'aarch64' and ansible_facts['os_family'] == 'Debian' else 'aarch64' if ansible_architecture == 'aarch64' and ansible_facts['os_family'] == 'RedHat' else 'x86_64' if ansible_architecture == 'x86_64' and ansible_facts['os_family'] == 'RedHat' else 'amd64' }}"
+        os_major: "{{ ansible_facts['distribution_major_version'] }}"
+        arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' and ansible_facts['os_family'] == 'Debian' else 'aarch64' if ansible_facts['architecture'] == 'aarch64' and ansible_facts['os_family'] == 'RedHat' else 'x86_64' if ansible_facts['architecture'] == 'x86_64' and ansible_facts['os_family'] == 'RedHat' else 'amd64' }}"
 
     - name: Download Posit Connect (RedHat)
       when: ansible_facts['os_family'] == 'RedHat'
@@ -51,7 +51,7 @@
         timeout: 120
 
     - name: Download Posit Connect (Ubuntu)
-      when: ansible_distribution == 'Ubuntu'
+      when: ansible_facts['distribution'] == 'Ubuntu'
       ansible.builtin.get_url:
         url: 'https://cdn.posit.co/connect/{{ version_major_minor }}/rstudio-connect_{{ connect_general_version }}~ubuntu{{ os_major }}_{{ arch }}.deb'
         dest: '/tmp/connect-{{ connect_general_version }}.{{ binary_type }}'
@@ -66,7 +66,7 @@
         state: present
 
     - name: Install Posit Connect (Ubuntu)
-      when: ansible_distribution == 'Ubuntu'
+      when: ansible_facts['distribution'] == 'Ubuntu'
       ansible.builtin.apt:
         deb: '/tmp/connect-{{ connect_general_version }}.{{ binary_type }}'
 

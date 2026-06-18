@@ -18,9 +18,9 @@
     - name: Define architecture variables
       ansible.builtin.set_fact:
         wb_version: '2025.09.0-387.pro2'
-        wb_rhel_arch: "{{ 'aarch64' if ansible_architecture == 'aarch64' else 'x86_64' }}"
-        wb_rhel_arch_download: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x86_64' }}"
-        wb_deb_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }}"
+        wb_rhel_arch: "{{ 'aarch64' if ansible_facts['architecture'] == 'aarch64' else 'x86_64' }}"
+        wb_rhel_arch_download: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' else 'x86_64' }}"
+        wb_deb_arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' else 'amd64' }}"
 
     - name: Create mock Artifactory directory structure
       ansible.builtin.file:

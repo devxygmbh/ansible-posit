@@ -39,8 +39,8 @@
         binary_type: "{{ 'rpm' if ansible_facts['os_family'] == 'RedHat' else 'deb' }}"
         version_major_minor: "{{ connect_general_version.split('.')[0] }}.{{ connect_general_version.split('.')[1] }}"
         os_identifier: "{{ 'el' if ansible_facts['os_family'] == 'RedHat' else 'ubuntu' }}"
-        os_major: '{{ ansible_distribution_major_version }}'
-        arch: "{{ 'arm64' if ansible_architecture == 'aarch64' and ansible_facts['os_family'] == 'Debian' else 'aarch64' if ansible_architecture == 'aarch64' and ansible_facts['os_family'] == 'RedHat' else 'x86_64' if ansible_architecture == 'x86_64' and ansible_facts['os_family'] == 'RedHat' else 'amd64' }}"
+        os_major: "{{ ansible_facts['distribution_major_version'] }}"
+        arch: "{{ 'arm64' if ansible_facts['architecture'] == 'aarch64' and ansible_facts['os_family'] == 'Debian' else 'aarch64' if ansible_facts['architecture'] == 'aarch64' and ansible_facts['os_family'] == 'RedHat' else 'x86_64' if ansible_facts['architecture'] == 'x86_64' and ansible_facts['os_family'] == 'RedHat' else 'amd64' }}"
 
     - name: Construct Artifactory URL for Posit Connect (RedHat)
       when: ansible_facts['os_family'] == 'RedHat'
@@ -48,7 +48,7 @@
         connect_download_url: '{{ connect_artifactory_base_url }}/{{ connect_artifactory_posit_repo }}/{{ version_major_minor }}/rstudio-connect-{{ connect_general_version }}.el{{ os_major }}.{{ arch }}.rpm'
 
     - name: Construct Artifactory URL for Posit Connect (Ubuntu)
-      when: ansible_distribution == 'Ubuntu'
+      when: ansible_facts['distribution'] == 'Ubuntu'
       ansible.builtin.set_fact:
         connect_download_url: '{{ connect_artifactory_base_url }}/{{ connect_artifactory_posit_repo }}/{{ version_major_minor }}/rstudio-connect_{{ connect_general_version }}~ubuntu{{ os_major }}_{{ arch }}.deb'
 
@@ -70,7 +70,7 @@
         state: present
 
     - name: Install Posit Connect (Ubuntu)
-      when: ansible_distribution == 'Ubuntu'
+      when: ansible_facts['distribution'] == 'Ubuntu'
       ansible.builtin.apt:
         deb: '/tmp/connect-{{ connect_general_version }}.{{ binary_type }}'
 
