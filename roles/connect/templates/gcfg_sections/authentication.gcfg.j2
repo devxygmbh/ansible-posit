@@ -25,8 +25,8 @@ ClientSecret = {{ connect_auth_oauth2_client_secret }}
 {% if connect_auth_oauth2_openid_issuer %}
 OpenIDConnectIssuer = {{ connect_auth_oauth2_openid_issuer }}
 {% endif %}
-{% if connect_auth_oauth2_scopes %}
-Scopes = {{ connect_auth_oauth2_scopes }}
+{% if connect_auth_oauth2_custom_scopes %}
+CustomScope = {{ connect_auth_oauth2_custom_scopes }}
 {% endif %}
 UniqueIdClaim = {{ connect_auth_oauth2_unique_id_claim }}
 EmailClaim = {{ connect_auth_oauth2_email_claim }}

@@ -23,7 +23,7 @@
 | Download miniconda                      | <https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh> | Optional dependency: `devxy.data_science_core.python` |
 | Download Python                         | <https://repo.anaconda.com>                                             | Optional dependency: `devxy.data_science_core.python` |
 
-<generator object sync_do_map at 0x10be43340>
+<generator object sync_do_map at 0x109c05640>
 
 ## Table of content
 

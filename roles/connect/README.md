@@ -6,6 +6,7 @@ Installs Posit Connect <https://posit.co/>
 
 - [Requirements](#requirements)
 - [Default Variables](#default-variables)
+  - [connect_applications_metrics_collection_enabled](#connect_applications_metrics_collection_enabled)
   - [connect_applications_run_as_current_user](#connect_applications_run_as_current_user)
   - [connect_applications_supervisor_accounts](#connect_applications_supervisor_accounts)
   - [connect_applications_supervisor_path](#connect_applications_supervisor_path)
@@ -33,6 +34,7 @@ Installs Posit Connect <https://posit.co/>
   - [connect_auth_name](#connect_auth_name)
   - [connect_auth_oauth2_client_id](#connect_auth_oauth2_client_id)
   - [connect_auth_oauth2_client_secret](#connect_auth_oauth2_client_secret)
+  - [connect_auth_oauth2_custom_scopes](#connect_auth_oauth2_custom_scopes)
   - [connect_auth_oauth2_email_claim](#connect_auth_oauth2_email_claim)
   - [connect_auth_oauth2_first_name_claim](#connect_auth_oauth2_first_name_claim)
   - [connect_auth_oauth2_groups_auto_provision](#connect_auth_oauth2_groups_auto_provision)
@@ -41,7 +43,6 @@ Installs Posit Connect <https://posit.co/>
   - [connect_auth_oauth2_openid_issuer](#connect_auth_oauth2_openid_issuer)
   - [connect_auth_oauth2_register_on_first_login](#connect_auth_oauth2_register_on_first_login)
   - [connect_auth_oauth2_registration_domain_allow_list](#connect_auth_oauth2_registration_domain_allow_list)
-  - [connect_auth_oauth2_scopes](#connect_auth_oauth2_scopes)
   - [connect_auth_oauth2_unique_id_claim](#connect_auth_oauth2_unique_id_claim)
   - [connect_auth_oauth2_username_claim](#connect_auth_oauth2_username_claim)
   - [connect_auth_pam_forward_password](#connect_auth_pam_forward_password)
@@ -178,7 +179,6 @@ Installs Posit Connect <https://posit.co/>
   - [connect_server_gallery_enabled](#connect_server_gallery_enabled)
   - [connect_server_hide_email_addresses](#connect_server_hide_email_addresses)
   - [connect_server_hide_version](#connect_server_hide_version)
-  - [connect_server_license_type](#connect_server_license_type)
   - [connect_server_logged_in_warning](#connect_server_logged_in_warning)
   - [connect_server_mail_all](#connect_server_mail_all)
   - [connect_server_product_check](#connect_server_product_check)
@@ -209,6 +209,12 @@ Installs Posit Connect <https://posit.co/>
 - Minimum Ansible version: `2.9`
 
 ## Default Variables
+
+### connect_applications_metrics_collection_enabled
+
+Enables collection of metrics for applications
+
+**_Type:_** boolean<br />
 
 ### connect_applications_run_as_current_user
 
@@ -372,6 +378,12 @@ OAuth2 client secret
 
 **_Type:_** string<br />
 
+### connect_auth_oauth2_custom_scopes
+
+OAuth2 custom scopes (space-separated)
+
+**_Type:_** string<br />
+
 ### connect_auth_oauth2_email_claim
 
 Claim to use for email address
@@ -392,7 +404,7 @@ Automatically create Connect groups encountered in the groups claim on user logi
 
 ### connect_auth_oauth2_groups_claim
 
-Claim that contains the user's group memberships (e.g. 'groups'). Empty string disables group import. Requires the corresponding scope to be requested via connect_auth_oauth2_scopes.
+Claim that contains the user's group memberships (e.g. 'groups'). Empty string disables group import. Requires the corresponding scope to be requested via connect_auth_oauth2_custom_scopes.
 
 **_Type:_** string<br />
 
@@ -417,12 +429,6 @@ Auto-register users on first login
 ### connect_auth_oauth2_registration_domain_allow_list
 
 Comma-separated list of email domains permitted to register (e.g. 'example.com,example.org'). Empty string allows all domains.
-
-**_Type:_** string<br />
-
-### connect_auth_oauth2_scopes
-
-OAuth2 scopes (space-separated)
 
 **_Type:_** string<br />
 
@@ -1267,12 +1273,6 @@ Hide email addresses from non-admins
 Hide the Connect version in the UI
 
 **_Type:_** boolean<br />
-
-### connect_server_license_type
-
-License type (local or remote)
-
-**_Type:_** string<br />
 
 ### connect_server_logged_in_warning
 

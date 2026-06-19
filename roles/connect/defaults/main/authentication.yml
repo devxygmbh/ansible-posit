@@ -41,9 +41,9 @@ connect_auth_oauth2_client_secret: ''
 # @var connect_auth_oauth2_openid_issuer:type: string
 # @var connect_auth_oauth2_openid_issuer:description: OpenID Connect issuer URL
 connect_auth_oauth2_openid_issuer: ''
-# @var connect_auth_oauth2_scopes:type: string
-# @var connect_auth_oauth2_scopes:description: OAuth2 scopes (space-separated)
-connect_auth_oauth2_scopes: 'openid profile email'
+# @var connect_auth_oauth2_custom_scopes:type: string
+# @var connect_auth_oauth2_custom_scopes:description: OAuth2 custom scopes (space-separated)
+connect_auth_oauth2_custom_scopes: ''
 # @var connect_auth_oauth2_unique_id_claim:type: string
 # @var connect_auth_oauth2_unique_id_claim:description: Claim to use as unique user identifier
 connect_auth_oauth2_unique_id_claim: sub
@@ -60,7 +60,7 @@ connect_auth_oauth2_first_name_claim: given_name
 # @var connect_auth_oauth2_last_name_claim:description: Claim to use for last name
 connect_auth_oauth2_last_name_claim: family_name
 # @var connect_auth_oauth2_groups_claim:type: string
-# @var connect_auth_oauth2_groups_claim:description: Claim that contains the user's group memberships (e.g. 'groups'). Empty string disables group import. Requires the corresponding scope to be requested via connect_auth_oauth2_scopes.
+# @var connect_auth_oauth2_groups_claim:description: Claim that contains the user's group memberships (e.g. 'groups'). Empty string disables group import. Requires the corresponding scope to be requested via connect_auth_oauth2_custom_scopes.
 connect_auth_oauth2_groups_claim: ''
 # @var connect_auth_oauth2_groups_auto_provision:type: boolean
 # @var connect_auth_oauth2_groups_auto_provision:description: Automatically create Connect groups encountered in the groups claim on user login
