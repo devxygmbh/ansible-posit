@@ -14,7 +14,7 @@
         src: '/tmp/JetBrainsMono-{{ workbench_fonts_jetbrains_mono_version }}.zip'
         dest: '/tmp/'
         remote_src: true
-        creates: '/tmp/fonts'
+        creates: '/tmp/fonts/ttf/JetBrainsMono-Light.ttf'
 
     - name: Create directories for JetBrains Mono font
       ansible.builtin.file:
