@@ -71,6 +71,9 @@ connect_auth_oauth2_registration_domain_allow_list: ''
 # @var connect_auth_oauth2_register_on_first_login:type: boolean
 # @var connect_auth_oauth2_register_on_first_login:description: Auto-register users on first login
 connect_auth_oauth2_register_on_first_login: true
+# @var connect_auth_oauth2_use_pkce:type: boolean
+# @var connect_auth_oauth2_use_pkce:description: Use Proof Key for Code Exchange (PKCE) for the OAuth2/OIDC authorization code flow. Enabled by default; disable only if the identity provider does not support PKCE.
+connect_auth_oauth2_use_pkce: true
 
 ## SAML Configuration
 # @var connect_auth_saml_idp_metadata_url:type: string

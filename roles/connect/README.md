@@ -44,6 +44,7 @@ Installs Posit Connect <https://posit.co/>
   - [connect_auth_oauth2_register_on_first_login](#connect_auth_oauth2_register_on_first_login)
   - [connect_auth_oauth2_registration_domain_allow_list](#connect_auth_oauth2_registration_domain_allow_list)
   - [connect_auth_oauth2_unique_id_claim](#connect_auth_oauth2_unique_id_claim)
+  - [connect_auth_oauth2_use_pkce](#connect_auth_oauth2_use_pkce)
   - [connect_auth_oauth2_username_claim](#connect_auth_oauth2_username_claim)
   - [connect_auth_pam_forward_password](#connect_auth_pam_forward_password)
   - [connect_auth_pam_required_group](#connect_auth_pam_required_group)
@@ -437,6 +438,12 @@ Comma-separated list of email domains permitted to register (e.g. 'example.com,e
 Claim to use as unique user identifier
 
 **_Type:_** string<br />
+
+### connect_auth_oauth2_use_pkce
+
+Use Proof Key for Code Exchange (PKCE) for the OAuth2/OIDC authorization code flow. Enabled by default; disable only if the identity provider does not support PKCE.
+
+**_Type:_** boolean<br />
 
 ### connect_auth_oauth2_username_claim
 

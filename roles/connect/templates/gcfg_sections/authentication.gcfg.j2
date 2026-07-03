@@ -47,6 +47,7 @@ GroupsAutoProvision = {{ connect_auth_oauth2_groups_auto_provision | lower }}
 RegistrationDomainAllowList = {{ connect_auth_oauth2_registration_domain_allow_list }}
 {% endif %}
 RegisterOnFirstLogin = {{ connect_auth_oauth2_register_on_first_login | lower }}
+UsePKCE = {{ connect_auth_oauth2_use_pkce | lower }}
 {% endif %}
 
 {% if connect_auth_provider == 'saml' %}
