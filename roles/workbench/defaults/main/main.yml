@@ -191,6 +191,9 @@ workbench_server_auth_cookies_force_secure: 0
 # @var workbench_server_auth_openid:type: integer
 # @var workbench_server_auth_openid:description: Auth OpenID
 workbench_server_auth_openid: 0
+# @var workbench_server_auth_openid_pkce_enabled:type: integer
+# @var workbench_server_auth_openid_pkce_enabled:description: Auth OpenID PKCE enabled
+workbench_server_auth_openid_pkce_enabled: 0
 # @var workbench_server_auth_openid_username_claim:type: string
 # @var workbench_server_auth_openid_username_claim:description: Auth OpenID username claim
 workbench_server_auth_openid_username_claim: preferred_username
