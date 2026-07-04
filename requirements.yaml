@@ -4,7 +4,7 @@ collections:
   - name: community.crypto
     version: 3.2.2
   - name: community.general
-    version: 13.0.1
+    version: 13.1.0
 roles:
   - name: nginxinc.nginx
     version: 0.25.0
