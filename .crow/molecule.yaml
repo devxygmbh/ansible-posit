@@ -17,6 +17,9 @@ matrix:
     - SCENARIO: db_drivers_msodbcsql_default
       WHEN: 'roles/db_drivers/**'
 
+labels:
+  backend: docker
+
 steps:
   # Unfiltered step so crow always publishes the ci/crow/pr/molecule status,
   # even on PRs that change no role files (where the test step below is

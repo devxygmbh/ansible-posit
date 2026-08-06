@@ -10,6 +10,9 @@ clone:
 depends_on:
   - lint
 
+labels:
+  backend: docker
+
 steps:
   release-collection:
     environment:
