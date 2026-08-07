@@ -1,3 +1,49 @@
+- name: '[Config] Resolve effective local launcher profiles'
+  ansible.builtin.set_fact:
+    workbench_launcher_local_profiles_effective: >-
+      {{
+        workbench_launcher_local_profiles
+        if workbench_launcher_local_profiles | length > 0
+        else [
+          {
+            'section': '*',
+            'resource_profiles': workbench_launcher_local_resources | map(attribute='id') | list,
+            'allow_custom_resources': workbench_launcher_local_allow_custom_resources,
+          }
+        ]
+      }}
+
+- name: '[Config] Validate local launcher resource profile ids are unique'
+  vars:
+    workbench_launcher_local_resource_ids: "{{ workbench_launcher_local_resources | map(attribute='id') | list }}"
+  ansible.builtin.assert:
+    that:
+      - workbench_launcher_local_resource_ids | length == workbench_launcher_local_resource_ids | unique | length
+    fail_msg: >-
+      workbench_launcher_local_resources contains duplicate ids:
+      {{ workbench_launcher_local_resource_ids | join(', ') }}
+    success_msg: 'Local launcher resource profile ids are unique'
+
+- name: '[Config] Validate local launcher profiles reference defined resource profiles'
+  vars:
+    workbench_launcher_local_resource_ids: "{{ workbench_launcher_local_resources | map(attribute='id') | list }}"
+    workbench_launcher_local_referenced_profiles: >-
+      {{
+        workbench_launcher_local_profiles_effective
+        | selectattr('resource_profiles', 'defined')
+        | map(attribute='resource_profiles')
+        | flatten | unique | list
+      }}
+  ansible.builtin.assert:
+    that:
+      - workbench_launcher_local_referenced_profiles | difference(workbench_launcher_local_resource_ids) | length == 0
+    fail_msg: >-
+      workbench_launcher_local_profiles references resource profiles that are not defined in
+      workbench_launcher_local_resources:
+      {{ workbench_launcher_local_referenced_profiles | difference(workbench_launcher_local_resource_ids) | join(', ') }}.
+      Defined ids: {{ workbench_launcher_local_resource_ids | join(', ') }}
+    success_msg: 'Local launcher profiles reference only defined resource profile ids'
+
 - name: '[Config] Create /etc/R'
   ansible.builtin.file:
     path: /etc/R
@@ -125,11 +171,11 @@
   notify:
     - Restart rstudio-launcher service
 
-- name: '[Config] Apply local launcher resource profiles'
-  when: workbench_launcher_local_resources | length > 0
+- name: '[Config] Apply local launcher user/group profiles'
+  when: workbench_launcher_local_resources | length > 0 or workbench_launcher_local_profiles | length > 0
   ansible.builtin.template:
-    src: launcher.local.resources.conf.j2
-    dest: /etc/rstudio/launcher.local.resources.conf
+    src: launcher.local.profiles.conf.j2
+    dest: '{{ workbench_launcher_local_profile_config }}'
     owner: root
     group: root
     mode: '0644'

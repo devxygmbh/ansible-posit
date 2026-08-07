@@ -1,0 +1,32 @@
+### MANAGED BY ANSIBLE ###
+# This file is managed by Ansible. Any changes made directly to this file will be lost.
+# Please make any changes to the appropriate Ansible variables.
+# https://docs.posit.co/ide/server-pro/admin/job_launcher/local_plugin.html
+#
+# Sections: [*] = global defaults, [@groupname] = group, [username] = user
+# Profiles are processed top to bottom; later matches override earlier ones.
+#
+# Every name in resource-profiles is defined in launcher.local.resources.conf.
+
+{% for profile in workbench_launcher_local_profiles_effective %}
+[{{ profile.section }}]
+{% if profile.default_cpus is defined %}
+default-cpus={{ profile.default_cpus }}
+{% endif %}
+{% if profile.max_cpus is defined %}
+max-cpus={{ profile.max_cpus }}
+{% endif %}
+{% if profile.default_mem_mb is defined %}
+default-mem-mb={{ profile.default_mem_mb }}
+{% endif %}
+{% if profile.max_mem_mb is defined %}
+max-mem-mb={{ profile.max_mem_mb }}
+{% endif %}
+{% if profile.resource_profiles is defined %}
+resource-profiles={{ profile.resource_profiles | join(',') }}
+{% endif %}
+{% if profile.allow_custom_resources is defined %}
+allow-custom-resources={{ profile.allow_custom_resources }}
+{% endif %}
+
+{% endfor %}

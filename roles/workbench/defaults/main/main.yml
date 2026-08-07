@@ -131,6 +131,49 @@ workbench_launcher_local_resources:
     cpus: 2
     mem_mb: 4096
 
+## Local User/Group Profiles (launcher.local.profiles.conf)
+# https://docs.posit.co/ide/server-pro/admin/job_launcher/local_plugin.html
+
+# @var workbench_launcher_local_profile_config:type: string
+# @var workbench_launcher_local_profile_config:description: Path to the local plugin user/group profiles configuration file
+workbench_launcher_local_profile_config: /etc/rstudio/launcher.local.profiles.conf
+
+# @var workbench_launcher_local_allow_custom_resources:type: integer
+# @var workbench_launcher_local_allow_custom_resources:description: >
+#   Whether the auto-generated [*] section allows jobs to use the 'custom' resource profile,
+#   letting users request arbitrary CPU/memory instead of a named profile.
+#   Only applies when workbench_launcher_local_profiles is empty.
+workbench_launcher_local_allow_custom_resources: 1
+
+# @var workbench_launcher_local_profiles:type: list
+# @var workbench_launcher_local_profiles:description: >
+#   List of local launcher user/group profiles. Each entry should have a 'section' key
+#   ([*] for global, [@groupname] for groups, [username] for users) and any of the
+#   available profile settings. Profiles are processed top to bottom, later matches override earlier ones.
+#   Leave empty to auto-generate a single [*] section referencing every id in
+#   workbench_launcher_local_resources, which keeps the two files in sync automatically.
+#   When set explicitly, every name listed in resource_profiles must exist as an id in
+#   workbench_launcher_local_resources or the play fails.
+# @var workbench_launcher_local_profiles:example: >
+#   workbench_launcher_local_profiles:
+#     - section: "*"
+#       resource_profiles: ["default"]
+#       allow_custom_resources: 0
+#     - section: "@power-users"
+#       resource_profiles: ["default", "large"]
+#       max_cpus: 8
+#       max_mem_mb: 32768
+#     - section: "jsmith"
+#       max_cpus: 3
+workbench_launcher_local_profiles: []
+# Available profile settings (use underscores in variable names, rendered as hyphens):
+#   default_cpus              - Default CPUs for jobs (0 = infinite)
+#   max_cpus                  - Maximum CPUs allowed (0 = infinite)
+#   default_mem_mb            - Default memory in MB (0 = infinite)
+#   max_mem_mb                - Maximum memory in MB allowed (0 = infinite)
+#   resource_profiles         - List of resource profile ids available to this section
+#   allow_custom_resources    - Allow requesting custom CPU/memory (0 or 1)
+
 # @var workbench_server_www_thread_pool_size:type: integer
 # @var workbench_server_www_thread_pool_size:description: WWW thread pool size
 workbench_server_www_thread_pool_size: 2

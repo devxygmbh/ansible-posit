@@ -12,3 +12,55 @@
         recurse: true
         use_regex: false
       register: r_installed
+
+    - name: Read launcher.local.resources.conf
+      become: true
+      ansible.builtin.slurp:
+        src: /etc/rstudio/launcher.local.resources.conf
+      register: launcher_local_resources_conf
+
+    - name: Read launcher.local.profiles.conf
+      become: true
+      ansible.builtin.slurp:
+        src: /etc/rstudio/launcher.local.profiles.conf
+      register: launcher_local_profiles_conf
+
+    - name: Read launcher.local.conf
+      become: true
+      ansible.builtin.slurp:
+        src: /etc/rstudio/launcher.local.conf
+      register: launcher_local_conf
+
+    - name: Assert launcher.local.conf points at the profiles file
+      ansible.builtin.assert:
+        that:
+          - "'profile-config=/etc/rstudio/launcher.local.profiles.conf' in (launcher_local_conf.content | b64decode)"
+        fail_msg: 'launcher.local.conf is missing the profile-config option'
+
+    # Every name in a resource-profiles= line must exist as a [section] header in
+    # launcher.local.resources.conf, otherwise the profiles file offers profiles
+    # the local plugin cannot resolve.
+    - name: Assert profiles.conf only references defined resource profiles
+      vars:
+        defined_ids: >-
+          {{
+            launcher_local_resources_conf.content | b64decode
+            | regex_findall('(?m)^\[([^\]]+)\]')
+          }}
+        referenced_ids: >-
+          {{
+            (
+              launcher_local_profiles_conf.content | b64decode
+              | regex_findall('(?m)^resource-profiles=(.*)$')
+              | join(',')
+            ).split(',')
+            | map('trim') | reject('equalto', '') | unique | list
+          }}
+      ansible.builtin.assert:
+        that:
+          - referenced_ids | length > 0
+          - referenced_ids | difference(defined_ids) | length == 0
+        fail_msg: >-
+          launcher.local.profiles.conf references {{ referenced_ids | join(', ') }}
+          but launcher.local.resources.conf defines {{ defined_ids | join(', ') }}
+        success_msg: 'launcher.local.profiles.conf references only defined resource profiles'
