@@ -9,7 +9,7 @@ labels:
 
 steps:
   - name: editorconfig
-    image: cr.codefloe.com/docker.io/mstruebing/editorconfig-checker:v3.10.0
+    image: cr.codefloe.com/docker.io/mstruebing/editorconfig-checker:v3.11.1
     depends_on: []
 
   - name: prettier
