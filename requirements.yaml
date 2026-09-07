@@ -2,7 +2,7 @@ collections:
   - name: devxy.data_science_core
     version: 1.5.3
   - name: community.crypto
-    version: 3.3.0
+    version: 3.4.0
   - name: community.general
     version: 13.3.0
 roles:
