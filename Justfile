@@ -1,3 +1,7 @@
+# Suppress the Azure SDK's invalid backslash-space escape warning on Python 3.14.
+# Apply before Ansible starts so controller-side lookups inherit the filter.
+export PYTHONWARNINGS := env_var_or_default('PYTHONWARNINGS', '') + ',ignore:"\ " is an invalid escape sequence:SyntaxWarning'
+
 lint:
   ansible-lint
 
