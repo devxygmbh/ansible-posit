@@ -13,7 +13,7 @@ steps:
     depends_on: []
 
   - name: prettier
-    image: cr.codefloe.com/docker.io/woodpeckerci/plugin-prettier:1.4.1
+    image: cr.codefloe.com/docker.io/woodpeckerci/plugin-prettier:1.4.2
     pull: true
     depends_on: []
     settings:
