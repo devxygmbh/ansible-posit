@@ -44,6 +44,9 @@ ssl-certificate-key={{ workbench_server_www_ssl_certificate_key }}
 {% if workbench_server_www_address is defined %}
 www-address={{ workbench_server_www_address }}
 {% endif %}
+{% if workbench_server_www_root_path is defined and workbench_server_www_root_path | length > 0 %}
+www-root-path={{ workbench_server_www_root_path }}
+{% endif %}
 session-ssl-enabled={{ workbench_server_www_session_ssl_enabled }}
 
 ### rsession

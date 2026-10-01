@@ -14,19 +14,16 @@
       register: r_installed
 
     - name: Read launcher.local.resources.conf
-      become: true
       ansible.builtin.slurp:
         src: /etc/rstudio/launcher.local.resources.conf
       register: launcher_local_resources_conf
 
     - name: Read launcher.local.profiles.conf
-      become: true
       ansible.builtin.slurp:
         src: /etc/rstudio/launcher.local.profiles.conf
       register: launcher_local_profiles_conf
 
     - name: Read launcher.local.conf
-      become: true
       ansible.builtin.slurp:
         src: /etc/rstudio/launcher.local.conf
       register: launcher_local_conf
