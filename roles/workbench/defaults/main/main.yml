@@ -1,7 +1,7 @@
 ## General
 # @var workbench_general_version:type: string
 # @var workbench_general_version:description: Workbench version
-workbench_general_version: '2025.09.0-387.pro2'
+workbench_general_version: '2026.09.0-174.pro3'
 # @var workbench_general_local_test_user_create:type: boolean
 # @var workbench_general_local_test_user_create:description: Whether to create a local (test) user
 workbench_general_local_test_user_create: false
@@ -149,7 +149,8 @@ workbench_launcher_local_allow_custom_resources: 1
 # @var workbench_launcher_local_profiles:description: >
 #   List of local launcher user/group profiles. Each entry should have a 'section' key
 #   ([*] for global, [@groupname] for groups, [username] for users) and any of the
-#   available profile settings. Profiles are processed top to bottom, later matches override earlier ones.
+#   available profile settings. More specific sections override less specific ones
+#   ([username] > [@group] > [*]); among sections at the same level, later ones win.
 #   Leave empty to auto-generate a single [*] section referencing every id in
 #   workbench_launcher_local_resources, which keeps the two files in sync automatically.
 #   When set explicitly, every name listed in resource_profiles must exist as an id in
@@ -201,6 +202,9 @@ workbench_server_www_root_path: ''
 # @var workbench_server_www_session_ssl_enabled:type: integer
 # @var workbench_server_www_session_ssl_enabled:description: WWW session SSL enabled
 workbench_server_www_session_ssl_enabled: 1
+# @var workbench_server_www_proxy_localhost_verify_port_owner:type: integer
+# @var workbench_server_www_proxy_localhost_verify_port_owner:description: Only proxy localhost ports (/p/) owned by the requesting user (Workbench 2026.08.0+). Disabling it removes the only boundary preventing one user from reaching another user's localhost ports.
+workbench_server_www_proxy_localhost_verify_port_owner: 1
 
 # @var workbench_server_rsession_no_profile:type: integer
 # @var workbench_server_rsession_no_profile:description: RSession no profile
@@ -238,8 +242,8 @@ workbench_server_auth_cookies_force_secure: 0
 # @var workbench_server_auth_openid:description: Auth OpenID
 workbench_server_auth_openid: 0
 # @var workbench_server_auth_openid_pkce_enabled:type: integer
-# @var workbench_server_auth_openid_pkce_enabled:description: Auth OpenID PKCE enabled
-workbench_server_auth_openid_pkce_enabled: 0
+# @var workbench_server_auth_openid_pkce_enabled:description: Enable PKCE for OpenID Connect logins (upstream default since Workbench 2026.05.0). Disable only if the IdP does not support PKCE.
+workbench_server_auth_openid_pkce_enabled: 1
 # @var workbench_server_auth_openid_username_claim:type: string
 # @var workbench_server_auth_openid_username_claim:description: Auth OpenID username claim
 workbench_server_auth_openid_username_claim: preferred_username
@@ -293,10 +297,39 @@ workbench_metrics_enabled: 0
 # @var workbench_metrics_port:type: integer
 # @var workbench_metrics_port:description: Metrics port
 workbench_metrics_port: 8989
+# @var workbench_metrics_address:type: string
+# @var workbench_metrics_address:description: Address for the Prometheus metrics endpoint. Empty uses www-address.
+workbench_metrics_address: ''
+
+## OpenTelemetry (Workbench 2026.05.0+, requires the Monitoring license feature)
+# https://docs.posit.co/ide/server-pro/admin/auditing_and_monitoring/opentelemetry.html
+
+# @var workbench_otel_enabled:type: integer
+# @var workbench_otel_enabled:description: Master switch for OpenTelemetry export. The otel-* settings are only rendered when this is 1.
+workbench_otel_enabled: 0
+# @var workbench_otel_endpoint:type: string
+# @var workbench_otel_endpoint:description: Base OTLP/HTTP endpoint (e.g. http://collector:4318); /v1/logs and /v1/traces are appended
+workbench_otel_endpoint: ''
+# @var workbench_otel_logs_enabled:type: integer
+# @var workbench_otel_logs_enabled:description: Export log events via OTLP
+workbench_otel_logs_enabled: 0
+# @var workbench_otel_logs_headers:type: string
+# @var workbench_otel_logs_headers:description: Comma-separated key=value headers for OTLP export requests (also used for traces unless workbench_otel_traces_headers is set)
+workbench_otel_logs_headers: ''
+# @var workbench_otel_traces_enabled:type: integer
+# @var workbench_otel_traces_enabled:description: Export session-launch traces via OTLP
+workbench_otel_traces_enabled: 0
+# @var workbench_otel_traces_headers:type: string
+# @var workbench_otel_traces_headers:description: Comma-separated key=value headers for trace export; only needed when traces use different auth than logs
+workbench_otel_traces_headers: ''
 
 # @var workbench_server_databricks_enabled:type: string
 # @var workbench_server_databricks_enabled:description: Server Databricks enabled
 workbench_server_databricks_enabled: auto
+
+# @var workbench_server_posit_connect_url:type: string
+# @var workbench_server_posit_connect_url:description: URL of the Posit Connect server associated with this Workbench (Workbench 2026.09.0+). Empty omits the setting.
+workbench_server_posit_connect_url: ''
 
 # @var workbench_server_user_provisioning_enabled:type: integer
 # @var workbench_server_user_provisioning_enabled:description: Server user provisioning enabled
@@ -341,6 +374,9 @@ workbench_session_allow_r_repos_edit: 0
 # @var workbench_session_copilot_enabled:type: integer
 # @var workbench_session_copilot_enabled:description: Copilot enabled
 workbench_session_copilot_enabled: 1
+# @var workbench_session_allow_posit_assistant:type: integer
+# @var workbench_session_allow_posit_assistant:description: Allow Posit Assistant features in RStudio Pro sessions (Workbench 2026.04.0+)
+workbench_session_allow_posit_assistant: 0
 # @var workbench_session_session_timeout_kill_hours:type: integer
 # @var workbench_session_session_timeout_kill_hours:description: Session timeout kill hours
 workbench_session_session_timeout_kill_hours: 24

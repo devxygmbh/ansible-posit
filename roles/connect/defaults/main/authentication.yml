@@ -16,6 +16,9 @@ connect_auth_inactivity: '8h'
 # @var connect_auth_api_key_auth:type: boolean
 # @var connect_auth_api_key_auth:description: Enable API key authentication
 connect_auth_api_key_auth: true
+# @var connect_auth_api_key_max_lifetime:type: string
+# @var connect_auth_api_key_max_lifetime:description: Maximum lifetime for new API keys and service tokens (e.g. '90d'; minimum '24h'). '0' allows keys that never expire. (Connect 2026.06.0+)
+connect_auth_api_key_max_lifetime: '0'
 
 ## PAM Configuration
 # @var connect_auth_pam_service:type: string
@@ -53,6 +56,9 @@ connect_auth_oauth2_email_claim: email
 # @var connect_auth_oauth2_username_claim:type: string
 # @var connect_auth_oauth2_username_claim:description: Claim to use for username
 connect_auth_oauth2_username_claim: preferred_username
+# @var connect_auth_oauth2_username_claim_rewrite:type: string
+# @var connect_auth_oauth2_username_claim_rewrite:description: Rewrite rule for the username claim, written as a RE2 regex, a single space, then the replacement (e.g. '^(.*)@example\.com$ $1'). Wrap the whole value in double quotes if it contains a backslash, ';' or '#'. Empty disables the rewrite. (Connect 2026.07.0+)
+connect_auth_oauth2_username_claim_rewrite: ''
 # @var connect_auth_oauth2_first_name_claim:type: string
 # @var connect_auth_oauth2_first_name_claim:description: Claim to use for first name
 connect_auth_oauth2_first_name_claim: given_name
@@ -65,9 +71,12 @@ connect_auth_oauth2_groups_claim: ''
 # @var connect_auth_oauth2_groups_auto_provision:type: boolean
 # @var connect_auth_oauth2_groups_auto_provision:description: Automatically create Connect groups encountered in the groups claim on user login
 connect_auth_oauth2_groups_auto_provision: true
-# @var connect_auth_oauth2_registration_domain_allow_list:type: string
-# @var connect_auth_oauth2_registration_domain_allow_list:description: Comma-separated list of email domains permitted to register (e.g. 'example.com,example.org'). Empty string allows all domains.
-connect_auth_oauth2_registration_domain_allow_list: ''
+# @var connect_auth_oauth2_allowed_domains:type: list
+# @var connect_auth_oauth2_allowed_domains:description: Email domains permitted to authenticate (e.g. ['example.com', 'example.org']), rendered as one AllowedDomain line each. Empty list allows all domains. Users matching either this list or connect_auth_oauth2_allowed_emails are permitted.
+connect_auth_oauth2_allowed_domains: []
+# @var connect_auth_oauth2_allowed_emails:type: list
+# @var connect_auth_oauth2_allowed_emails:description: Email addresses permitted to authenticate, rendered as one AllowedEmail line each. Empty list allows all addresses.
+connect_auth_oauth2_allowed_emails: []
 # @var connect_auth_oauth2_register_on_first_login:type: boolean
 # @var connect_auth_oauth2_register_on_first_login:description: Auto-register users on first login
 connect_auth_oauth2_register_on_first_login: true
@@ -82,15 +91,18 @@ connect_auth_saml_idp_metadata_url: ''
 # @var connect_auth_saml_idp_metadata_path:type: string
 # @var connect_auth_saml_idp_metadata_path:description: Path to SAML IdP metadata file
 connect_auth_saml_idp_metadata_path: ''
-# @var connect_auth_saml_sp_entity_id:type: string
-# @var connect_auth_saml_sp_entity_id:description: SAML Service Provider Entity ID
-connect_auth_saml_sp_entity_id: ''
+# @var connect_auth_saml_idp_entity_id:type: string
+# @var connect_auth_saml_idp_entity_id:description: Entity ID of the SAML IdP. Required when the IdP metadata contains multiple entries.
+connect_auth_saml_idp_entity_id: ''
 # @var connect_auth_saml_unique_id_attribute:type: string
 # @var connect_auth_saml_unique_id_attribute:description: SAML attribute for unique user ID
 connect_auth_saml_unique_id_attribute: NameID
 # @var connect_auth_saml_username_attribute:type: string
 # @var connect_auth_saml_username_attribute:description: SAML attribute for username
 connect_auth_saml_username_attribute: ''
+# @var connect_auth_saml_username_attribute_rewrite:type: string
+# @var connect_auth_saml_username_attribute_rewrite:description: Rewrite rule for the username attribute, in the same format as connect_auth_oauth2_username_claim_rewrite. Empty disables the rewrite. (Connect 2026.07.0+)
+connect_auth_saml_username_attribute_rewrite: ''
 # @var connect_auth_saml_email_attribute:type: string
 # @var connect_auth_saml_email_attribute:description: SAML attribute for email
 connect_auth_saml_email_attribute: ''
@@ -111,9 +123,9 @@ connect_auth_ldap_user_search_base_dn: ''
 # @var connect_auth_ldap_user_object_class:type: string
 # @var connect_auth_ldap_user_object_class:description: LDAP user object class
 connect_auth_ldap_user_object_class: posixAccount
-# @var connect_auth_ldap_user_unique_id_attribute:type: string
-# @var connect_auth_ldap_user_unique_id_attribute:description: LDAP attribute for unique user ID
-connect_auth_ldap_user_unique_id_attribute: uid
+# @var connect_auth_ldap_unique_id_attribute:type: string
+# @var connect_auth_ldap_unique_id_attribute:description: LDAP attribute with an immutable value that uniquely identifies users and groups (e.g. objectGUID for AD, entryUUID for OpenLDAP)
+connect_auth_ldap_unique_id_attribute: uid
 # @var connect_auth_ldap_user_email_attribute:type: string
 # @var connect_auth_ldap_user_email_attribute:description: LDAP attribute for email
 connect_auth_ldap_user_email_attribute: mail
@@ -129,3 +141,6 @@ connect_auth_ldap_group_search_base_dn: ''
 # @var connect_auth_ldap_group_object_class:type: string
 # @var connect_auth_ldap_group_object_class:description: LDAP group object class
 connect_auth_ldap_group_object_class: posixGroup
+# @var connect_auth_ldap_nested_group_expansion:type: boolean
+# @var connect_auth_ldap_nested_group_expansion:description: Resolve nested Active Directory group memberships (Active Directory only; may slow lookups on large directories). (Connect 2026.07.0+)
+connect_auth_ldap_nested_group_expansion: false

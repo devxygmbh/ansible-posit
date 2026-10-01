@@ -4,7 +4,8 @@
 # https://docs.posit.co/ide/server-pro/admin/job_launcher/local_plugin.html
 #
 # Sections: [*] = global defaults, [@groupname] = group, [username] = user
-# Profiles are processed top to bottom; later matches override earlier ones.
+# More specific sections override less specific ones ([username] > [@group] > [*]);
+# among sections at the same level, later ones win.
 #
 # Every name in resource-profiles is defined in launcher.local.resources.conf.
 

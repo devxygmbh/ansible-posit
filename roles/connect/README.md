@@ -8,7 +8,6 @@ Installs Posit Connect <https://posit.co/>
 - [Default Variables](#default-variables)
   - [connect_applications_metrics_collection_enabled](#connect_applications_metrics_collection_enabled)
   - [connect_applications_run_as_current_user](#connect_applications_run_as_current_user)
-  - [connect_applications_supervisor_accounts](#connect_applications_supervisor_accounts)
   - [connect_applications_supervisor_path](#connect_applications_supervisor_path)
   - [connect_applications_supervisor_script](#connect_applications_supervisor_script)
   - [connect_artifactory_base_url](#connect_artifactory_base_url)
@@ -18,20 +17,24 @@ Installs Posit Connect <https://posit.co/>
   - [connect_artifactory_posit_repo](#connect_artifactory_posit_repo)
   - [connect_artifactory_username](#connect_artifactory_username)
   - [connect_auth_api_key_auth](#connect_auth_api_key_auth)
+  - [connect_auth_api_key_max_lifetime](#connect_auth_api_key_max_lifetime)
   - [connect_auth_inactivity](#connect_auth_inactivity)
   - [connect_auth_ldap_bind_dn](#connect_auth_ldap_bind_dn)
   - [connect_auth_ldap_bind_password](#connect_auth_ldap_bind_password)
   - [connect_auth_ldap_group_object_class](#connect_auth_ldap_group_object_class)
   - [connect_auth_ldap_group_search_base_dn](#connect_auth_ldap_group_search_base_dn)
+  - [connect_auth_ldap_nested_group_expansion](#connect_auth_ldap_nested_group_expansion)
   - [connect_auth_ldap_server_address](#connect_auth_ldap_server_address)
+  - [connect_auth_ldap_unique_id_attribute](#connect_auth_ldap_unique_id_attribute)
   - [connect_auth_ldap_user_email_attribute](#connect_auth_ldap_user_email_attribute)
   - [connect_auth_ldap_user_first_name_attribute](#connect_auth_ldap_user_first_name_attribute)
   - [connect_auth_ldap_user_last_name_attribute](#connect_auth_ldap_user_last_name_attribute)
   - [connect_auth_ldap_user_object_class](#connect_auth_ldap_user_object_class)
   - [connect_auth_ldap_user_search_base_dn](#connect_auth_ldap_user_search_base_dn)
-  - [connect_auth_ldap_user_unique_id_attribute](#connect_auth_ldap_user_unique_id_attribute)
   - [connect_auth_lifetime](#connect_auth_lifetime)
   - [connect_auth_name](#connect_auth_name)
+  - [connect_auth_oauth2_allowed_domains](#connect_auth_oauth2_allowed_domains)
+  - [connect_auth_oauth2_allowed_emails](#connect_auth_oauth2_allowed_emails)
   - [connect_auth_oauth2_client_id](#connect_auth_oauth2_client_id)
   - [connect_auth_oauth2_client_secret](#connect_auth_oauth2_client_secret)
   - [connect_auth_oauth2_custom_scopes](#connect_auth_oauth2_custom_scopes)
@@ -42,22 +45,24 @@ Installs Posit Connect <https://posit.co/>
   - [connect_auth_oauth2_last_name_claim](#connect_auth_oauth2_last_name_claim)
   - [connect_auth_oauth2_openid_issuer](#connect_auth_oauth2_openid_issuer)
   - [connect_auth_oauth2_register_on_first_login](#connect_auth_oauth2_register_on_first_login)
-  - [connect_auth_oauth2_registration_domain_allow_list](#connect_auth_oauth2_registration_domain_allow_list)
   - [connect_auth_oauth2_unique_id_claim](#connect_auth_oauth2_unique_id_claim)
   - [connect_auth_oauth2_use_pkce](#connect_auth_oauth2_use_pkce)
   - [connect_auth_oauth2_username_claim](#connect_auth_oauth2_username_claim)
+  - [connect_auth_oauth2_username_claim_rewrite](#connect_auth_oauth2_username_claim_rewrite)
   - [connect_auth_pam_forward_password](#connect_auth_pam_forward_password)
   - [connect_auth_pam_required_group](#connect_auth_pam_required_group)
   - [connect_auth_pam_service](#connect_auth_pam_service)
   - [connect_auth_pam_use_session](#connect_auth_pam_use_session)
   - [connect_auth_provider](#connect_auth_provider)
   - [connect_auth_saml_email_attribute](#connect_auth_saml_email_attribute)
+  - [connect_auth_saml_idp_entity_id](#connect_auth_saml_idp_entity_id)
   - [connect_auth_saml_idp_metadata_path](#connect_auth_saml_idp_metadata_path)
   - [connect_auth_saml_idp_metadata_url](#connect_auth_saml_idp_metadata_url)
-  - [connect_auth_saml_sp_entity_id](#connect_auth_saml_sp_entity_id)
   - [connect_auth_saml_unique_id_attribute](#connect_auth_saml_unique_id_attribute)
   - [connect_auth_saml_username_attribute](#connect_auth_saml_username_attribute)
+  - [connect_auth_saml_username_attribute_rewrite](#connect_auth_saml_username_attribute_rewrite)
   - [connect_authorization_default_user_role](#connect_authorization_default_user_role)
+  - [connect_authorization_legacy_publisher_settings](#connect_authorization_legacy_publisher_settings)
   - [connect_authorization_publishers_can_add_users](#connect_authorization_publishers_can_add_users)
   - [connect_authorization_publishers_can_manage_run_as](#connect_authorization_publishers_can_manage_run_as)
   - [connect_authorization_publishers_can_manage_vanities](#connect_authorization_publishers_can_manage_vanities)
@@ -109,6 +114,8 @@ Installs Posit Connect <https://posit.co/>
   - [connect_logging_access_log_format](#connect_logging_access_log_format)
   - [connect_logging_audit_log](#connect_logging_audit_log)
   - [connect_logging_audit_log_format](#connect_logging_audit_log_format)
+  - [connect_logging_content_log](#connect_logging_content_log)
+  - [connect_logging_content_log_format](#connect_logging_content_log_format)
   - [connect_logging_service_log](#connect_logging_service_log)
   - [connect_logging_service_log_format](#connect_logging_service_log_format)
   - [connect_logging_service_log_level](#connect_logging_service_log_level)
@@ -128,6 +135,7 @@ Installs Posit Connect <https://posit.co/>
   - [connect_otel_database_instrumentation](#connect_otel_database_instrumentation)
   - [connect_otel_enabled](#connect_otel_enabled)
   - [connect_otel_endpoint](#connect_otel_endpoint)
+  - [connect_otel_endpoint_headers](#connect_otel_endpoint_headers)
   - [connect_otel_endpoint_logs](#connect_otel_endpoint_logs)
   - [connect_otel_endpoint_metrics](#connect_otel_endpoint_metrics)
   - [connect_otel_endpoint_traces](#connect_otel_endpoint_traces)
@@ -138,6 +146,8 @@ Installs Posit Connect <https://posit.co/>
   - [connect_python_enabled](#connect_python_enabled)
   - [connect_python_executable](#connect_python_executable)
   - [connect_python_executables](#connect_python_executables)
+  - [connect_python_package_repositories](#connect_python_package_repositories)
+  - [connect_python_package_repository_resolution](#connect_python_package_repository_resolution)
   - [connect_python_pypi_url](#connect_python_pypi_url)
   - [connect_quarto_base_path](#connect_quarto_base_path)
   - [connect_quarto_bin_path](#connect_quarto_bin_path)
@@ -179,18 +189,21 @@ Installs Posit Connect <https://posit.co/>
   - [connect_server_frame_options_dashboard](#connect_server_frame_options_dashboard)
   - [connect_server_gallery_enabled](#connect_server_gallery_enabled)
   - [connect_server_hide_email_addresses](#connect_server_hide_email_addresses)
-  - [connect_server_hide_version](#connect_server_hide_version)
   - [connect_server_logged_in_warning](#connect_server_logged_in_warning)
   - [connect_server_mail_all](#connect_server_mail_all)
   - [connect_server_product_check](#connect_server_product_check)
   - [connect_server_public_warning](#connect_server_public_warning)
+  - [connect_server_removed_settings_ui_warning](#connect_server_removed_settings_ui_warning)
   - [connect_server_root_redirect](#connect_server_root_redirect)
   - [connect_server_same_site](#connect_server_same_site)
+  - [connect_server_sanitize_headers](#connect_server_sanitize_headers)
   - [connect_server_sender_email](#connect_server_sender_email)
   - [connect_server_sender_email_display_name](#connect_server_sender_email_display_name)
+  - [connect_server_server_name](#connect_server_server_name)
   - [connect_server_system_check_frequency](#connect_server_system_check_frequency)
   - [connect_server_system_check_on_startup](#connect_server_system_check_on_startup)
   - [connect_server_temp_dir](#connect_server_temp_dir)
+  - [connect_server_unrecognized_settings_ui_warning](#connect_server_unrecognized_settings_ui_warning)
   - [connect_server_use_fips_encryption](#connect_server_use_fips_encryption)
   - [connect_server_whats_new_enabled](#connect_server_whats_new_enabled)
   - [connect_smtp_host](#connect_smtp_host)
@@ -222,12 +235,6 @@ Enables collection of metrics for applications
 Run applications as the publishing user
 
 **_Type:_** boolean<br />
-
-### connect_applications_supervisor_accounts
-
-Comma-separated list of supervisor account names
-
-**_Type:_** string<br />
 
 ### connect_applications_supervisor_path
 
@@ -283,6 +290,12 @@ Enable API key authentication
 
 **_Type:_** boolean<br />
 
+### connect_auth_api_key_max_lifetime
+
+Maximum lifetime for new API keys and service tokens (e.g. '90d'; minimum '24h'). '0' allows keys that never expire. (Connect 2026.06.0+)
+
+**_Type:_** string<br />
+
 ### connect_auth_inactivity
 
 Session inactivity timeout
@@ -313,9 +326,21 @@ LDAP group search base DN
 
 **_Type:_** string<br />
 
+### connect_auth_ldap_nested_group_expansion
+
+Resolve nested Active Directory group memberships (Active Directory only; may slow lookups on large directories). (Connect 2026.07.0+)
+
+**_Type:_** boolean<br />
+
 ### connect_auth_ldap_server_address
 
 LDAP server address (ldap:// or ldaps://)
+
+**_Type:_** string<br />
+
+### connect_auth_ldap_unique_id_attribute
+
+LDAP attribute with an immutable value that uniquely identifies users and groups (e.g. objectGUID for AD, entryUUID for OpenLDAP)
 
 **_Type:_** string<br />
 
@@ -349,12 +374,6 @@ LDAP user search base DN
 
 **_Type:_** string<br />
 
-### connect_auth_ldap_user_unique_id_attribute
-
-LDAP attribute for unique user ID
-
-**_Type:_** string<br />
-
 ### connect_auth_lifetime
 
 Session lifetime duration
@@ -366,6 +385,18 @@ Session lifetime duration
 Display name for authentication provider
 
 **_Type:_** string<br />
+
+### connect_auth_oauth2_allowed_domains
+
+Email domains permitted to authenticate (e.g. ['example.com', 'example.org']), rendered as one AllowedDomain line each. Empty list allows all domains. Users matching either this list or connect_auth_oauth2_allowed_emails are permitted.
+
+**_Type:_** list<br />
+
+### connect_auth_oauth2_allowed_emails
+
+Email addresses permitted to authenticate, rendered as one AllowedEmail line each. Empty list allows all addresses.
+
+**_Type:_** list<br />
 
 ### connect_auth_oauth2_client_id
 
@@ -427,12 +458,6 @@ Auto-register users on first login
 
 **_Type:_** boolean<br />
 
-### connect_auth_oauth2_registration_domain_allow_list
-
-Comma-separated list of email domains permitted to register (e.g. 'example.com,example.org'). Empty string allows all domains.
-
-**_Type:_** string<br />
-
 ### connect_auth_oauth2_unique_id_claim
 
 Claim to use as unique user identifier
@@ -448,6 +473,12 @@ Use Proof Key for Code Exchange (PKCE) for the OAuth2/OIDC authorization code fl
 ### connect_auth_oauth2_username_claim
 
 Claim to use for username
+
+**_Type:_** string<br />
+
+### connect_auth_oauth2_username_claim_rewrite
+
+Rewrite rule for the username claim, written as a RE2 regex, a single space, then the replacement (e.g. '^(.\*)@example\.com$ $1'). Wrap the whole value in double quotes if it contains a backslash, ';' or '#'. Empty disables the rewrite. (Connect 2026.07.0+)
 
 **_Type:_** string<br />
 
@@ -487,6 +518,12 @@ SAML attribute for email
 
 **_Type:_** string<br />
 
+### connect_auth_saml_idp_entity_id
+
+Entity ID of the SAML IdP. Required when the IdP metadata contains multiple entries.
+
+**_Type:_** string<br />
+
 ### connect_auth_saml_idp_metadata_path
 
 Path to SAML IdP metadata file
@@ -496,12 +533,6 @@ Path to SAML IdP metadata file
 ### connect_auth_saml_idp_metadata_url
 
 SAML IdP metadata URL
-
-**_Type:_** string<br />
-
-### connect_auth_saml_sp_entity_id
-
-SAML Service Provider Entity ID
 
 **_Type:_** string<br />
 
@@ -517,33 +548,45 @@ SAML attribute for username
 
 **_Type:_** string<br />
 
+### connect_auth_saml_username_attribute_rewrite
+
+Rewrite rule for the username attribute, in the same format as connect_auth_oauth2_username_claim_rewrite. Empty disables the rewrite. (Connect 2026.07.0+)
+
+**_Type:_** string<br />
+
 ### connect_authorization_default_user_role
 
 Default role for new users (viewer, publisher, administrator)
 
 **_Type:_** string<br />
 
+### connect_authorization_legacy_publisher_settings
+
+Emit the deprecated PublishersCanOwnGroups/AddUsers/ManageVanities/ManageRunAs settings (deprecated in Connect 2026.09.0). When upgrading an existing server, enable it for the first 2026.09.0+ start so the values below are migrated into the database, then disable it again; otherwise Connect's own defaults are migrated (PublishersCanOwnGroups=false).
+
+**_Type:_** boolean<br />
+
 ### connect_authorization_publishers_can_add_users
 
-Publishers can add users
+(Legacy) Publishers can add users
 
 **_Type:_** boolean<br />
 
 ### connect_authorization_publishers_can_manage_run_as
 
-Publishers can manage RunAs users
+(Legacy) Publishers can manage RunAs users
 
 **_Type:_** boolean<br />
 
 ### connect_authorization_publishers_can_manage_vanities
 
-Publishers can manage vanity URLs
+(Legacy) Publishers can manage vanity URLs
 
 **_Type:_** boolean<br />
 
 ### connect_authorization_publishers_can_own_groups
 
-Publishers can own groups
+(Legacy) Publishers can own groups
 
 **_Type:_** boolean<br />
 
@@ -627,7 +670,7 @@ PostgreSQL host
 
 ### connect_database_postgres_password
 
-PostgreSQL password
+PostgreSQL password, rendered as Postgres.Password alongside the URL (also when connect_database_postgres_url is set)
 
 **_Type:_** string<br />
 
@@ -639,7 +682,7 @@ PostgreSQL port
 
 ### connect_database_postgres_url
 
-PostgreSQL connection URL
+PostgreSQL connection URL (e.g. 'postgres://connect@db.example.com:5432/connect?sslmode=require'). When empty, the URL is built from connect_database_postgres_user/host/port/database, because Connect only accepts a URL.
 
 **_Type:_** string<br />
 
@@ -842,6 +885,18 @@ Audit log format (JSON)
 
 **_Type:_** string<br />
 
+### connect_logging_content_log
+
+Destination for content process stdout/stderr (SERVICE, STDOUT, STDERR, or a file path). Empty disables content logging. (Connect 2026.03.0+)
+
+**_Type:_** string<br />
+
+### connect_logging_content_log_format
+
+Content log format (TEXT or JSON)
+
+**_Type:_** string<br />
+
 ### connect_logging_service_log
 
 Path to service log file
@@ -956,6 +1011,12 @@ OTLP receiver endpoint URL for telemetry export
 
 **_Type:_** string<br />
 
+### connect_otel_endpoint_headers
+
+HTTP headers sent to the OTLP endpoint, each in the form 'Name: value' (Connect 2026.09.0+). Stored as plaintext in the config file, so do not put secrets here.
+
+**_Type:_** list<br />
+
 ### connect_otel_endpoint_logs
 
 Export log signals to OTLP endpoint
@@ -1015,6 +1076,29 @@ Path to single Python executable
 List of Python executable paths (explicit)
 
 **_Type:_** list<br />
+
+### connect_python_package_repositories
+
+List of Python package indexes rendered as [PythonPackageRepository] sections. Each entry must have: name, url
+(Connect 2026.05.0+)
+
+**_Type:_** list<br />
+
+#### Example usage
+
+```YAML
+  connect_python_package_repositories:
+    - name: PyPI
+      url: https://packagemanager.posit.co/pypi/latest/simple
+```
+
+### connect_python_package_repository_resolution
+
+Controls how Connect combines configured PythonPackageRepository entries with
+indexes from published content. Values: lax (merge both), strict (configured only).
+(Connect 2026.05.0+)
+
+**_Type:_** string<br />
 
 ### connect_python_pypi_url
 
@@ -1145,7 +1229,7 @@ Process idle timeout
 
 ### connect_scheduler_init_timeout
 
-Process initialization timeout
+Process initialization timeout (upstream default raised from 60s to 120s in Connect 2026.03.0)
 
 **_Type:_** string<br />
 
@@ -1163,7 +1247,7 @@ Maximum connections per process
 
 ### connect_scheduler_max_processes
 
-Maximum concurrent processes
+Maximum concurrent processes per content item (must be >= 1; Connect 2026.04.0+ rejects 0)
 
 **_Type:_** integer<br />
 
@@ -1275,12 +1359,6 @@ Hide email addresses from non-admins
 
 **_Type:_** boolean<br />
 
-### connect_server_hide_version
-
-Hide the Connect version in the UI
-
-**_Type:_** boolean<br />
-
 ### connect_server_logged_in_warning
 
 HTML message for logged-in users
@@ -1305,6 +1383,12 @@ HTML message displayed on dashboard
 
 **_Type:_** string<br />
 
+### connect_server_removed_settings_ui_warning
+
+Show warnings to admins when removed settings are found in the configuration file
+
+**_Type:_** boolean<br />
+
 ### connect_server_root_redirect
 
 Redirect path after login
@@ -1317,6 +1401,12 @@ SameSite cookie attribute (None, Lax, Strict)
 
 **_Type:_** string<br />
 
+### connect_server_sanitize_headers
+
+HTTP header names to strip from incoming requests before they are proxied to content (Connect 2026.04.0+)
+
+**_Type:_** list<br />
+
 ### connect_server_sender_email
 
 Email address used as the sender for system emails
@@ -1326,6 +1416,12 @@ Email address used as the sender for system emails
 ### connect_server_sender_email_display_name
 
 Display name for outbound emails
+
+**_Type:_** string<br />
+
+### connect_server_server_name
+
+Value of the Server HTTP response header. Replaces HideVersion (removed in Connect 2026.08.0); the header never includes the version.
 
 **_Type:_** string<br />
 
@@ -1346,6 +1442,12 @@ Run system checks on startup
 Temporary directory for content processes
 
 **_Type:_** string<br />
+
+### connect_server_unrecognized_settings_ui_warning
+
+Show warnings to admins when unrecognized settings are found in the configuration file (Connect 2026.06.0+)
+
+**_Type:_** boolean<br />
 
 ### connect_server_use_fips_encryption
 

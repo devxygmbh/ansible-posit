@@ -38,3 +38,20 @@ connect_python_bin_path: bin/python3
 #   Custom PyPI index URL (e.g., Artifactory PyPI proxy, leave empty for default PyPI).
 #   Deployed to /etc/uv/uv.toml and /etc/pip.conf so Connect's build process uses it.
 connect_python_pypi_url: ''
+
+# @var connect_python_package_repository_resolution:type: string
+# @var connect_python_package_repository_resolution:description: >
+#   Controls how Connect combines configured PythonPackageRepository entries with
+#   indexes from published content. Values: lax (merge both), strict (configured only).
+#   (Connect 2026.05.0+)
+connect_python_package_repository_resolution: lax
+
+# @var connect_python_package_repositories:type: list
+# @var connect_python_package_repositories:description: >
+#   List of Python package indexes rendered as [PythonPackageRepository] sections. Each entry must have: name, url
+#   (Connect 2026.05.0+)
+# @var connect_python_package_repositories:example: >
+#   connect_python_package_repositories:
+#     - name: PyPI
+#       url: https://packagemanager.posit.co/pypi/latest/simple
+connect_python_package_repositories: []

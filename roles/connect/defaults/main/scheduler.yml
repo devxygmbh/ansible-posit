@@ -2,7 +2,7 @@
 # https://docs.posit.co/connect/admin/appendix/configuration/#Scheduler
 
 # @var connect_scheduler_max_processes:type: integer
-# @var connect_scheduler_max_processes:description: Maximum concurrent processes
+# @var connect_scheduler_max_processes:description: Maximum concurrent processes per content item (must be >= 1; Connect 2026.04.0+ rejects 0)
 connect_scheduler_max_processes: 4
 # @var connect_scheduler_max_conns_per_process:type: integer
 # @var connect_scheduler_max_conns_per_process:description: Maximum connections per process
@@ -11,8 +11,8 @@ connect_scheduler_max_conns_per_process: 10
 # @var connect_scheduler_load_factor:description: Process load factor (0.0-1.0)
 connect_scheduler_load_factor: '0.5'
 # @var connect_scheduler_init_timeout:type: string
-# @var connect_scheduler_init_timeout:description: Process initialization timeout
-connect_scheduler_init_timeout: '60s'
+# @var connect_scheduler_init_timeout:description: Process initialization timeout (upstream default raised from 60s to 120s in Connect 2026.03.0)
+connect_scheduler_init_timeout: '120s'
 # @var connect_scheduler_idle_timeout:type: string
 # @var connect_scheduler_idle_timeout:description: Process idle timeout
 connect_scheduler_idle_timeout: '900s'

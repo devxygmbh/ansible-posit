@@ -28,9 +28,9 @@ connect_server_dashboard_path: /connect
 # @var connect_server_root_redirect:type: string
 # @var connect_server_root_redirect:description: Redirect path after login
 connect_server_root_redirect: ''
-# @var connect_server_hide_version:type: boolean
-# @var connect_server_hide_version:description: Hide the Connect version in the UI
-connect_server_hide_version: false
+# @var connect_server_server_name:type: string
+# @var connect_server_server_name:description: Value of the Server HTTP response header. Replaces HideVersion (removed in Connect 2026.08.0); the header never includes the version.
+connect_server_server_name: 'Posit Connect'
 # @var connect_server_compilation_concurrency:type: integer
 # @var connect_server_compilation_concurrency:description: Number of concurrent package compilations
 connect_server_compilation_concurrency: 1
@@ -76,7 +76,16 @@ connect_server_system_check_frequency: '0'
 # @var connect_server_custom_headers:type: list
 # @var connect_server_custom_headers:description: List of custom HTTP headers
 connect_server_custom_headers: []
+# @var connect_server_sanitize_headers:type: list
+# @var connect_server_sanitize_headers:description: HTTP header names to strip from incoming requests before they are proxied to content (Connect 2026.04.0+)
+connect_server_sanitize_headers: []
 
 # @var connect_server_deprecated_settings_ui_warning:type: boolean
 # @var connect_server_deprecated_settings_ui_warning:description: Show warnings to admins when deprecated settings are in use
 connect_server_deprecated_settings_ui_warning: true
+# @var connect_server_removed_settings_ui_warning:type: boolean
+# @var connect_server_removed_settings_ui_warning:description: Show warnings to admins when removed settings are found in the configuration file
+connect_server_removed_settings_ui_warning: true
+# @var connect_server_unrecognized_settings_ui_warning:type: boolean
+# @var connect_server_unrecognized_settings_ui_warning:description: Show warnings to admins when unrecognized settings are found in the configuration file (Connect 2026.06.0+)
+connect_server_unrecognized_settings_ui_warning: true

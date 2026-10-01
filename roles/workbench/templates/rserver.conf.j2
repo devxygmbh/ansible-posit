@@ -48,6 +48,7 @@ www-address={{ workbench_server_www_address }}
 www-root-path={{ workbench_server_www_root_path }}
 {% endif %}
 session-ssl-enabled={{ workbench_server_www_session_ssl_enabled }}
+www-proxy-localhost-verify-port-owner={{ workbench_server_www_proxy_localhost_verify_port_owner }}
 
 ### rsession
 rsession-no-profile={{ workbench_server_rsession_no_profile }}
@@ -107,12 +108,33 @@ monitor-rrd-enabled={{ workbench_server_monitor_rrd_enabled }}
 ### metrics
 metrics-enabled={{ workbench_metrics_enabled }}
 metrics-port={{ workbench_metrics_port }}
-{% if workbench_metrics_address is defined %}
-metrics-address={{ workbench_server_metrics_address }}
+{% if workbench_metrics_address | length > 0 %}
+metrics-address={{ workbench_metrics_address }}
+{% endif %}
+
+### OpenTelemetry
+otel-enabled={{ workbench_otel_enabled }}
+{% if workbench_otel_enabled | int == 1 %}
+{% if workbench_otel_endpoint | length > 0 %}
+otel-endpoint={{ workbench_otel_endpoint }}
+{% endif %}
+otel-logs-enabled={{ workbench_otel_logs_enabled }}
+{% if workbench_otel_logs_headers | length > 0 %}
+otel-logs-headers={{ workbench_otel_logs_headers }}
+{% endif %}
+otel-traces-enabled={{ workbench_otel_traces_enabled }}
+{% if workbench_otel_traces_headers | length > 0 %}
+otel-traces-headers={{ workbench_otel_traces_headers }}
+{% endif %}
 {% endif %}
 
 ### databricks
 databricks-enabled={{ workbench_server_databricks_enabled }}
+{% if workbench_server_posit_connect_url | length > 0 %}
+
+### Posit Connect
+posit-connect-url={{ workbench_server_posit_connect_url }}
+{% endif %}
 
 ### userProvisioning
 user-provisioning-enabled={{ workbench_server_user_provisioning_enabled }}

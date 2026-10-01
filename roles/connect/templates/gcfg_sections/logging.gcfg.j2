@@ -8,3 +8,7 @@ AccessLogFormat = {{ connect_logging_access_log_format }}
 AuditLog = {{ connect_logging_audit_log }}
 AuditLogFormat = {{ connect_logging_audit_log_format }}
 {% endif %}
+{% if connect_logging_content_log %}
+ContentLog = {{ connect_logging_content_log }}
+ContentLogFormat = {{ connect_logging_content_log_format }}
+{% endif %}

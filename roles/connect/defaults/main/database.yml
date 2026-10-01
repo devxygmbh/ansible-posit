@@ -12,7 +12,7 @@ connect_database_sqlite_dir: /var/lib/rstudio-connect/db
 
 ## PostgreSQL Configuration
 # @var connect_database_postgres_url:type: string
-# @var connect_database_postgres_url:description: PostgreSQL connection URL
+# @var connect_database_postgres_url:description: PostgreSQL connection URL (e.g. 'postgres://connect@db.example.com:5432/connect?sslmode=require'). When empty, the URL is built from connect_database_postgres_user/host/port/database, because Connect only accepts a URL.
 connect_database_postgres_url: ''
 # @var connect_database_postgres_host:type: string
 # @var connect_database_postgres_host:description: PostgreSQL host
@@ -27,7 +27,7 @@ connect_database_postgres_database: connect
 # @var connect_database_postgres_user:description: PostgreSQL username
 connect_database_postgres_user: connect
 # @var connect_database_postgres_password:type: string
-# @var connect_database_postgres_password:description: PostgreSQL password
+# @var connect_database_postgres_password:description: PostgreSQL password, rendered as Postgres.Password alongside the URL (also when connect_database_postgres_url is set)
 connect_database_postgres_password: ''
 
 ## Connection Pool

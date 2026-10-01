@@ -6,6 +6,9 @@ Name = {{ connect_auth_name }}
 Lifetime = {{ connect_auth_lifetime }}
 Inactivity = {{ connect_auth_inactivity }}
 APIKeyAuth = {{ connect_auth_api_key_auth | lower }}
+{% if connect_auth_api_key_max_lifetime | string != '0' %}
+APIKeyMaxLifetime = {{ connect_auth_api_key_max_lifetime }}
+{% endif %}
 
 {% if connect_auth_provider == 'pam' %}
 [PAM]
@@ -33,6 +36,9 @@ EmailClaim = {{ connect_auth_oauth2_email_claim }}
 {% if connect_auth_oauth2_username_claim %}
 UsernameClaim = {{ connect_auth_oauth2_username_claim }}
 {% endif %}
+{% if connect_auth_oauth2_username_claim_rewrite %}
+UsernameClaimRewrite = {{ connect_auth_oauth2_username_claim_rewrite }}
+{% endif %}
 {% if connect_auth_oauth2_first_name_claim %}
 FirstNameClaim = {{ connect_auth_oauth2_first_name_claim }}
 {% endif %}
@@ -43,9 +49,12 @@ LastNameClaim = {{ connect_auth_oauth2_last_name_claim }}
 GroupsClaim = {{ connect_auth_oauth2_groups_claim }}
 GroupsAutoProvision = {{ connect_auth_oauth2_groups_auto_provision | lower }}
 {% endif %}
-{% if connect_auth_oauth2_registration_domain_allow_list %}
-RegistrationDomainAllowList = {{ connect_auth_oauth2_registration_domain_allow_list }}
-{% endif %}
+{% for domain in connect_auth_oauth2_allowed_domains %}
+AllowedDomain = {{ domain }}
+{% endfor %}
+{% for email in connect_auth_oauth2_allowed_emails %}
+AllowedEmail = {{ email }}
+{% endfor %}
 RegisterOnFirstLogin = {{ connect_auth_oauth2_register_on_first_login | lower }}
 UsePKCE = {{ connect_auth_oauth2_use_pkce | lower }}
 {% endif %}
@@ -58,12 +67,15 @@ IdPMetaDataURL = {{ connect_auth_saml_idp_metadata_url }}
 {% if connect_auth_saml_idp_metadata_path %}
 IdPMetaDataPath = {{ connect_auth_saml_idp_metadata_path }}
 {% endif %}
-{% if connect_auth_saml_sp_entity_id %}
-SPEntityId = {{ connect_auth_saml_sp_entity_id }}
+{% if connect_auth_saml_idp_entity_id %}
+IdPEntityID = {{ connect_auth_saml_idp_entity_id }}
 {% endif %}
 UniqueIdAttribute = {{ connect_auth_saml_unique_id_attribute }}
 {% if connect_auth_saml_username_attribute %}
 UsernameAttribute = {{ connect_auth_saml_username_attribute }}
+{% endif %}
+{% if connect_auth_saml_username_attribute_rewrite %}
+UsernameAttributeRewrite = {{ connect_auth_saml_username_attribute_rewrite }}
 {% endif %}
 {% if connect_auth_saml_email_attribute %}
 EmailAttribute = {{ connect_auth_saml_email_attribute }}
@@ -85,7 +97,7 @@ BindPassword = {{ connect_auth_ldap_bind_password }}
 UserSearchBaseDN = {{ connect_auth_ldap_user_search_base_dn }}
 {% endif %}
 UserObjectClass = {{ connect_auth_ldap_user_object_class }}
-UserUniqueIdAttribute = {{ connect_auth_ldap_user_unique_id_attribute }}
+UniqueIdAttribute = {{ connect_auth_ldap_unique_id_attribute }}
 UserEmailAttribute = {{ connect_auth_ldap_user_email_attribute }}
 UserFirstNameAttribute = {{ connect_auth_ldap_user_first_name_attribute }}
 UserLastNameAttribute = {{ connect_auth_ldap_user_last_name_attribute }}
@@ -95,4 +107,5 @@ GroupSearchBaseDN = {{ connect_auth_ldap_group_search_base_dn }}
 {% if connect_auth_ldap_group_object_class %}
 GroupObjectClass = {{ connect_auth_ldap_group_object_class }}
 {% endif %}
+NestedGroupExpansion = {{ connect_auth_ldap_nested_group_expansion | lower }}
 {% endif %}

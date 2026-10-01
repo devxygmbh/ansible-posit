@@ -47,5 +47,8 @@ Traces = true
 {% if connect_otel_endpoint_metrics %}
 Metrics = true
 {% endif %}
+{% for header in connect_otel_endpoint_headers %}
+Header = {{ header }}
+{% endfor %}
 {% endif %}
 {% endif %}

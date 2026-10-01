@@ -73,3 +73,6 @@ connect_otel_endpoint_traces: false
 # @var connect_otel_endpoint_metrics:type: boolean
 # @var connect_otel_endpoint_metrics:description: Export metric signals to OTLP endpoint
 connect_otel_endpoint_metrics: false
+# @var connect_otel_endpoint_headers:type: list
+# @var connect_otel_endpoint_headers:description: HTTP headers sent to the OTLP endpoint, each in the form 'Name: value' (Connect 2026.09.0+). Stored as plaintext in the config file, so do not put secrets here.
+connect_otel_endpoint_headers: []

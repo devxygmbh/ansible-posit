@@ -14,12 +14,9 @@ Dir = {{ connect_database_sqlite_dir }}
 {% if connect_database_postgres_url %}
 URL = {{ connect_database_postgres_url }}
 {% else %}
-Host = {{ connect_database_postgres_host }}
-Port = {{ connect_database_postgres_port }}
-Database = {{ connect_database_postgres_database }}
-User = {{ connect_database_postgres_user }}
+URL = postgres://{{ connect_database_postgres_user | urlencode }}@{{ connect_database_postgres_host }}:{{ connect_database_postgres_port }}/{{ connect_database_postgres_database }}
+{% endif %}
 {% if connect_database_postgres_password %}
 Password = {{ connect_database_postgres_password }}
-{% endif %}
 {% endif %}
 {% endif %}

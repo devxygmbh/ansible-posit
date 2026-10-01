@@ -22,7 +22,9 @@ DashboardPath = {{ connect_server_dashboard_path }}
 {% if connect_server_root_redirect %}
 RootRedirect = {{ connect_server_root_redirect }}
 {% endif %}
-HideVersion = {{ connect_server_hide_version | lower }}
+{% if connect_server_server_name %}
+ServerName = {{ connect_server_server_name }}
+{% endif %}
 CompilationConcurrency = {{ connect_server_compilation_concurrency }}
 {% if connect_server_public_warning %}
 PublicWarning = {{ connect_server_public_warning }}
@@ -46,7 +48,12 @@ SystemCheckFrequency = {{ connect_server_system_check_frequency }}
 {% for header in connect_server_custom_headers %}
 CustomHeader = {{ header }}
 {% endfor %}
+{% for header in connect_server_sanitize_headers %}
+SanitizeHeader = {{ header }}
+{% endfor %}
 DeprecatedSettingsUIWarning = {{ connect_server_deprecated_settings_ui_warning | lower }}
+RemovedSettingsUIWarning = {{ connect_server_removed_settings_ui_warning | lower }}
+UnrecognizedSettingsUIWarning = {{ connect_server_unrecognized_settings_ui_warning | lower }}
 
 [Licensing]
 LicenseType = {{ connect_licensing_license_type }}

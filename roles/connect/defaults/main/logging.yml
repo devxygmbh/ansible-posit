@@ -22,3 +22,9 @@ connect_logging_audit_log: ''
 # @var connect_logging_audit_log_format:type: string
 # @var connect_logging_audit_log_format:description: Audit log format (JSON)
 connect_logging_audit_log_format: JSON
+# @var connect_logging_content_log:type: string
+# @var connect_logging_content_log:description: Destination for content process stdout/stderr (SERVICE, STDOUT, STDERR, or a file path). Empty disables content logging. (Connect 2026.03.0+)
+connect_logging_content_log: ''
+# @var connect_logging_content_log_format:type: string
+# @var connect_logging_content_log_format:description: Content log format (TEXT or JSON)
+connect_logging_content_log_format: TEXT

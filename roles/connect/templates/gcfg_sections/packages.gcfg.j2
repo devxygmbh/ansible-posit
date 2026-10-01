@@ -13,3 +13,8 @@ HTTPSProxy = {{ connect_packages_https_proxy }}
 URL = {{ repo.url }}
 
 {% endfor %}
+{% for repo in connect_python_package_repositories %}
+[PythonPackageRepository "{{ repo.name }}"]
+URL = {{ repo.url }}
+
+{% endfor %}

@@ -10,21 +10,34 @@ connect_authorization_user_groups: true
 # @var connect_authorization_viewers_can_request_privileges:type: boolean
 # @var connect_authorization_viewers_can_request_privileges:description: Allow viewers to request publisher privileges
 connect_authorization_viewers_can_request_privileges: true
-# @var connect_authorization_publishers_can_own_groups:type: boolean
-# @var connect_authorization_publishers_can_own_groups:description: Publishers can own groups
-connect_authorization_publishers_can_own_groups: true
-# @var connect_authorization_publishers_can_add_users:type: boolean
-# @var connect_authorization_publishers_can_add_users:description: Publishers can add users
-connect_authorization_publishers_can_add_users: false
-# @var connect_authorization_publishers_can_manage_vanities:type: boolean
-# @var connect_authorization_publishers_can_manage_vanities:description: Publishers can manage vanity URLs
-connect_authorization_publishers_can_manage_vanities: true
-# @var connect_authorization_publishers_can_manage_run_as:type: boolean
-# @var connect_authorization_publishers_can_manage_run_as:description: Publishers can manage RunAs users
-connect_authorization_publishers_can_manage_run_as: false
 # @var connect_authorization_viewers_can_only_see_themselves:type: boolean
 # @var connect_authorization_viewers_can_only_see_themselves:description: Viewers can only see their own content
 connect_authorization_viewers_can_only_see_themselves: false
 # @var connect_authorization_user_info_editable_by:type: string
 # @var connect_authorization_user_info_editable_by:description: Who can edit user info (self, admin, adminAndSelf)
 connect_authorization_user_info_editable_by: Admin
+
+## Legacy Publisher permission settings (deprecated in Connect 2026.09.0)
+# Publisher role permissions are now managed on the People > Roles page or via the roles API.
+# On the first start of 2026.09.0+, Connect copies these values into its database; afterwards
+# it ignores them and warns on every startup. They are no longer emitted by default.
+# Upgrading an existing server: set connect_authorization_legacy_publisher_settings to true for
+# the first 2026.09.0+ start so the values below are migrated, then set it back to false.
+# Otherwise Connect migrates its own defaults (e.g. PublishersCanOwnGroups=false), and the
+# permissions must be re-granted on the People > Roles page.
+
+# @var connect_authorization_legacy_publisher_settings:type: boolean
+# @var connect_authorization_legacy_publisher_settings:description: Emit the deprecated PublishersCanOwnGroups/AddUsers/ManageVanities/ManageRunAs settings (deprecated in Connect 2026.09.0). When upgrading an existing server, enable it for the first 2026.09.0+ start so the values below are migrated into the database, then disable it again; otherwise Connect's own defaults are migrated (PublishersCanOwnGroups=false).
+connect_authorization_legacy_publisher_settings: false
+# @var connect_authorization_publishers_can_own_groups:type: boolean
+# @var connect_authorization_publishers_can_own_groups:description: (Legacy) Publishers can own groups
+connect_authorization_publishers_can_own_groups: true
+# @var connect_authorization_publishers_can_add_users:type: boolean
+# @var connect_authorization_publishers_can_add_users:description: (Legacy) Publishers can add users
+connect_authorization_publishers_can_add_users: false
+# @var connect_authorization_publishers_can_manage_vanities:type: boolean
+# @var connect_authorization_publishers_can_manage_vanities:description: (Legacy) Publishers can manage vanity URLs
+connect_authorization_publishers_can_manage_vanities: true
+# @var connect_authorization_publishers_can_manage_run_as:type: boolean
+# @var connect_authorization_publishers_can_manage_run_as:description: (Legacy) Publishers can manage RunAs users
+connect_authorization_publishers_can_manage_run_as: false
