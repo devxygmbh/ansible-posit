@@ -52,7 +52,7 @@ steps:
       event: tag
 
   'Push changes to repo':
-    image: cr.codefloe.com/docker.io/appleboy/drone-git-push:1.2.3
+    image: cr.codefloe.com/docker.io/appleboy/drone-git-push:1.2.5
     settings:
       remote: ${CI_REPO_CLONE_SSH_URL}
       branch: main
