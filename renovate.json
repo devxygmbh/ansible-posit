@@ -10,19 +10,21 @@
         "/roles/db_drivers/defaults/main\\.yml$/"
       ],
       "matchStrings": [
-        "# renovate: depName=(?<depName>\\S+) datasource=(?<datasource>\\S+)\\n\\w+: \"?(?<currentValue>[^\"\\n]+?)\"?\\s*$"
+        "# renovate: depName=(?<depName>\\S+) datasource=(?<datasource>\\S+)\\n\\w+:[ \\t]+[\"']?(?<currentValue>[^\"'\\s]+)"
       ],
       "versioningTemplate": "loose"
     }
   ],
-  "customDatasources": {
-    "posit-pro-drivers": {
-      "defaultRegistryUrlTemplate": "https://live-rstudio.pantheonsite.io/wp-content/uploads/downloads.json",
-      "format": "json",
-      "transformTemplates": [
-        "{\"releases\": [{\"version\": pro_drivers.installer.rhel8.version}]}"
+  "packageRules": [
+    {
+      "description": "Posit drivers come from the Cloudsmith apt repository, which replaced the retired downloads.json host.",
+      "matchDepNames": ["rstudio-drivers"],
+      "registryUrls": [
+        "https://dl.posit.co/public/pro/deb/ubuntu?suite=noble&components=main&binaryArch=amd64"
       ]
-    },
+    }
+  ],
+  "customDatasources": {
     "oracle-instantclient": {
       "defaultRegistryUrlTemplate": "https://yum.oracle.com/repo/OracleLinux/OL9/oracle/instantclient/x86_64/",
       "format": "html",

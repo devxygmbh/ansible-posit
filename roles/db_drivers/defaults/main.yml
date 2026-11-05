@@ -1,6 +1,6 @@
 # defaults file for db-drivers
 
-# renovate: depName=posit-pro-drivers datasource=custom.posit-pro-drivers
+# renovate: depName=rstudio-drivers datasource=deb
 db_drivers_version: 2026.01.0
 
 # @var db_drivers_install_dir:type: string

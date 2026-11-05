@@ -38,7 +38,7 @@ steps:
       DOCKER_HOST: tcp://docker:2375
       ANSIBLE_ROLES_PATH: ./roles
     commands:
-      - apk add -q --no-cache uv git curl build-base autoconf automake linux-headers musl-dev libffi-dev openssl-dev openssh yaml-dev ca-certificates
+      - apk add -q --no-cache --upgrade uv git curl build-base autoconf automake linux-headers musl-dev libffi-dev openssl-dev openssh yaml-dev ca-certificates
       - uv venv ~/venv/ansible-molecule
       - source ~/venv/ansible-molecule/bin/activate
       - uv pip install -q ansible-doctor ansible-core molecule-plugins[docker] cryptography
